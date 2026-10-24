@@ -108,12 +108,137 @@ None of these are connected to both the UK and Bulgaria. They're listed so we do
 
 ---
 
-## 4. Suggested site pages
+## 4. Reference site: The Chelsea Psychology Clinic
 
-1. **Home** – who she is, who she helps, "Book a session"
-2. **About** – bio, education, experience, awards
-3. **Services** – what she offers, in person / online
-4. **Prices & booking**
-5. **Articles** – e.g. her "School of Psychology" columns
-6. **Contact**
-7. **Privacy policy & cookies**
+Analysed: <https://www.thechelseapsychologyclinic.com/> (October 2026)
+
+### What it is
+
+A big private clinic in London: 5 locations (Chelsea, Harley Street, Knightsbridge, Mayfair, Kensington), 100+ clinicians, therapy plus psychiatry. Her site will be **one person, not a clinic**, so we copy the *structure and the good ideas*, not the size.
+
+### Their menu
+
+| Menu | What's inside |
+|---|---|
+| **Adults** | Private therapy, couples, family, group, psychiatry, ADHD/autism assessments, nutrition, sleep, retreats |
+| **Child & Adolescent** | Child therapy, child psychiatry, assessments, **educational psychology assessments**, **schools & education** |
+| **Therapies** | One page per method: CBT, ACT, CFT, DBT, EMDR, schema therapy, online therapy… (15 pages) |
+| **Issues** | One page per problem: anxiety, depression, ADHD, autism, dyslexia, bereavement, stress, self-harm… (30 pages) |
+| **Psychiatry / Online / Corporate** | Separate sections |
+| **Team** | One profile page per clinician, **with the languages they speak** |
+| **Membership** | Paid membership plan |
+
+**Footer:** Locations, Our Fees, Careers, **Crisis Information**, Sitemap, Privacy Policy, Terms & Conditions, Instagram.
+
+### Homepage, top to bottom
+
+1. Headline: "Private Psychiatry & Therapy Clinic in London"
+2. Three promises: *leading specialists, tailored therapy, best outcomes*
+3. Service tiles (Adults / Children)
+4. Online therapy block
+5. Membership plan
+6. Team carousel
+7. Featured resources: blog posts and short videos ("Is therapy confidential?", "How many sessions will I need?")
+8. **Press**: articles they were quoted in
+9. "Featured in…" media logos, plus health-insurance logos
+10. "Start your journey today" button
+11. Locations with "Get directions"
+12. Phone number and opening hours
+
+### How their pages are built
+
+- **Issue page** (e.g. Anxiety): what it is → types → how it's treated → **FAQ** → related videos → "Start your journey" button.
+- **Team profile**: photo, name, title, bio, languages, contact form.
+- **Fees page**: a clear table. Each line has the service, the price (£200–£300 for a 50-min session, £250–£350 for an assessment) and the length in minutes. It also mentions health insurance.
+- **Contact page**: a short form (name, email, phone, message, **best time to call** with Pre-9am / 9–12 / 12–5 / 5–8, privacy consent). It promises a callback within 24 hours and shows the phone number, opening hours and addresses.
+
+### What we copy ✅
+
+- Clear menus split into **who I help** and **what I help with**
+- One page per issue, each ending in an FAQ and a booking button. These pages are what bring people in from Google.
+- An **open fees table**. People trust prices they can see.
+- **Short FAQ videos** (1–2 min) – easy to film on a phone
+- **Press / "As featured in"**. Her BG BEN column fits here.
+- A **crisis information** page
+- The contact form with "best time to call"
+- A "Start your journey" button on every page
+
+### What we skip ❌
+
+- Psychiatry, nutrition, sleep, retreats, membership, careers, corporate, multiple locations. These need a whole clinic.
+- 30 issue pages and 15 therapy pages. **6–8 issue pages that match her real specialisms** is plenty to start.
+- Health-insurance logos, unless she's registered with insurers.
+
+### Where we can beat them
+
+- **Two languages, two countries.** Chelsea only shows a "Languages: English, Greek" tag on profiles. Her whole site is native Bulgarian *and* English, which is a real selling point for Bulgarians in the UK.
+- **Personal.** One face, her own voice, her own story. A solo practitioner can feel warmer than a big clinic.
+- **Her niche.** If her background is educational and developmental psychology, then children, teens, parents, schools and cyberbullying are exactly where Chelsea's offer is thinnest.
+
+---
+
+## 5. Our pages (sitemap)
+
+Every page exists in both languages. URLs are in English on `.co.uk` and in Bulgarian (Latin letters) on `.bg`.
+
+### Main menu
+
+| # | Page | drvasileva.co.uk | drvasileva.bg | What's on it |
+|---|---|---|---|---|
+| 1 | **Home** | `/` | `/` | Photo, one-line promise, who I help, how it works (3 steps), "Featured in", book button |
+| 2 | **About me** | `/about` | `/za-men` | Story, education, PhD, experience, **awards**, registrations, languages, approach |
+| 3 | **Who I help** | `/who-i-help` | `/s-kogo-rabotya` | Overview page, linking to 3a–3d |
+| 3a | – Adults | `/who-i-help/adults` | `/s-kogo-rabotya/vazrastni` | Individual therapy |
+| 3b | – Children & teens | `/who-i-help/children-teens` | `/s-kogo-rabotya/deca-i-tiyneydzhari` | Child and teen work |
+| 3c | – Parents & families | `/who-i-help/parents` | `/s-kogo-rabotya/roditeli` | Parenting support, family sessions |
+| 3d | – Schools | `/who-i-help/schools` | `/s-kogo-rabotya/uchilishta` | Talks, training, consultations *(if she does this)* |
+| 4 | **What I help with** | `/issues` | `/problemi` | Grid of issue pages (see list below) |
+| 5 | **Online therapy** | `/online-therapy` | `/onlayn-terapiya` | How online sessions work, platform, time zones UK ↔ BG |
+| 6 | **Fees & booking** | `/fees` | `/ceni` | Price table (GBP on .co.uk, EUR on .bg), session length, cancellation policy, booking |
+| 7 | **Articles** | `/articles` | `/statii` | Her writing, incl. the "School of Psychology" columns |
+| 8 | **Contact** | `/contact` | `/kontakti` | Form with best time to call, email, phone, address/map, hours |
+
+### Issue pages (start with 6–8, pick from her real specialisms)
+
+| Issue | .co.uk | .bg |
+|---|---|---|
+| Anxiety | `/issues/anxiety` | `/problemi/trevozhnost` |
+| Depression & low mood | `/issues/depression` | `/problemi/depresiya` |
+| Stress & burnout | `/issues/stress` | `/problemi/stres` |
+| Relationship difficulties | `/issues/relationships` | `/problemi/vzaimootnosheniya` |
+| Bullying & cyberbullying | `/issues/bullying` | `/problemi/tormoz` |
+| Learning difficulties (dyslexia…) | `/issues/learning-difficulties` | `/problemi/obuchitelni-zatrudneniya` |
+| Child behaviour & emotions | `/issues/child-behaviour` | `/problemi/povedenie-pri-detsata` |
+| Life abroad / adapting to a new country | `/issues/living-abroad` | `/problemi/zhivot-v-chuzhbina` |
+
+**Every issue page follows the same layout** (copied from Chelsea): what it is → signs → how I help → FAQ (3–5 questions) → "Book a session" button.
+
+> "Life abroad" is our own idea, not from Chelsea. It suits her UK-based Bulgarian clients and very few competitors cover it.
+
+### Footer pages
+
+| Page | .co.uk | .bg | Notes |
+|---|---|---|---|
+| **FAQ** | `/faq` | `/chesto-zadavani-vaprosi` | Is it confidential? How many sessions? Online vs in person? Cancellations? |
+| **Press / Featured in** | `/press` | `/medii` | BG BEN column, interviews, talks |
+| **Crisis help** | `/crisis` | `/spesht-pomosht` | UK: 999, NHS 111, Samaritans 116 123. BG: 112. "I'm not an emergency service." |
+| **Privacy policy** | `/privacy` | `/poveritelnost` | UK GDPR / EU GDPR – health data |
+| **Cookies** | `/cookies` | `/biskvitki` | Cookie banner + policy |
+| **Terms** | `/terms` | `/obshti-usloviya` | Booking, payment, cancellation terms |
+
+### On every page
+
+- Header: logo · menu · **BG / EN switch** · "Book a session" button
+- Footer: contact details, hours, social links, crisis link, legal links
+- Bottom of each page: "Ready to talk? Book a session" block
+
+### Total to build first
+
+**~22 page types**: 8 main pages, 4 "who I help" pages, 6–8 issue pages and 6 footer pages, each in two languages. Articles get added over time.
+
+### Nice-to-have later
+
+- Short FAQ videos (1–2 min, filmed on a phone)
+- Testimonials. Check her professional body's rules first (HCPC / BPS in the UK, her Bulgarian society); many therapists avoid them for confidentiality reasons.
+- Online booking calendar (Calendly / Cal.com) that shows UK and BG times
+- Newsletter sign-up
