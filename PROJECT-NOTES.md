@@ -38,7 +38,7 @@ drvasileva.co.uk  ─┘                       .co.uk  = English,   prices in GB
 |---|---|---|
 | Language | Bulgarian | English |
 | Currency | EUR (€) – Bulgaria uses the euro since 1 Jan 2026 | GBP (£) |
-| Time zone for booking | Bulgaria (EET) | UK (GMT/BST) – 2 hours behind |
+| Time zone for sessions | Bulgaria (EET) | UK (GMT/BST) – 2 hours behind |
 | Appointments offered | **Online only** | **Online and in person** |
 | Phone number | Her UK number | Her UK number |
 | Chat button | **Viber** | **WhatsApp** |
@@ -53,7 +53,7 @@ She has one phone number (UK), so both sites use it. Only the chat app changes:
 - **drvasileva.bg → Viber** (what most people in Bulgaria use). Link: `viber://chat?number=%2B44XXXXXXXXXX`
 - **drvasileva.co.uk → WhatsApp** (what most people in the UK use). Link: `https://wa.me/44XXXXXXXXXX`
 - **Facebook** is her only social account, so it's linked in the footer of both sites.
-- **No address on either site.** For in-person sessions in the UK, she sends the details after booking.
+- **No address on either site.** For in-person sessions in the UK, she gives the details when people message or call her.
 
 > The Viber link only opens if the visitor has Viber installed (normal in Bulgaria). Show the number as text next to the button as a fallback.
 
@@ -146,13 +146,12 @@ A big private clinic in London: 5 locations (Chelsea, Harley Street, Knightsbrid
 ### What we copy ✅
 
 - Clear menus split into **who I help** and **what I help with**
-- One page per issue, each ending in an FAQ and a booking button. These pages are what bring people in from Google.
+- One page per issue, each ending in an FAQ and a contact button. These pages are what bring people in from Google.
 - An **open fees table**. People trust prices they can see.
 - **Short FAQ videos** (1–2 min) – easy to film on a phone
 - **Press / "As featured in"**. Her BG BEN column fits here.
 - A **crisis information** page
-- The contact form with "best time to call"
-- A "Start your journey" button on every page
+- A "get in touch" button on every page (for us: call / Viber / WhatsApp, not a booking form)
 
 ### What we skip ❌
 
@@ -176,7 +175,7 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 
 | # | Page | drvasileva.co.uk | drvasileva.bg | What's on it |
 |---|---|---|---|---|
-| 1 | **Home** | `/` | `/` | Photo, one-line promise, who I help, how it works (3 steps), "Featured in", book button |
+| 1 | **Home** | `/` | `/` | Photo, one-line promise, who I help, online & in person (.co.uk) / online only (.bg), "Featured in", call + chat buttons |
 | 2 | **About me** | `/about` | `/za-men` | Story, education, PhD, experience, **awards**, registrations, languages, approach |
 | 3 | **Who I help** | `/who-i-help` | `/s-kogo-rabotya` | Overview page, linking to 3a–3d |
 | 3a | – Adults | `/who-i-help/adults` | `/s-kogo-rabotya/vazrastni` | Individual therapy |
@@ -184,10 +183,9 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 | 3c | – Parents & families | `/who-i-help/parents` | `/s-kogo-rabotya/roditeli` | Parenting support, family sessions |
 | 3d | – Schools | `/who-i-help/schools` | `/s-kogo-rabotya/uchilishta` | Talks, training, consultations *(if she does this)* |
 | 4 | **What I help with** | `/issues` | `/problemi` | Grid of issue pages (see list below) |
-| 5 | **Appointments** | `/appointments` | `/onlayn-konsultacii` | **.co.uk:** online *and* in person (no address, details sent after booking). **.bg:** online only. How sessions work, video platform, time zones UK ↔ BG |
-| 6 | **Fees** | `/fees` | `/ceni` | **.co.uk:** GBP, online + in person. **.bg:** EUR, online only. Session length, cancellation policy |
-| 7 | **Articles** | `/articles` | `/statii` | Her writing, incl. the "School of Psychology" columns |
-| 8 | **Contact** | `/contact` | `/kontakti` | Form with best time to call, email, UK phone number, chat button (**Viber** on .bg, **WhatsApp** on .co.uk), Facebook, hours. **No address or map** |
+| 5 | **Fees** | `/fees` | `/ceni` | **.co.uk:** GBP, online + in person. **.bg:** EUR, online only. Session length, how online sessions work, time zones UK ↔ BG, cancellation policy |
+| 6 | **Articles** | `/articles` | `/statii` | Her writing, incl. the "School of Psychology" columns |
+| 7 | **Contact** | `/contact` | `/kontakti` | **No form, no booking.** Big buttons: call her UK number, chat (**Viber** on .bg, **WhatsApp** on .co.uk), email, Facebook. Hours she answers. **No address or map** |
 
 ### Issue pages (start with 6–8, pick from her real specialisms)
 
@@ -202,7 +200,7 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 | Child behaviour & emotions | `/issues/child-behaviour` | `/problemi/povedenie-pri-detsata` |
 | Life abroad / adapting to a new country | `/issues/living-abroad` | `/problemi/zhivot-v-chuzhbina` |
 
-**Every issue page follows the same layout** (copied from Chelsea): what it is → signs → how I help → FAQ (3–5 questions) → "Book a session" button.
+**Every issue page follows the same layout** (copied from Chelsea): what it is → signs → how I help → FAQ (3–5 questions) → "Call or message me" buttons.
 
 > "Life abroad" is our own idea, not from Chelsea. It suits her UK-based Bulgarian clients and very few competitors cover it.
 
@@ -215,24 +213,24 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 | **Crisis help** | `/crisis` | `/spesht-pomosht` | UK: 999, NHS 111, Samaritans 116 123. BG: 112. "I'm not an emergency service." |
 | **Privacy policy** | `/privacy` | `/poveritelnost` | UK GDPR / EU GDPR – health data |
 | **Cookies** | `/cookies` | `/biskvitki` | Cookie banner + policy |
-| **Terms** | `/terms` | `/obshti-usloviya` | Booking, payment, cancellation terms |
+| **Terms** | `/terms` | `/obshti-usloviya` | Payment and cancellation terms |
 
 ### On every page
 
-- Header: logo · menu · **BG / EN switch** · "Book a session" button (goes to the contact page)
+- Header: logo · menu · **BG / EN switch** · "Contact me" button (goes to the contact page)
 - Footer: UK phone number, chat button (Viber on .bg / WhatsApp on .co.uk), email, Facebook, hours, crisis link, legal links. No address.
-- Bottom of each page: "Ready to talk? Get in touch" block with the same chat button
+- Bottom of each page: "Ready to talk? Call or message me" block with the phone and chat buttons
 
 ### Total to build first
 
-**~22 page types**: 8 main pages, 4 "who I help" pages, 6–8 issue pages and 6 footer pages, each in two languages. Articles get added over time.
+**~21 page types**: 7 main pages, 4 "who I help" pages, 6–8 issue pages and 6 footer pages, each in two languages. Articles get added over time.
 
 ### Not included (decided)
 
 - Google Business Profile
 - Listings on other directories
 - Address or map
-- Online booking calendar. Bookings come through the contact form, Viber/WhatsApp, phone or email.
+- **No booking page, booking calendar or contact form.** People call or message her directly (phone, Viber/WhatsApp, email, Facebook).
 - Newsletter
 
 ### Nice-to-have later
