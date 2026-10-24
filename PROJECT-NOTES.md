@@ -39,8 +39,23 @@ drvasileva.co.uk  ─┘                       .co.uk  = English,   prices in GB
 | Language | Bulgarian | English |
 | Currency | EUR (€) – Bulgaria uses the euro since 1 Jan 2026 | GBP (£) |
 | Time zone for booking | Bulgaria (EET) | UK (GMT/BST) – 2 hours behind |
-| Phone shown | Bulgarian number | UK number (if she has one) |
+| Appointments offered | **Online only** | **Online and in person** |
+| Phone number | Her UK number | Her UK number |
+| Chat button | **Viber** | **WhatsApp** |
+| Socials | Facebook | Facebook |
+| Address | Not shown | Not shown |
 | Legal pages | Privacy policy under EU GDPR | Privacy policy under UK GDPR |
+
+### Contact buttons
+
+She has one phone number (UK), so both sites use it. Only the chat app changes:
+
+- **drvasileva.bg → Viber** (what most people in Bulgaria use). Link: `viber://chat?number=%2B44XXXXXXXXXX`
+- **drvasileva.co.uk → WhatsApp** (what most people in the UK use). Link: `https://wa.me/44XXXXXXXXXX`
+- **Facebook** is her only social account, so it's linked in the footer of both sites.
+- **No address on either site.** For in-person sessions in the UK, she sends the details after booking.
+
+> The Viber link only opens if the visitor has Viber installed (normal in Bulgaria). Show the number as text next to the button as a fallback.
 
 ### Google search – do's and don'ts
 
@@ -49,28 +64,13 @@ drvasileva.co.uk  ─┘                       .co.uk  = English,   prices in GB
 - **Do** let the domains do the targeting: Google automatically treats `.bg` as Bulgaria and `.co.uk` as the UK.
 - **Don't** auto-redirect people by their location. It confuses Google and annoys people (e.g. a Bulgarian living in London). Use the BG / EN button instead.
 
-### Google Business Profile (Google Maps)
-
-- A profile needs a **real address where she sees clients in person**.
-- **Office only in Bulgaria** → one profile in Bulgaria, linked to `drvasileva.bg`. No UK profile is possible (virtual offices break Google's rules and get suspended).
-- **Offices in both countries** → two profiles, each linked to its own domain.
-- **Online only** → not eligible for a profile. The website and directories do the work instead.
-
-> **To decide:** where does she actually see clients – Bulgaria, UK, both, or online only?
-
-### Other places to list her
-
-- **UK:** HCPC register (needed to use the title "practitioner psychologist" in the UK), BPS / BACP directories, Psychology Today UK.
-- **Bulgaria:** superdoc.bg, imatter.bg, the relevant Bulgarian psychology / psychotherapy society registers.
-- **Everywhere:** Bing Places, Apple Business Connect.
-
 ---
 
 ## 3. About Dr Vasileva (research)
 
-> ⚠️ **Not confirmed.** A web search did not find one clear profile for "Dr Vasileva, psychologist, UK + Bulgaria", and **no awards were found** online. The person below is the **closest match**. Please check with her before anything goes on the site.
+### Dr Mirena Koleva Vasileva (д-р Мирена Колева Василева)
 
-### Closest match: Dr Mirena Koleva Vasileva (д-р Мирена Колева Василева)
+✅ Confirmed as our Dr Vasileva. **No awards were found online**, so we need those from her.
 
 What the public sources say:
 
@@ -82,16 +82,6 @@ What the public sources say:
 
 Source: bgben.co.uk – "В „Училище по психология“: Тишината на дигиталното насилие" (10 June 2026).
 
-### Other psychologists named Vasileva (to avoid mixing up)
-
-None of these are connected to both the UK and Bulgaria. They're listed so we don't use their details by mistake:
-
-- Polina Vasileva – psychologist/psychotherapist in Bulgaria. Her imatter.bg profile lists a J.L. Moreno statuette (2019–2020).
-- Mira, Nadezhda, Anelia Vasileva – psychologists in Sofia (superdoc.bg).
-- Galina Vasileva, Nina Vasileva – psychologists in Varna (both listed on zlatnafirma.eu "Golden Company" award pages).
-- Desi Vasileva – clinical psychologist in Oslo, Norway.
-- Dr Mira Vasileva – clinical psychologist in Germany (Oldenburg).
-
 ### Info we still need from her
 
 - [ ] Full name as it should appear (BG + EN spelling)
@@ -100,9 +90,10 @@ None of these are connected to both the UK and Bulgaria. They're listed so we do
 - [ ] Registrations (HCPC / BPS in the UK, Bulgarian society membership)
 - [ ] **Awards** – names, years, who gave them (nothing found online)
 - [ ] Specialisms (e.g. children, teens, parents, anxiety, cyberbullying…)
-- [ ] Services: in person / online, session length, prices in EUR and GBP
-- [ ] Office address(es) – decides the Google Business Profile
-- [ ] Phone, email, booking method
+- [ ] Session length and prices: online in EUR (.bg); online and in person in GBP (.co.uk)
+- [ ] UK phone number (used for Viber and WhatsApp)
+- [ ] Facebook page link
+- [ ] Email address
 - [ ] Languages she works in
 - [ ] Short bio in her own words
 
@@ -173,7 +164,7 @@ A big private clinic in London: 5 locations (Chelsea, Harley Street, Knightsbrid
 
 - **Two languages, two countries.** Chelsea only shows a "Languages: English, Greek" tag on profiles. Her whole site is native Bulgarian *and* English, which is a real selling point for Bulgarians in the UK.
 - **Personal.** One face, her own voice, her own story. A solo practitioner can feel warmer than a big clinic.
-- **Her niche.** If her background is educational and developmental psychology, then children, teens, parents, schools and cyberbullying are exactly where Chelsea's offer is thinnest.
+- **Her niche.** Her background is educational and developmental psychology, and children, teens, parents, schools and cyberbullying are exactly where Chelsea's offer is thinnest.
 
 ---
 
@@ -193,10 +184,10 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 | 3c | – Parents & families | `/who-i-help/parents` | `/s-kogo-rabotya/roditeli` | Parenting support, family sessions |
 | 3d | – Schools | `/who-i-help/schools` | `/s-kogo-rabotya/uchilishta` | Talks, training, consultations *(if she does this)* |
 | 4 | **What I help with** | `/issues` | `/problemi` | Grid of issue pages (see list below) |
-| 5 | **Online therapy** | `/online-therapy` | `/onlayn-terapiya` | How online sessions work, platform, time zones UK ↔ BG |
-| 6 | **Fees & booking** | `/fees` | `/ceni` | Price table (GBP on .co.uk, EUR on .bg), session length, cancellation policy, booking |
+| 5 | **Appointments** | `/appointments` | `/onlayn-konsultacii` | **.co.uk:** online *and* in person (no address, details sent after booking). **.bg:** online only. How sessions work, video platform, time zones UK ↔ BG |
+| 6 | **Fees** | `/fees` | `/ceni` | **.co.uk:** GBP, online + in person. **.bg:** EUR, online only. Session length, cancellation policy |
 | 7 | **Articles** | `/articles` | `/statii` | Her writing, incl. the "School of Psychology" columns |
-| 8 | **Contact** | `/contact` | `/kontakti` | Form with best time to call, email, phone, address/map, hours |
+| 8 | **Contact** | `/contact` | `/kontakti` | Form with best time to call, email, UK phone number, chat button (**Viber** on .bg, **WhatsApp** on .co.uk), Facebook, hours. **No address or map** |
 
 ### Issue pages (start with 6–8, pick from her real specialisms)
 
@@ -219,7 +210,7 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 
 | Page | .co.uk | .bg | Notes |
 |---|---|---|---|
-| **FAQ** | `/faq` | `/chesto-zadavani-vaprosi` | Is it confidential? How many sessions? Online vs in person? Cancellations? |
+| **FAQ** | `/faq` | `/chesto-zadavani-vaprosi` | Is it confidential? How many sessions? How do online sessions work? Cancellations? (.co.uk also: online vs in person) |
 | **Press / Featured in** | `/press` | `/medii` | BG BEN column, interviews, talks |
 | **Crisis help** | `/crisis` | `/spesht-pomosht` | UK: 999, NHS 111, Samaritans 116 123. BG: 112. "I'm not an emergency service." |
 | **Privacy policy** | `/privacy` | `/poveritelnost` | UK GDPR / EU GDPR – health data |
@@ -228,17 +219,23 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 
 ### On every page
 
-- Header: logo · menu · **BG / EN switch** · "Book a session" button
-- Footer: contact details, hours, social links, crisis link, legal links
-- Bottom of each page: "Ready to talk? Book a session" block
+- Header: logo · menu · **BG / EN switch** · "Book a session" button (goes to the contact page)
+- Footer: UK phone number, chat button (Viber on .bg / WhatsApp on .co.uk), email, Facebook, hours, crisis link, legal links. No address.
+- Bottom of each page: "Ready to talk? Get in touch" block with the same chat button
 
 ### Total to build first
 
 **~22 page types**: 8 main pages, 4 "who I help" pages, 6–8 issue pages and 6 footer pages, each in two languages. Articles get added over time.
 
+### Not included (decided)
+
+- Google Business Profile
+- Listings on other directories
+- Address or map
+- Online booking calendar. Bookings come through the contact form, Viber/WhatsApp, phone or email.
+- Newsletter
+
 ### Nice-to-have later
 
 - Short FAQ videos (1–2 min, filmed on a phone)
 - Testimonials. Check her professional body's rules first (HCPC / BPS in the UK, her Bulgarian society); many therapists avoid them for confidentiality reasons.
-- Online booking calendar (Calendly / Cal.com) that shows UK and BG times
-- Newsletter sign-up
