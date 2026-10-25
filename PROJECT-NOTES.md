@@ -57,7 +57,7 @@ She has one phone number (UK), so both sites use it. Only the chat app changes:
 - **drvasileva.co.uk → WhatsApp** (what most people in the UK use). Link: `https://wa.me/447999334778`
 - **Phone:** shown as `+44 7999 334778` on .bg (so it works when dialled from Bulgaria) and `07999 334778` on .co.uk. Both link to `tel:+447999334778`.
 - **Email:** `contact@drvasileva.bg` on .bg, `contact@drvasileva.co.uk` on .co.uk. Both can forward into one inbox she already uses.
-- **Facebook** is her only social account, so it's linked in the footer of both sites: <https://www.facebook.com/share/19nr77HjG3/>. This is a share link. Before launch, open it and copy the page's real address (`facebook.com/<her-page>`), which is more reliable.
+- **Facebook** is her only social account, so it's linked in the footer of both sites: <https://www.facebook.com/share/1Bh2hqG1Ac/>. This is a share link. Before launch, open it and copy the page's real address (`facebook.com/<her-page>`), which is more reliable.
 - **No address on either site.** For in-person sessions in the UK, she gives the details when people message or call her.
 
 > The Viber link only opens if the visitor has Viber installed (normal in Bulgaria). Show the number as text next to the button as a fallback.
@@ -143,13 +143,14 @@ Source: her CV, plus her list of BG BEN columns.
   - dyslexia, dyspraxia, handwriting difficulties
   - learning disabilities and developmental delays
 - **Psychological assessments and written psychological reports**
+- **Group sessions** (group therapy)
 - **Group training for organisations and schools:** professional stress, effective teamwork, relationships (adult–child, child–child, adult–adult, employer–employee)
 - **Method:** mainly **CBT (cognitive behavioural therapy)**, plus art-therapy methods in crisis work
 
 ### Languages
 
 Bulgarian (native), English (fluent), Russian (good), German (basic).
-**On the site:** sessions in **Bulgarian and English**. Russian too, if she's happy to offer it.
+**On the site:** sessions in **Bulgarian and English** only (no Russian sessions).
 
 ### Media & public work
 
@@ -180,11 +181,14 @@ Use this title everywhere: header, About page, page titles, Facebook.
 - [x] Phone, email, Facebook
 - [x] Payment methods
 - [x] Languages
-- [ ] **Session length and prices**: online in EUR (.bg); online and in person in GBP (.co.uk). Also prices for assessments/reports and group training, if she offers them on the site. *(Coming in the next message.)*
-- [ ] Cancellation policy
+- [ ] **Prices and session length**: decided **after the website is finished**. The Fees page is built with placeholders until then.
+- [x] Cancellation policy: **24 hours' notice**
 - [x] Titles: use the decided title above
-- [ ] Does she want to offer Russian-language sessions?
-- [ ] Does she want **"Organisations & schools"** (group training) on the site?
+- [x] Russian-language sessions: **no**
+- [x] "Organisations & schools" page: **yes**
+- [x] Group sessions: **yes**, gets its own page
+- [x] Columns: **translated into English** for .co.uk
+- [ ] **Full list of scientific papers** (she has more than the CV shows; coming soon)
 - [x] BG BEN: she can republish her columns in full ✅
 - [ ] A short "about me" paragraph in her own words (we can draft one from the CV for her to approve)
 
@@ -268,14 +272,15 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 |---|---|---|---|---|
 | 1 | **Home** | `/` | `/` | Photo, one-line promise, who I help, online & in person (.co.uk) / online only (.bg), "Featured in", call + chat buttons |
 | 2 | **About me** | `/about` | `/za-men` | Photo, her story, 21 years since 2005, PhD, education, experience timeline, **awards**, BPS membership, CBT, languages, charity work |
-| 3 | **Who I help** | `/who-i-help` | `/s-kogo-rabotya` | Overview page, linking to 3a–3e |
+| 3 | **Who I help** | `/who-i-help` | `/s-kogo-rabotya` | Overview page, linking to 3a–3f |
 | 3a | – Adults | `/who-i-help/adults` | `/s-kogo-rabotya/vazrastni` | Individual CBT therapy: anxiety, depression, panic, stress |
 | 3b | – Couples & families | `/who-i-help/couples-families` | `/s-kogo-rabotya/dvoyki-i-semeystva` | CBT couples therapy, family therapy |
 | 3c | – Children & teens | `/who-i-help/children-teens` | `/s-kogo-rabotya/deca-i-tiyneydzhari` | Consultations for children and teens, support for parents |
 | 3d | – Special educational needs | `/who-i-help/special-educational-needs` | `/s-kogo-rabotya/specialni-obrazovatelni-potrebnosti` | Autism, ADHD, dyslexia, dyspraxia, learning difficulties, assessments and reports |
-| 3e | – Organisations & schools | `/who-i-help/organisations` | `/s-kogo-rabotya/organizacii` | Group training: professional stress, teamwork, relationships *(if she wants this on the site)* |
+| 3e | – Organisations & schools | `/who-i-help/organisations` | `/s-kogo-rabotya/organizacii` | Group training: professional stress, teamwork, relationships |
+| 3f | – Group sessions | `/who-i-help/group-sessions` | `/s-kogo-rabotya/grupovi-sesii` | What group sessions are, who they're for, how they work, online / in person |
 | 4 | **What I help with** | `/issues` | `/problemi` | Grid of issue pages (see list below) |
-| 5 | **Fees** | `/fees` | `/ceni` | **.co.uk:** GBP, online + in person. **.bg:** EUR, online only. Session length, assessments & reports, how online sessions work, time zones UK ↔ BG, **payment by bank transfer or Revolut**, cancellation policy. *Prices to follow.* |
+| 5 | **Fees** | `/fees` | `/ceni` | **.co.uk:** GBP, online + in person. **.bg:** EUR, online only. Session length, assessments & reports, how online sessions work, time zones UK ↔ BG, **payment by bank transfer or Revolut**, **cancellation: 24 hours' notice**. *Prices added after the site is finished.* |
 | 6 | **Articles & publications** | `/articles` | `/statii` | Her "School of Psychology" columns (all of them, see section 6), plus her scientific publications |
 | 7 | **Contact** | `/contact` | `/kontakti` | **No form, no booking.** Big buttons: call **07999 334778**, chat (**Viber** on .bg, **WhatsApp** on .co.uk), email (**contact@drvasileva.bg / .co.uk**), Facebook. **No hours, no address or map** |
 
@@ -310,7 +315,7 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 | **Crisis help** | `/crisis` | `/spesht-pomosht` | UK: 999, NHS 111, Samaritans 116 123. BG: 112. "I'm not an emergency service." |
 | **Privacy policy** | `/privacy` | `/poveritelnost` | UK GDPR / EU GDPR – health data |
 | **Cookies** | `/cookies` | `/biskvitki` | Cookie banner + policy |
-| **Terms** | `/terms` | `/obshti-usloviya` | Payment (bank transfer / Revolut) and cancellation terms |
+| **Terms** | `/terms` | `/obshti-usloviya` | Payment (bank transfer / Revolut), **24-hour cancellation** |
 
 ### On every page
 
@@ -320,7 +325,7 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 
 ### Total to build first
 
-**~29 page types**: 7 main pages, 5 "who I help" pages, 11 issue pages and 6 footer pages, each in two languages. Plus one page per column (18 to start), with new columns added over time.
+**~30 page types**: 7 main pages, 6 "who I help" pages, 11 issue pages and 6 footer pages, each in two languages. Plus one page per column (18 to start), with new columns added over time.
 
 ### Not included (decided)
 
@@ -369,7 +374,7 @@ The titles below are English translations. The originals are in Bulgarian. On .b
 
 > **How to show them:** ✅ BG BEN allows full republishing. Each column gets its own page on her site with the **full text** (good for Google), plus a line at the bottom: "First published in BG BEN, <date>" with a link to the original.
 >
-> **English versions:** the columns are in Bulgarian. For .co.uk, we either translate them (she approves each one) or show them in Bulgarian with an English summary.
+> **English versions:** ✅ all columns get **translated into English** for .co.uk, and she approves each translation before it goes live.
 
 ### Scientific publications
 
@@ -388,7 +393,7 @@ The CV says 21 scientific publications on peer relationships, the family environ
 
 **PhD thesis:** *Family environment and experiencing stress in adolescence* (2013), Varna Free University.
 
-> The other ~11 publications aren't named in the CV. If she sends that list, we add them here.
+> She has **more scientific papers** than the CV lists. Full list coming soon, then we add them here.
 
 ### Interviews
 
