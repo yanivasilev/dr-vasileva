@@ -159,16 +159,16 @@ Bulgarian (native), English (fluent), Russian (good), German (basic).
 - Lectures at Burgas Free University: Experimental Psychology, Pedagogical Psychology, "Art therapy methods in crisis intervention", "Family environment and experience of stress in adolescence"
 - 6 scientific and applied contributions from her PhD, recognised at the **Bulgarian Academy of Sciences**
 
-### ⚠️ Titles: check before we publish
+### Title (decided)
 
-Her CV lists "Counselling Psychologist, MBPsS, PhD, BSs, MSs, MA, CPsychol, EuroPsy". In the UK, some of these are legally protected or easy to look up, so we need to be careful on the .co.uk site:
+**Dr Mirena Vasileva, PhD – Psychologist & CBT Psychotherapist · MBPsS**
+(BG: **д-р Мирена Василева – психолог и когнитивно-поведенчески психотерапевт**)
 
-- **"Counselling Psychologist" is a protected title in the UK.** It needs **HCPC registration**. If she isn't on the HCPC register, the .co.uk site should say **"Psychologist"** or **"CBT Psychotherapist"** instead.
-- **MBPsS** (BPS membership no. 464684) is fine to show.
-- **CPsychol** (Chartered Psychologist) and **EuroPsy** are separate grades that anyone can check online. We'll only show them if she has the certificates for them. MBPsS and CPsychol are normally different membership levels.
-- **"Dr"** is fine with her PhD. Write "Dr Mirena Vasileva, PhD" so it's clear it's a doctorate, not a medical degree.
+Use this title everywhere: header, About page, page titles, Facebook.
 
-**Safe title for now:** *Dr Mirena Vasileva, PhD – Psychologist & CBT Psychotherapist · MBPsS*
+- ✅ Show: **Dr**, **PhD**, **Psychologist**, **CBT Psychotherapist**, **MBPsS** (BPS membership no. 464684)
+- ❌ Never show: "Counselling Psychologist", "CPsychol", "EuroPsy". She doesn't hold these, and "Counselling Psychologist" is a protected title in the UK.
+- Write "Dr … PhD" together so it's clear it's a doctorate, not a medical degree.
 
 ### Info we still need from her
 
@@ -182,10 +182,10 @@ Her CV lists "Counselling Psychologist, MBPsS, PhD, BSs, MSs, MA, CPsychol, Euro
 - [x] Languages
 - [ ] **Session length and prices**: online in EUR (.bg); online and in person in GBP (.co.uk). Also prices for assessments/reports and group training, if she offers them on the site. *(Coming in the next message.)*
 - [ ] Cancellation policy
-- [ ] Confirm titles: HCPC registered? CPsychol? EuroPsy? (see above)
+- [x] Titles: use the decided title above
 - [ ] Does she want to offer Russian-language sessions?
 - [ ] Does she want **"Organisations & schools"** (group training) on the site?
-- [ ] Permission from BG BEN to republish her columns in full. Otherwise we show a short intro + link to BG BEN.
+- [x] BG BEN: she can republish her columns in full ✅
 - [ ] A short "about me" paragraph in her own words (we can draft one from the CV for her to approve)
 
 ---
@@ -367,7 +367,7 @@ The titles below are English translations. The originals are in Bulgarian. On .b
 | 17 | 08.07.2026 | The alphabet of the human soul | [Article](https://www.bgben.co.uk/azbukata-na-choveshkata-dusha) |
 | 18 | 19.09.2026 | Expired gratitude | [Article](https://www.bgben.co.uk/blagodarnostta-s-iztekul-srok) |
 
-> **How to show them:** each column gets its own page on her site (good for Google), with a "First published in BG BEN" line and a link to the original. If BG BEN won't allow the full text, we show a short intro and a "Read on BG BEN" button instead.
+> **How to show them:** ✅ BG BEN allows full republishing. Each column gets its own page on her site with the **full text** (good for Google), plus a line at the bottom: "First published in BG BEN, <date>" with a link to the original.
 >
 > **English versions:** the columns are in Bulgarian. For .co.uk, we either translate them (she approves each one) or show them in Bulgarian with an English summary.
 
