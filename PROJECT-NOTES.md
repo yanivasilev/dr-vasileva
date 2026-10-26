@@ -345,7 +345,7 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 - Listings on other directories
 - Address or map
 - Opening hours (she's flexible)
-- **No booking page, booking calendar or contact form.** People call or message her directly (phone, Viber/WhatsApp, email, Facebook).
+- **No booking page or booking calendar.** People call or message her directly (phone, Viber/WhatsApp, email, Facebook) or use the contact form.
 - Newsletter
 
 ### Nice-to-have later
@@ -701,3 +701,43 @@ Shown as a row on **Home** and **About me**:
 1. **BPS letters.** In **September 2022** the BPS changed the letters for graduate members from **MBPsS** to **GMBPsS**. Her CV still says MBPsS. She can see her current grade and letters in her BPS member portal. Until then, the badge just says "Member, British Psychological Society", which is true either way, and the letters after her name should match what the portal shows.
 2. **DBS.** Her Enhanced DBS is dated **July 2016**. A DBS check is a snapshot on the day it's issued. Only show the badge if she has a **recent** one or is on the **DBS Update Service**.
 3. **Bulgarian Psychological Society.** Confirm the exact name of the society she's a member of, so the badge text is correct.
+
+---
+
+## 11. Contact form ✅ (added)
+
+On the **Contact** page, under the call/message tiles: name, email, phone (optional), "I'm interested in", how to reply (Email / Phone call / WhatsApp / Viber), language (English / Български), message, privacy consent. There's also a note not to share detailed health information, and a crisis reminder.
+
+### How it's protected
+
+- **Cloudflare Turnstile**, a free, privacy-friendly "I'm not a robot" check. Most visitors never see a puzzle.
+- **Honeypot**, a hidden field that only bots fill in. Those messages are silently dropped.
+- **Server-side checks**: Turnstile is verified on the server, every field has a length limit, and the email and consent are required.
+
+### How a message reaches her
+
+```
+Form  →  /api/contact (Cloudflare Pages Function: functions/api/contact.js)
+      →  checks Turnstile + fields
+      →  sends the email via Resend  →  contact@drvasileva.co.uk (her inbox)
+```
+
+Replying to the email goes straight to the visitor (the email's reply-to is set to their address).
+
+### Setup at launch (one-off, about 20 minutes)
+
+1. **Host on Cloudflare Pages** (free). The `functions/` folder is picked up automatically.
+2. **Turnstile:** Cloudflare dashboard → Turnstile → *Add widget* → add **drvasileva.co.uk** and **drvasileva.bg** → copy the **site key** into the site (it replaces the test key `1x00000000000000000000AA`) and the **secret key** into the environment variables.
+3. **Resend** (free up to 3,000 emails a month): create an account → add the domain **drvasileva.co.uk** → add the DNS records it shows → create an API key.
+4. **Environment variables** in Cloudflare Pages → Settings:
+
+| Name | Value |
+|---|---|
+| `TURNSTILE_SECRET_KEY` | from step 2 |
+| `RESEND_API_KEY` | from step 3 |
+| `CONTACT_TO` | `contact@drvasileva.co.uk` |
+| `CONTACT_FROM` | `Website <website@drvasileva.co.uk>` |
+
+5. Send a test message from both domains.
+
+> The privacy policy already mentions the form, Resend and Turnstile.

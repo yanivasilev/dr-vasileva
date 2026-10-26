@@ -121,7 +121,7 @@
     ['Is everything I say confidential?', 'Yes. What you share stays between us. The only exception is if I believe you or someone else, especially a child, is at serious risk of harm. Then I may have to inform the right services, as the law and my professional code require. I would always try to talk to you about it first.'],
     ['What languages do you work in?', 'Bulgarian and English. This includes individual, couples, family and group sessions.'],
     ['Do you offer online or in-person sessions?', 'Both. Online sessions take place over a secure video call, so you can join from anywhere: the UK, Bulgaria or elsewhere. In-person sessions take place in the UK. I share the location when we arrange your appointment.'],
-    ['How do I make an appointment?', 'Simply get in touch by phone, Viber, WhatsApp, email or Facebook. Tell me a little about what you need, and we’ll find a time that suits you.'],
+    ['How do I make an appointment?', 'Simply get in touch by phone, Viber, WhatsApp, email, Facebook or the contact form. Tell me a little about what you need, and we’ll find a time that suits you.'],
     ['How long is a session?', 'Session length will be confirmed soon.'],
     ['How many sessions will I need?', 'It depends on you and what you’d like to work on. Some people feel a difference after a few sessions, others prefer longer support. We’ll agree a plan together at the start and review your progress along the way.'],
     ['What approach do you use?', 'Mainly cognitive behavioural therapy (CBT), a practical, well-researched approach. It helps you understand the link between your thoughts, feelings and behaviour, and learn tools to change them.'],
@@ -489,7 +489,51 @@
         </div>
         ${document.querySelector('#home-tiles').outerHTML.replace('id="home-tiles"', '')}
       </div>
-    </section>`;
+    </section>
+    <section class="page-body" id="message"><div class="wrap split">
+      <div>
+        <span class="eyebrow" data-reveal>Send a message</span>
+        <h2 data-reveal style="--d:.05s">Prefer to <em>write</em>?</h2>
+        <p class="lead" data-reveal style="--d:.1s;margin-bottom:34px">Fill in the form and I’ll get back to you, in Bulgarian or in English.</p>
+        <form class="cform" id="contact-form" novalidate data-reveal>
+          <div class="row2">
+            <label class="field"><span>Your name <i>*</i></span><input name="name" autocomplete="name" required maxlength="100"></label>
+            <label class="field"><span>Email <i>*</i></span><input name="email" type="email" autocomplete="email" required maxlength="150"></label>
+          </div>
+          <div class="row2">
+            <label class="field"><span>Phone <small>(optional)</small></span><input name="phone" type="tel" autocomplete="tel" maxlength="30"></label>
+            <label class="field"><span>I’m interested in</span><select name="topic">
+              <option value="">Please choose…</option>
+              ${WHO.map(w => `<option>${w.title}</option>`).join('')}
+              <option>Something else</option>
+            </select></label>
+          </div>
+          <fieldset class="field"><legend>How should I reply?</legend><div class="chips-choice">
+            ${['Email', 'Phone call', 'WhatsApp', 'Viber'].map((o, i) => `<label><input type="radio" name="reply" value="${o}"${i ? '' : ' checked'}><span>${o}</span></label>`).join('')}
+          </div></fieldset>
+          <fieldset class="field"><legend>Language</legend><div class="chips-choice">
+            <label><input type="radio" name="language" value="English" checked><span>English</span></label>
+            <label><input type="radio" name="language" value="Bulgarian"><span lang="bg">Български</span></label>
+          </div></fieldset>
+          <label class="field"><span>Your message <i>*</i></span><textarea name="message" rows="6" required maxlength="3000" placeholder="A few words about what you’d like help with is enough."></textarea></label>
+          <p class="hint">${ic('i-lock')}Please keep it brief. There’s no need to share detailed health information here; we can talk about that in person.</p>
+          <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
+          <label class="check"><input type="checkbox" name="consent" required><span>I agree that my details are used to reply to my message, as described in the <a href="#/privacy">privacy policy</a>. <i>*</i></span></label>
+          <div class="ts" id="ts-box"></div>
+          <div class="form-error" role="alert" hidden></div>
+          <button class="btn btn-green send" type="submit"><span class="send-label">Send message</span>${ic('i-send')}</button>
+        </form>
+        <div class="form-done" hidden role="status">
+          <span class="ico">${ic('i-check')}</span>
+          <h3>Thank you, your message has been sent</h3>
+          <p>I’ll get back to you as soon as I can. If it’s urgent, please call or message me on WhatsApp or Viber.</p>
+        </div>
+      </div>
+      <aside class="aside">
+        <div class="box" data-reveal><h3>What happens next</h3>${nextSteps}</div>
+        <div class="note warn" data-reveal>${ic('i-alert')}<span><b>In an emergency</b> please don’t use this form. Call 999 (UK) or 112 (Bulgaria), or see <a href="#/crisis">Crisis help</a>.</span></div>
+      </aside>
+    </div></section>`;
 
   PAGES['/crisis'] = () => `
     ${hero({ crumbs: [['Crisis help']], eyebrow: 'Crisis help', title: 'If you need help <em>now</em>', lead: 'I’m not an emergency service and can’t always reply straight away. If you are in crisis, please contact one of these services.', icon: 'i-alert' })}
@@ -520,7 +564,7 @@
   };
   legal('/privacy', 'Privacy policy', `
     <h2>Who I am</h2><p>Dr Mirena Vasileva is the data controller for the personal information you share through this website and in sessions. Contact: ${EMAIL}. ICO registration number: <span class="tbc">to be added</span>.</p>
-    <h2>What I collect</h2><p>Your name and contact details when you get in touch, and, if you become a client, information about your health and wellbeing that you share in sessions.</p>
+    <h2>What I collect</h2><p>Your name and contact details when you get in touch (by phone, message, email or the contact form), and, if you become a client, information about your health and wellbeing that you share in sessions.</p><h2>The contact form</h2><p>Messages sent through the form are emailed to me using Resend, an email delivery service. To protect the form from spam and bots it uses Cloudflare Turnstile, which checks your browser without tracking you across websites.</p>
     <h2>Why</h2><p>To reply to you, arrange and provide sessions, and keep the records my professional code requires. Health information is processed to provide health care, under UK GDPR and EU GDPR.</p>
     <h2>How long</h2><p>Records are kept securely only for as long as needed and as professional guidance requires.</p>
     <h2>Your rights</h2><p>You can ask to see, correct or delete your information, and you can complain to the ICO (UK) or the Commission for Personal Data Protection (Bulgaria).</p>`);
@@ -607,7 +651,54 @@
     observeReveals();
     onScroll();
   };
+  // Contact form. TURNSTILE_SITE_KEY is Cloudflare's public test key (always passes); replace it with the real site key at launch.
+  const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
+  const FORM_ENDPOINT = '/api/contact';
+  function wireForm(el) {
+    const form = el.querySelector('#contact-form');
+    if (!form) return;
+    const err = form.querySelector('.form-error'), btn = form.querySelector('.send'), label = btn.querySelector('.send-label');
+    let widget = null;
+    const mountTurnstile = () => {
+      if (typeof window.turnstile?.render !== 'function' || !document.body.contains(form)) return false;
+      widget = turnstile.render('#ts-box', { sitekey: TURNSTILE_SITE_KEY, theme: 'light', appearance: 'interaction-only' });
+      return true;
+    };
+    if (!mountTurnstile()) {
+      const t = setInterval(() => { if (mountTurnstile() || !document.body.contains(form)) clearInterval(t); }, 300);
+    }
+    const showError = msg => { err.textContent = msg; err.hidden = false; };
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      err.hidden = true;
+      form.querySelectorAll('.invalid').forEach(f => f.classList.remove('invalid'));
+      const bad = [...form.querySelectorAll('[required]')].filter(f => !f.checkValidity());
+      if (bad.length) {
+        bad.forEach(f => (f.closest('.field') || f.closest('.check')).classList.add('invalid'));
+        bad[0].focus();
+        return showError('Please fill in the fields marked with *.');
+      }
+      btn.disabled = true; label.textContent = 'Sending…';
+      const done = () => { form.hidden = true; el.querySelector('.form-done').hidden = false; };
+      try {
+        if (location.protocol === 'file:') { await new Promise(r => setTimeout(r, 900)); return done(); }   // preview only
+        const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: new FormData(form) });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data.error || 'send');
+        done();
+      } catch (ex) {
+        showError(ex.message === 'verification'
+          ? 'We couldn’t confirm you’re not a robot. Please try again.'
+          : 'Sorry, something went wrong. Please try again, or call or message me instead.');
+        if (typeof window.turnstile?.reset === 'function' && widget !== null) turnstile.reset(widget);
+      } finally {
+        btn.disabled = false; label.textContent = 'Send message';
+      }
+    });
+  }
+
   function wirePage(el) {
+    wireForm(el);
     el.querySelectorAll('.js-count').forEach(c => c.dataset.to = YEARS);
     const tabs = el.querySelectorAll('.tab');
     tabs.forEach(tab => tab.addEventListener('click', () => {

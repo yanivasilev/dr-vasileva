@@ -112,7 +112,10 @@
   .lang:has(a:not(.on):hover)::before { transform: translateX(-100%); }
   .lang:has(a:not(.on):hover) a.on { color: inherit; }
   .lang a:not(.on):hover { color: var(--green-deep); }
-  .scrolled .lang::before { background: var(--lilac-soft); }
+  .scrolled .lang::before { background: var(--green-dark); }
+  .scrolled .lang a.on { color: var(--cream); }
+  .scrolled .lang a:not(.on):hover { color: var(--cream); }
+  .menu-open .nav-right > .lang { opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
   .nav .btn { padding: 11px 20px; font-size: .9rem; }
   .roll { gap: 0; }
   .roll-text { position: relative; display: inline-block; overflow: hidden; line-height: 1.3; }
