@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://drvasileva.co.uk/sitemap.xml

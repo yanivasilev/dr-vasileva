@@ -1,0 +1,21 @@
+# Runs the contact-form service. Copy to /etc/systemd/system/, then:
+#   systemctl daemon-reload && systemctl enable --now drvasileva-contact
+[Unit]
+Description=Dr Vasileva website contact form
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+EnvironmentFile=/etc/drvasileva/contact.env
+ExecStart=/usr/bin/python3 /var/www/dr-vasileva/server/contact_server.py
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -824,6 +824,14 @@
     .cta-box .btn-row .btn { flex: 1 1 100%; }
   }
 
+  /* ===== 404 ===== */
+  .notfound { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; }
+  .notfound h1 { font-size: clamp(2.8rem, 6vw, 5rem); }
+  .nf-links { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 44px; padding-top: 26px; border-top: 1px solid rgba(250,247,242,.15); }
+  .nf-links a { display: inline-flex; align-items: center; gap: 8px; color: rgba(250,247,242,.85); text-decoration: none; font-weight: 600; }
+  .nf-links a:hover { color: var(--lilac); }
+  .nf-links .icon { width: 16px; height: 16px; }
+
   .nav-links a[aria-current]::after { content: ""; position: absolute; left: 50%; bottom: 3px; width: 4px; height: 4px; border-radius: 50%; background: currentColor; transform: translateX(-50%); }
 </style>
 </head>
@@ -1940,7 +1948,7 @@
   };
   legal('/privacy', 'Privacy policy', `
     <h2>Who I am</h2><p>Dr Mirena Vasileva is the data controller for the personal information you share through this website and in sessions. Contact: ${EMAIL}. ICO registration number: <span class="tbc">to be added</span>.</p>
-    <h2>What I collect</h2><p>Your name and contact details when you get in touch (by phone, message, email or the contact form), and, if you become a client, information about your health and wellbeing that you share in sessions.</p><h2>The contact form</h2><p>Messages sent through the form are emailed to me using Resend, an email delivery service. To protect the form from spam and bots it uses Cloudflare Turnstile, which checks your browser without tracking you across websites.</p>
+    <h2>What I collect</h2><p>Your name and contact details when you get in touch (by phone, message, email or the contact form), and, if you become a client, information about your health and wellbeing that you share in sessions.</p><h2>The contact form</h2><p>Messages sent through the form are emailed to me through my own secure mail server, not a third-party email service. To protect the form from spam and bots it uses Cloudflare Turnstile, which checks your browser without tracking you across websites.</p>
     <h2>Why</h2><p>To reply to you, arrange and provide sessions, and keep the records my professional code requires. Health information is processed to provide health care, under UK GDPR and EU GDPR.</p>
     <h2>How long</h2><p>Records are kept securely only for as long as needed and as professional guidance requires.</p>
     <h2>Your rights</h2><p>You can ask to see, correct or delete your information, and you can complain to the ICO (UK) or the Commission for Personal Data Protection (Bulgaria).</p>`);
@@ -1953,6 +1961,25 @@
     <h2>Cancellations</h2><p>Please give at least 24 hours’ notice. Sessions cancelled with less notice may be charged in full.</p>
     <h2>Confidentiality</h2><p>Sessions are confidential, except where there is a serious risk of harm to you or others.</p>
     <h2>Emergencies</h2><p>I’m not an emergency service. See the <a href="#/crisis">Crisis help</a> page.</p>`);
+
+  PAGES['/404'] = () => `
+    <section class="page-hero grain on-dark notfound">
+      <span class="blob b1"></span><span class="blob b2"></span>
+      <div class="wrap">
+        <span class="eyebrow">Error 404</span>
+        <h1>This page <em>doesn’t</em> exist</h1>
+        <p class="lead">The link may be old or mistyped. Here are some places to start instead.</p>
+        <div class="btn-row" style="margin-top:32px">
+          <a class="btn btn-cream" href="#/">Back to the homepage</a>
+          <a class="btn btn-whatsapp" href="${WA}">${ic('b-whatsapp', 'bi')}WhatsApp</a>
+          <a class="btn btn-viber" href="${VIBER}">${ic('b-viber', 'bi')}Viber</a>
+        </div>
+        <div class="nf-links">
+          <a href="#/about">About me${ic('i-arrow')}</a><a href="#/who-i-help">Who I help${ic('i-arrow')}</a>
+          <a href="#/issues">What I help with${ic('i-arrow')}</a><a href="#/contact">Contact${ic('i-arrow')}</a>
+        </div>
+      </div>
+    </section>`;
 
   function articleCards() {
     return columns.map(([date, title, tag, url]) => `
@@ -2004,13 +2031,47 @@
   const pagesEl = document.getElementById('pages');
   const homeEl = document.querySelector('.page[data-route="/"]');
   const titles = { '/': 'Dr Vasileva – Psychologist & CBT Psychotherapist' };
+  // Addresses: the preview files (opened from disk) use #/ links; the live site uses real paths
+  // (/about, and Bulgarian slugs on drvasileva.bg). SLUGS maps a page to its address on this site,
+  // OTHER_SLUGS to its address on the other language's site.
+  const HASH_MODE = location.protocol === 'file:';
+  const SLUGS = window.SLUGS || {}, OTHER_SLUGS = window.OTHER_SLUGS || {};
+  const KEYS = Object.fromEntries(Object.entries(SLUGS).map(([k, v]) => [v, k]));
+  const toUrl = (key, map = SLUGS) => map[key] || key;
+  const currentKey = () => {
+    if (HASH_MODE) return (location.hash.replace(/^#/, '') || '/').replace(/\/$/, '') || '/';
+    const p = decodeURI(location.pathname).replace(/\/(index\.html)?$/, '') || '/';
+    return KEYS[p] || p;
+  };
+  const rewriteLinks = root => root.querySelectorAll('a[href^="#/"]').forEach(a => {
+    const key = a.getAttribute('href').slice(1);
+    a.dataset.key = key;
+    if (!HASH_MODE) a.setAttribute('href', toUrl(key));
+  });
+  const metaLinks = [...document.querySelectorAll('link[rel="canonical"], link[rel="alternate"][hreflang], meta[property="og:url"]')];
+  metaLinks.forEach(m => m.dataset.base ||= (m.getAttribute('href') || m.getAttribute('content')).replace(/\/$/, ''));
+  const isBG = document.documentElement.lang === 'bg';
+  const syncMeta = key => {
+    if (HASH_MODE) return;
+    metaLinks.forEach(m => {
+      const lang = m.getAttribute('hreflang');
+      const map = !lang ? SLUGS : (lang === 'bg') === isBG ? SLUGS : OTHER_SLUGS;
+      m.setAttribute(m.tagName === 'META' ? 'content' : 'href', m.dataset.base + toUrl(key, map));
+    });
+  };
+  // Language switch: go to the same page in the other language
+  const syncLang = key => document.querySelectorAll('.lang a[data-base]').forEach(a =>
+    a.href = HASH_MODE ? a.dataset.base + location.hash : a.dataset.base.replace(/\/$/, '') + toUrl(key, OTHER_SLUGS));
+
   const render = () => {
-    let path = location.hash.replace(/^#/, '') || '/';
-    if (!path.startsWith('/')) return;           // ordinary in-page anchor
-    path = path.replace(/\/$/, '') || '/';
+    if (HASH_MODE && location.hash && !location.hash.startsWith('#/')) return;   // ordinary in-page anchor
+    let path = currentKey();
     setMenu(false);
     pagesEl.innerHTML = '';
-    if (path === '/' || !PAGES[path]) {
+    // Unknown address: the server's 404 page sets NOT_FOUND; unknown routes also land here
+    if (window.NOT_FOUND && HASH_MODE && !location.hash) path = '/404';
+    else if (path !== '/' && !PAGES[path]) path = '/404';
+    if (path === '/') {
       homeEl.classList.add('active');
     } else {
       homeEl.classList.remove('active');
@@ -2018,11 +2079,14 @@
       el.className = 'page active';
       el.innerHTML = PAGES[path]();
       pagesEl.appendChild(el);
+      rewriteLinks(el);
       wirePage(el);
     }
     const h1 = document.querySelector('.page.active h1');
     document.title = path === '/' ? titles['/'] : `${h1 ? h1.textContent : ''} – Dr Vasileva`;
-    navLinks.forEach(a => a.toggleAttribute('aria-current', a.getAttribute('href') !== '#/' && path.startsWith(a.getAttribute('href').slice(1))));
+    navLinks.forEach(a => a.toggleAttribute('aria-current', !!a.dataset.key && a.dataset.key !== '/' && path.startsWith(a.dataset.key)));
+    syncMeta(path);
+    syncLang(path);
     scrollTo({ top: 0, behavior: 'instant' });
     observeReveals();
     onScroll();
@@ -2082,12 +2146,21 @@
       el.querySelectorAll('.article').forEach(a => a.hidden = tab.dataset.filter !== 'all' && a.dataset.tag !== tab.dataset.filter);
     }));
   }
-  addEventListener('hashchange', render);
+  rewriteLinks(document);
+  if (HASH_MODE) {
+    addEventListener('hashchange', render);
+  } else {
+    // Real addresses: follow internal links without reloading, and support the back button
+    addEventListener('popstate', render);
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[data-key]');
+      if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target) return;
+      e.preventDefault();
+      if (a.getAttribute('href') !== location.pathname) history.pushState(null, '', a.getAttribute('href'));
+      render();
+    });
+  }
   render();
-  // Keep the same page when switching language (preview: the two files; live site: the two domains)
-  const syncLang = () => document.querySelectorAll('.lang a[data-base]').forEach(a => a.href = a.dataset.base + location.hash);
-  addEventListener('hashchange', syncLang);
-  syncLang();
 </script>
 </body>
 </html>

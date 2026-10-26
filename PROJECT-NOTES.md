@@ -717,14 +717,16 @@ On the **Contact** page, under the call/message tiles: name, email, phone (optio
 ### How a message reaches her
 
 ```
-Form  →  /api/contact (Cloudflare Pages Function: functions/api/contact.js)
+Form  →  /api/contact (on the VPS: server/contact_server.py, behind nginx)
       →  checks Turnstile + fields
-      →  sends the email via Resend  →  contact@drvasileva.co.uk (her inbox)
+      →  sends the email through mailcow (SMTP)  →  contact@drvasileva.co.uk  or  contact@drvasileva.bg
 ```
+
+> **We're using the VPS + mailcow version.** Setup steps are in **`deploy/README.md`**. The Cloudflare Pages + Resend version below (`functions/api/contact.js`) is kept only as an alternative.
 
 Replying to the email goes straight to the visitor (the email's reply-to is set to their address).
 
-### Setup at launch (one-off, about 20 minutes)
+### Alternative setup: Cloudflare Pages + Resend (not used)
 
 1. **Host on Cloudflare Pages** (free). The `functions/` folder is picked up automatically.
 2. **Turnstile:** Cloudflare dashboard → Turnstile → *Add widget* → add **drvasileva.co.uk** and **drvasileva.bg** → copy the **site key** into the site (it replaces the test key `1x00000000000000000000AA`) and the **secret key** into the environment variables.
@@ -740,14 +742,15 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 
 5. Send a test message from both domains.
 
-> The privacy policy already mentions the form, Resend and Turnstile.
+> The privacy policy mentions the form, her own mail server and Turnstile (if Resend is ever used, update that sentence).
 
 ---
 
 ## 12. Bulgarian version ✅ (first full draft)
 
 - **Preview files:** `mockup/site.html` (English) and `mockup/site-bg.html` (Bulgarian). The BG / EN switch moves between them and keeps you on the same page.
-- **Live site:** the same switch will go to the same page on the other domain (`drvasileva.co.uk` ↔ `drvasileva.bg`), and URLs will use the Bulgarian slugs from section 5.
+- **Live site:** `dist/en` (drvasileva.co.uk) and `dist/bg` (drvasileva.bg) are built with real addresses. The Bulgarian site uses the Bulgarian slugs from section 5 (e.g. `/za-men`). Every page is saved as its own file, so it loads directly and search engines can read it. The switch goes to the same page on the other domain. Each site has its own 404 page, robots.txt and sitemap.xml (with hreflang links between the two languages).
+- **Why the preview has `#/` in links:** a single preview file can't have real pages, so it uses `site.html#/about`. The live site doesn't.
 - **How it's built:** the English site is built first; `mockup/build/bg/` then swaps in the Bulgarian content (`data1.js`, `data2.js`, `blocks.js`, `pages.js`) and translates the remaining interface text with exact pairs (`pairs.py`). The build stops if an English phrase isn't found, so changes to the English text can't silently leave English on the Bulgarian site.
 - **Bulgarian specifics:** email `contact@drvasileva.bg`, share image `og-bg.png`, BG listed first in the switch, Bulgarian crisis numbers listed first, prices shown as € / £, dates in Bulgarian.
 
@@ -757,3 +760,19 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 - [ ] **Column titles** of the six older (PDF) columns are my back-translations from English: "Как да бъдем себе си…", "Покана за щастие", "Как да разбираме емоционалната интелигентност…", "Как страховете и емоциите ни разболяват", "Прошката е най-великият учител", "Как родителите могат да помогнат на децата си в юношеството". The other 12 come from the BG BEN web addresses and should be exact.
 - [ ] **Scientific publications**: the Bulgarian titles are back-translations of the English ones in her CV, so they need checking against the originals.
 - [ ] The interview title „Самоубийците са хора, които искат да бъдат забелязани“.
+
+---
+
+## 13. Hosting on the VPS ✅
+
+- One nginx on the OVH VPS serves both domains: `.co.uk` from `dist/en`, `.bg` from `dist/bg`. www and http are redirected to `https://` without www.
+- The contact form goes to a small Python service (`server/contact_server.py`) that sends through mailcow. Each domain sends to its own `contact@` address.
+- If mailcow is on the same VPS, its web server moves to local ports behind the main nginx (`deploy/nginx/mailcow-proxy.conf`).
+- Updating = `git pull`. No build is needed on the server.
+- Full step-by-step guide: **`deploy/README.md`**.
+
+### Still needed before launch
+
+- [ ] DNS for both domains (and www) → VPS
+- [ ] mailcow mailbox for the website (e.g. `website@drvasileva.co.uk`) + its password in `/etc/drvasileva/contact.env`
+- [ ] Real Turnstile keys (site key → rebuild the site, secret key → `contact.env`)

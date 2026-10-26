@@ -824,6 +824,14 @@
     .cta-box .btn-row .btn { flex: 1 1 100%; }
   }
 
+  /* ===== 404 ===== */
+  .notfound { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; }
+  .notfound h1 { font-size: clamp(2.8rem, 6vw, 5rem); }
+  .nf-links { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 44px; padding-top: 26px; border-top: 1px solid rgba(250,247,242,.15); }
+  .nf-links a { display: inline-flex; align-items: center; gap: 8px; color: rgba(250,247,242,.85); text-decoration: none; font-weight: 600; }
+  .nf-links a:hover { color: var(--lilac); }
+  .nf-links .icon { width: 16px; height: 16px; }
+
   .nav-links a[aria-current]::after { content: ""; position: absolute; left: 50%; bottom: 3px; width: 4px; height: 4px; border-radius: 50%; background: currentColor; transform: translateX(-50%); }
 </style>
 </head>
@@ -1939,7 +1947,7 @@
   };
   legal('/privacy', 'Политика за поверителност', `
     <h2>Кой съм аз</h2><p>Д-р Мирена Василева е администратор на личните данни, които споделяте чрез този сайт и по време на консултациите. Контакт: ${EMAIL}. Регистрационен номер в ICO: <span class="tbc">предстои</span>.</p>
-    <h2>Какви данни събирам</h2><p>Вашето име и данни за контакт, когато се свържете с мен (по телефона, със съобщение, по имейл или чрез формата за контакт), а ако станете клиент – информация за здравето и благосъстоянието Ви, която споделяте на консултациите.</p><h2>Формата за контакт</h2><p>Съобщенията от формата ми се изпращат по имейл чрез Resend – услуга за доставка на имейли. За защита от спам и ботове формата използва Cloudflare Turnstile, който проверява браузъра Ви, без да Ви проследява в други сайтове.</p>
+    <h2>Какви данни събирам</h2><p>Вашето име и данни за контакт, когато се свържете с мен (по телефона, със съобщение, по имейл или чрез формата за контакт), а ако станете клиент – информация за здравето и благосъстоянието Ви, която споделяте на консултациите.</p><h2>Формата за контакт</h2><p>Съобщенията от формата ми се изпращат по имейл чрез собствения ми защитен имейл сървър, а не чрез външна имейл услуга. За защита от спам и ботове формата използва Cloudflare Turnstile, който проверява браузъра Ви, без да Ви проследява в други сайтове.</p>
     <h2>Защо</h2><p>За да Ви отговоря, да уговорим и проведем консултациите и да водя документацията, изисквана от професионалната ми етика. Здравната информация се обработва с цел предоставяне на здравна грижа съгласно GDPR на ЕС и UK GDPR.</p>
     <h2>Колко дълго</h2><p>Данните се съхраняват сигурно само толкова, колкото е необходимо и колкото изискват професионалните правила.</p>
     <h2>Вашите права</h2><p>Можете да поискате достъп до данните си, тяхната корекция или изтриване, както и да подадете жалба до Комисията за защита на личните данни (България) или до ICO (Великобритания).</p>`);
@@ -1952,6 +1960,26 @@
     <h2>Отказване</h2><p>Моля, уведомете ме поне 24 часа предварително. При по-късно отказване консултацията може да бъде таксувана изцяло.</p>
     <h2>Поверителност</h2><p>Консултациите са поверителни, освен при сериозен риск от вреда за Вас или за други хора.</p>
     <h2>Спешни случаи</h2><p>Не съм спешна служба. Вижте страница <a href="#/crisis">Спешна помощ</a>.</p>`);
+
+
+  PAGES['/404'] = () => `
+    <section class="page-hero grain on-dark notfound">
+      <span class="blob b1"></span><span class="blob b2"></span>
+      <div class="wrap">
+        <span class="eyebrow">Грешка 404</span>
+        <h1>Тази страница <em>не съществува</em></h1>
+        <p class="lead">Връзката може да е стара или да съдържа грешка. Ето откъде можете да започнете.</p>
+        <div class="btn-row" style="margin-top:32px">
+          <a class="btn btn-cream" href="#/">Към началната страница</a>
+          <a class="btn btn-whatsapp" href="${WA}">${ic('b-whatsapp', 'bi')}WhatsApp</a>
+          <a class="btn btn-viber" href="${VIBER}">${ic('b-viber', 'bi')}Viber</a>
+        </div>
+        <div class="nf-links">
+          <a href="#/about">За мен${ic('i-arrow')}</a><a href="#/who-i-help">С кого работя${ic('i-arrow')}</a>
+          <a href="#/issues">С какво помагам${ic('i-arrow')}</a><a href="#/contact">Контакти${ic('i-arrow')}</a>
+        </div>
+      </div>
+    </section>`;
 
   function articleCards() {
     return columns.map(([date, title, tag, url]) => `
@@ -2003,13 +2031,47 @@
   const pagesEl = document.getElementById('pages');
   const homeEl = document.querySelector('.page[data-route="/"]');
   const titles = { '/': 'д-р Василева – психолог и КПТ психотерапевт' };
+  // Addresses: the preview files (opened from disk) use #/ links; the live site uses real paths
+  // (/about, and Bulgarian slugs on drvasileva.bg). SLUGS maps a page to its address on this site,
+  // OTHER_SLUGS to its address on the other language's site.
+  const HASH_MODE = location.protocol === 'file:';
+  const SLUGS = window.SLUGS || {}, OTHER_SLUGS = window.OTHER_SLUGS || {};
+  const KEYS = Object.fromEntries(Object.entries(SLUGS).map(([k, v]) => [v, k]));
+  const toUrl = (key, map = SLUGS) => map[key] || key;
+  const currentKey = () => {
+    if (HASH_MODE) return (location.hash.replace(/^#/, '') || '/').replace(/\/$/, '') || '/';
+    const p = decodeURI(location.pathname).replace(/\/(index\.html)?$/, '') || '/';
+    return KEYS[p] || p;
+  };
+  const rewriteLinks = root => root.querySelectorAll('a[href^="#/"]').forEach(a => {
+    const key = a.getAttribute('href').slice(1);
+    a.dataset.key = key;
+    if (!HASH_MODE) a.setAttribute('href', toUrl(key));
+  });
+  const metaLinks = [...document.querySelectorAll('link[rel="canonical"], link[rel="alternate"][hreflang], meta[property="og:url"]')];
+  metaLinks.forEach(m => m.dataset.base ||= (m.getAttribute('href') || m.getAttribute('content')).replace(/\/$/, ''));
+  const isBG = document.documentElement.lang === 'bg';
+  const syncMeta = key => {
+    if (HASH_MODE) return;
+    metaLinks.forEach(m => {
+      const lang = m.getAttribute('hreflang');
+      const map = !lang ? SLUGS : (lang === 'bg') === isBG ? SLUGS : OTHER_SLUGS;
+      m.setAttribute(m.tagName === 'META' ? 'content' : 'href', m.dataset.base + toUrl(key, map));
+    });
+  };
+  // Language switch: go to the same page in the other language
+  const syncLang = key => document.querySelectorAll('.lang a[data-base]').forEach(a =>
+    a.href = HASH_MODE ? a.dataset.base + location.hash : a.dataset.base.replace(/\/$/, '') + toUrl(key, OTHER_SLUGS));
+
   const render = () => {
-    let path = location.hash.replace(/^#/, '') || '/';
-    if (!path.startsWith('/')) return;           // ordinary in-page anchor
-    path = path.replace(/\/$/, '') || '/';
+    if (HASH_MODE && location.hash && !location.hash.startsWith('#/')) return;   // ordinary in-page anchor
+    let path = currentKey();
     setMenu(false);
     pagesEl.innerHTML = '';
-    if (path === '/' || !PAGES[path]) {
+    // Unknown address: the server's 404 page sets NOT_FOUND; unknown routes also land here
+    if (window.NOT_FOUND && HASH_MODE && !location.hash) path = '/404';
+    else if (path !== '/' && !PAGES[path]) path = '/404';
+    if (path === '/') {
       homeEl.classList.add('active');
     } else {
       homeEl.classList.remove('active');
@@ -2017,11 +2079,14 @@
       el.className = 'page active';
       el.innerHTML = PAGES[path]();
       pagesEl.appendChild(el);
+      rewriteLinks(el);
       wirePage(el);
     }
     const h1 = document.querySelector('.page.active h1');
     document.title = path === '/' ? titles['/'] : `${h1 ? h1.textContent : ''} – д-р Василева`;
-    navLinks.forEach(a => a.toggleAttribute('aria-current', a.getAttribute('href') !== '#/' && path.startsWith(a.getAttribute('href').slice(1))));
+    navLinks.forEach(a => a.toggleAttribute('aria-current', !!a.dataset.key && a.dataset.key !== '/' && path.startsWith(a.dataset.key)));
+    syncMeta(path);
+    syncLang(path);
     scrollTo({ top: 0, behavior: 'instant' });
     observeReveals();
     onScroll();
@@ -2081,12 +2146,21 @@
       el.querySelectorAll('.article').forEach(a => a.hidden = tab.dataset.filter !== 'all' && a.dataset.tag !== tab.dataset.filter);
     }));
   }
-  addEventListener('hashchange', render);
+  rewriteLinks(document);
+  if (HASH_MODE) {
+    addEventListener('hashchange', render);
+  } else {
+    // Real addresses: follow internal links without reloading, and support the back button
+    addEventListener('popstate', render);
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[data-key]');
+      if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target) return;
+      e.preventDefault();
+      if (a.getAttribute('href') !== location.pathname) history.pushState(null, '', a.getAttribute('href'));
+      render();
+    });
+  }
   render();
-  // Keep the same page when switching language (preview: the two files; live site: the two domains)
-  const syncLang = () => document.querySelectorAll('.lang a[data-base]').forEach(a => a.href = a.dataset.base + location.hash);
-  addEventListener('hashchange', syncLang);
-  syncLang();
 </script>
 </body>
 </html>

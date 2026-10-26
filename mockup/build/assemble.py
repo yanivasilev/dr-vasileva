@@ -113,11 +113,6 @@ assert 'const PAGES = {}' in s
 bg = {}
 exec(open(f'{B}/bg/pairs.py').read(), bg)
 rep('<div class="lang" aria-label="Language"><a href="https://drvasileva.bg/" hreflang="bg" lang="bg">BG</a><a href="#" class="on" aria-current="true">EN</a></div>', bg['LANG_EN'], 2)
-s = s.replace('</script>\n</body>', """  // Keep the same page when switching language (preview: the two files; live site: the two domains)
-  const syncLang = () => document.querySelectorAll('.lang a[data-base]').forEach(a => a.href = a.dataset.base + location.hash);
-  addEventListener('hashchange', syncLang);
-  syncLang();
-</script>\n</body>""", 1)
 
 open(f'{REPO}/mockup/site.html', 'w').write(s)
 print('site.html', len(s))
@@ -146,3 +141,63 @@ for en, tr in bg['PAIRS']:
     b = b.replace(en, tr)
 open(f'{REPO}/mockup/site-bg.html', 'w').write(b)
 print('site-bg.html', len(b))
+
+# =====================================================================
+# Deployable sites: dist/en (drvasileva.co.uk) and dist/bg (drvasileva.bg)
+# =====================================================================
+import shutil
+
+DOMAINS = {'en': 'https://drvasileva.co.uk/', 'bg': 'https://drvasileva.bg/'}
+
+
+def for_server(html):
+    # Paths become absolute (served from the domain root) and the language switch links to the other domain
+    html = html.replace('../images/', '/images/').replace('../site.webmanifest', '/site.webmanifest')
+    html = html.replace('href="site-bg.html" data-base="site-bg.html"', f'href="{DOMAINS["bg"]}" data-base="{DOMAINS["bg"]}"')
+    html = html.replace('href="site.html" data-base="site.html"', f'href="{DOMAINS["en"]}" data-base="{DOMAINS["en"]}"')
+    assert '../images/' not in html and 'site-bg.html' not in html and '"site.html"' not in html
+    return html
+
+
+def not_found(html):
+    # Same app, but it opens on the 404 view; <base> makes every link go back to the domain root
+    return html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/">\n<meta name="robots" content="noindex">\n<script>window.NOT_FOUND = true</script>', 1)
+
+
+import json, subprocess
+
+# Page addresses on the Bulgarian site (route key -> URL); the English site uses the keys as they are
+BG_SLUGS = {
+    '/': '/', '/about': '/za-men', '/who-i-help': '/s-kogo-rabotya',
+    '/who-i-help/adults': '/s-kogo-rabotya/vazrastni', '/who-i-help/couples-families': '/s-kogo-rabotya/dvoyki-i-semeystva',
+    '/who-i-help/children-teens': '/s-kogo-rabotya/deca-i-tiyneydzhari', '/who-i-help/special-educational-needs': '/s-kogo-rabotya/specialni-obrazovatelni-potrebnosti',
+    '/who-i-help/group-sessions': '/s-kogo-rabotya/grupovi-sesii', '/who-i-help/organisations': '/s-kogo-rabotya/organizacii',
+    '/issues': '/problemi', '/issues/anxiety-panic': '/problemi/trevozhnost-i-panicheski-ataki', '/issues/depression': '/problemi/depresiya',
+    '/issues/stress': '/problemi/stres', '/issues/relationships': '/problemi/problemi-v-dvoykata', '/issues/parenting-teens': '/problemi/roditeli-i-tiyneydzhari',
+    '/issues/child-behaviour': '/problemi/povedenie-pri-detsata', '/issues/autism': '/problemi/autizam', '/issues/adhd': '/problemi/adhd',
+    '/issues/learning-difficulties': '/problemi/obuchitelni-zatrudneniya', '/issues/bullying': '/problemi/tormoz-i-digitalno-nasilie',
+    '/issues/living-abroad': '/problemi/zhivot-v-chuzhbina', '/articles': '/statii', '/fees': '/ceni', '/faq': '/chesto-zadavani-vaprosi',
+    '/press': '/medii', '/contact': '/kontakti', '/crisis': '/spesht-pomosht', '/privacy': '/poveritelnost', '/cookies': '/biskvitki', '/terms': '/obshti-usloviya',
+}
+EN_SLUGS = {k: k for k in BG_SLUGS}
+SLUGS = {'en': (EN_SLUGS, BG_SLUGS), 'bg': (BG_SLUGS, EN_SLUGS)}
+
+for lang, html in (('en', s), ('bg', b)):
+    out = f'{REPO}/dist/{lang}'
+    shutil.rmtree(out, ignore_errors=True)
+    shutil.copytree(f'{REPO}/images', f'{out}/images')
+    shutil.copy(f'{REPO}/site.webmanifest', f'{out}/site.webmanifest')
+    own, other = SLUGS[lang]
+    page = for_server(html).replace('<script>document.documentElement.classList.add', '<script>window.SLUGS = ' + json.dumps(own) + '; window.OTHER_SLUGS = ' + json.dumps(other) + ';</script>\n<script>document.documentElement.classList.add', 1)
+    assert 'window.SLUGS' in page
+    open(f'{out}/index.html', 'w').write(page)
+    open(f'{out}/404.html', 'w').write(not_found(page))
+    open(f'{out}/robots.txt', 'w').write(f'User-agent: *\nAllow: /\n\nSitemap: {DOMAINS[lang]}sitemap.xml\n')
+    urls = ''.join(f'  <url><loc>{DOMAINS[lang].rstrip("/")}{own[k]}</loc>'
+                   f'<xhtml:link rel="alternate" hreflang="en-GB" href="{DOMAINS["en"].rstrip("/")}{EN_SLUGS[k]}"/>'
+                   f'<xhtml:link rel="alternate" hreflang="bg" href="{DOMAINS["bg"].rstrip("/")}{BG_SLUGS[k]}"/></url>\n' for k in own)
+    open(f'{out}/sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + urls + '</urlset>\n')
+    # Save every page as its own HTML file (needs Node + Playwright on the machine that builds)
+    json.dump([[k, own[k]] for k in own], open(f'{B}/routes-{lang}.json', 'w'))
+    subprocess.run(['node', f'{B}/prerender.js', out, f'{B}/routes-{lang}.json'], check=True)
+    print(f'dist/{lang}: index.html, 404.html, images/, robots.txt, sitemap.xml')
