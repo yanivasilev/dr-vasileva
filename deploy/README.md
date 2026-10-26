@@ -190,22 +190,22 @@ You can try everything on your own domain first:
 | Address | Site |
 |---|---|
 | `drvasileva.vasilevdigital.com` | English, `dist/en` |
-| `bg.drvasileva.vasilevdigital.com` | Bulgarian, `dist/bg` |
+| `drvasileva-bg.vasilevdigital.com` | Bulgarian, `dist/bg` |
 
 The EN / BG switch moves between these two addresses, and search engines are told not to index them.
 
 > **Don't point nginx at the repo folder or at `mockup/`.** Those are the preview files, and their BG link goes to `site-bg.html`. The `root` must be `dist/en` or `dist/bg`.
 
-1. Add a DNS **A** record for `bg.drvasileva.vasilevdigital.com` pointing to the VPS.
+1. Add a DNS **A** record for `drvasileva-bg.vasilevdigital.com` pointing to the VPS.
 2. **Remove** the nginx config you made for `drvasileva.vasilevdigital.com` so far, then reload nginx.
 3. Get one certificate covering both names. While you have no working config for them, use the temporary port-80 config:
    ```
    mkdir -p /var/www/letsencrypt
-   sed 's/server_name .*/server_name drvasileva.vasilevdigital.com bg.drvasileva.vasilevdigital.com;/' \
+   sed 's/server_name .*/server_name drvasileva.vasilevdigital.com drvasileva-bg.vasilevdigital.com;/' \
        /var/www/dr-vasileva/deploy/nginx/drvasileva-first-certs.conf > /etc/nginx/conf.d/drvasileva-test.conf
    nginx -t && systemctl reload nginx
    certbot certonly --webroot -w /var/www/letsencrypt --cert-name drvasileva.vasilevdigital.com \
-       -d drvasileva.vasilevdigital.com -d bg.drvasileva.vasilevdigital.com --deploy-hook "systemctl reload nginx"
+       -d drvasileva.vasilevdigital.com -d drvasileva-bg.vasilevdigital.com --deploy-hook "systemctl reload nginx"
    ```
    If certbot asks whether to update an existing certificate, answer yes.
 4. Put the real test config in place:
@@ -218,7 +218,7 @@ The EN / BG switch moves between these two addresses, and search engines are tol
 
 When the real domains go live, follow steps 4–5 above. You can keep the test site or delete `/etc/nginx/conf.d/drvasileva-test.conf`.
 
-The contact form works on the test site too. Messages sent from the `bg.` address go to the Bulgarian inbox.
+The contact form works on the test site too. Messages sent from the `-bg` address go to the Bulgarian inbox.
 
 ## 7. Updating the site later
 

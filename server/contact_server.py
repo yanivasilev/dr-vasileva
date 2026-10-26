@@ -143,7 +143,7 @@ class Handler(BaseHTTPRequestHandler):
         data = {k: v.replace('\r', ' ').replace('\n', ' ') if k != 'message' else v for k, v in data.items()}
 
         site = (self.headers.get('Host') or 'drvasileva.co.uk').split(':')[0]
-        is_bg = site.endswith('.bg') or site.startswith('bg.')          # bg.<test domain> is the Bulgarian test site
+        is_bg = site.endswith('.bg') or site.split('.')[0].endswith('-bg')   # <name>-bg.<test domain> is the Bulgarian test site
         to = ENV.get('MAIL_TO_BG') if is_bg and ENV.get('MAIL_TO_BG') else ENV['MAIL_TO_EN']
         try:
             send_mail(site, to, data)

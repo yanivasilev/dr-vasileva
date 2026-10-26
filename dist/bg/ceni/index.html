@@ -2100,10 +2100,10 @@
     });
   };
   // Language switch: go to the same page in the other language. On a test domain the other language
-  // is the same address with or without "bg." in front (test.example.com ↔ bg.test.example.com).
+  // is the same address with or without "-bg" on the first part (test.example.com ↔ test-bg.example.com).
   const LIVE_HOST = /(^|\.)drvasileva\.(co\.uk|bg)$/.test(location.hostname);
   const otherSite = base => HASH_MODE || LIVE_HOST ? base.replace(/\/$/, '')
-    : `${location.protocol}//${isBG ? location.host.replace(/^bg\./, '') : 'bg.' + location.host}`;
+    : `${location.protocol}//${isBG ? location.host.replace(/^([^.]+)-bg\./, '$1.') : location.host.replace(/^([^.]+)\./, '$1-bg.')}`;
   const syncLang = key => document.querySelectorAll('.lang a[data-base]').forEach(a =>
     a.href = HASH_MODE ? a.dataset.base + location.hash : otherSite(a.dataset.base) + toUrl(key, OTHER_SLUGS));
 
