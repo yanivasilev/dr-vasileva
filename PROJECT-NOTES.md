@@ -548,12 +548,31 @@ Both support **Cyrillic**, so Bulgarian looks just as good as English.
 - **Headings:** *Cormorant Garamond*, an elegant, editorial serif
 - **Body text:** *Manrope*, clean and very readable on phones
 
-### Logo
+### Logo ✅ (decided: spaced capitals)
 
-**Just the text "Dr Vasileva"**, in Cormorant Garamond, one colour, no symbol, nothing fancy. Dark green on light backgrounds and cream on dark ones.
+**DR VASILEVA** in Manrope, widely letter-spaced, one colour. Saved as a true vector SVG (letters converted to shapes), so it stays sharp at any size and doesn't depend on a font loading.
 
-- `images/logo.svg`: the text logo
-- `images/favicon.svg`: browser tab icon ("DV" on dark green)
+| File | Use |
+|---|---|
+| `images/logo.svg` | Dark green logo for light backgrounds |
+| `images/logo-light.svg` | Cream logo for dark backgrounds |
+
+The same logo is used on both .bg and .co.uk (it's her name, so it doesn't need translating).
+
+### Icons & share images
+
+| File | Size | Where it shows |
+|---|---|---|
+| `images/favicon.svg` | vector | Browser tab (modern browsers): **DV** in cream on dark green |
+| `images/favicon.ico` | 16/32/48 px | Browser tab (older browsers, Windows) |
+| `images/apple-touch-icon.png` | 180 × 180 | iPhone/iPad "Add to Home Screen" |
+| `images/icon-192.png`, `icon-512.png` | 192, 512 | Android home screen (`site.webmanifest`) |
+| `images/og-en.png` | 1200 × 630 | Link preview on **Facebook, WhatsApp, Viber, X/Twitter, LinkedIn** for drvasileva.co.uk |
+| `images/og-bg.png` | 1200 × 630 | The same, in Bulgarian, for drvasileva.bg |
+
+The share image shows the logo, the headline, her title, "Online & in person · Bulgarian & English", the domain and her photo in the arch.
+
+> Twitter/X uses the same image as Facebook (the `og:image` tag), so one image covers every platform.
 
 ### Style
 
