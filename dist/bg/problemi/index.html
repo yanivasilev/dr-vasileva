@@ -2066,8 +2066,9 @@
   const titles = { '/': 'д-р Василева – психолог и КПТ психотерапевт' };
   // Addresses: the preview files (opened from disk) use #/ links; the live site uses real paths
   // (/about, and Bulgarian slugs on drvasileva.bg). SLUGS maps a page to its address on this site,
-  // OTHER_SLUGS to its address on the other language's site.
-  const HASH_MODE = location.protocol === 'file:';
+  // OTHER_SLUGS to its address on the other language's site. Only the live build sets SLUGS, so the
+  // preview files keep #/ links even when they're put on a web server.
+  const HASH_MODE = location.protocol === 'file:' || !window.SLUGS;
   const SLUGS = window.SLUGS || {}, OTHER_SLUGS = window.OTHER_SLUGS || {};
   const KEYS = Object.fromEntries(Object.entries(SLUGS).map(([k, v]) => [v, k]));
   const toUrl = (key, map = SLUGS) => map[key] || key;
@@ -2092,9 +2093,13 @@
       m.setAttribute(m.tagName === 'META' ? 'content' : 'href', m.dataset.base + toUrl(key, map));
     });
   };
-  // Language switch: go to the same page in the other language
+  // Language switch: go to the same page in the other language. On a test domain the other language
+  // is the same address with or without "bg." in front (test.example.com ↔ bg.test.example.com).
+  const LIVE_HOST = /(^|\.)drvasileva\.(co\.uk|bg)$/.test(location.hostname);
+  const otherSite = base => HASH_MODE || LIVE_HOST ? base.replace(/\/$/, '')
+    : `${location.protocol}//${isBG ? location.host.replace(/^bg\./, '') : 'bg.' + location.host}`;
   const syncLang = key => document.querySelectorAll('.lang a[data-base]').forEach(a =>
-    a.href = HASH_MODE ? a.dataset.base + location.hash : a.dataset.base.replace(/\/$/, '') + toUrl(key, OTHER_SLUGS));
+    a.href = HASH_MODE ? a.dataset.base + location.hash : otherSite(a.dataset.base) + toUrl(key, OTHER_SLUGS));
 
   const render = () => {
     if (HASH_MODE && location.hash && !location.hash.startsWith('#/')) return;   // ordinary in-page anchor

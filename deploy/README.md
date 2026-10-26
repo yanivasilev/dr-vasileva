@@ -30,6 +30,8 @@ You don't need Node, a build step or a database.
 | `server/contact_server.py` | The contact-form service: it checks Turnstile, validates the form and sends the email via SMTP. |
 | `deploy/nginx/drvasileva.conf` | The nginx sites: www→bare redirects, http→https, both domains. |
 | `deploy/nginx/drvasileva-common.conf` | Settings shared by both domains: 404 page, `/api/contact`, caching, security headers. |
+| `deploy/nginx/drvasileva-limits.conf` | The contact-form limit (shared by the live and test sites). |
+| `deploy/nginx/drvasileva-test.conf` | A test copy on your own domain (see *Test site* below). |
 | `deploy/nginx/drvasileva-first-certs.conf` | A temporary config, used only to get the first certificates. |
 | `deploy/nginx/mailcow-proxy.conf` | Only needed if mailcow is on the same VPS (step 2). |
 | `deploy/systemd/drvasileva-contact.service` | Keeps the contact service running. |
@@ -126,6 +128,7 @@ certbot renews them automatically from now on.
 
 ```
 cp /var/www/dr-vasileva/deploy/nginx/drvasileva-common.conf /etc/nginx/snippets/
+cp /var/www/dr-vasileva/deploy/nginx/drvasileva-limits.conf /etc/nginx/conf.d/
 cp /var/www/dr-vasileva/deploy/nginx/drvasileva.conf /etc/nginx/conf.d/drvasileva.conf
 nginx -t && systemctl reload nginx
 ```
@@ -137,7 +140,7 @@ Check it works:
 - https://drvasileva.bg/nyama shows the Bulgarian "page not found" page.
 - The **EN / BG** switch moves between the two domains and keeps you on the same page.
 
-If your server has no IPv6, delete the `listen [::]:…` lines.
+If your server has no IPv6, delete the `listen [::]:…` lines. On nginx 1.25 or newer, `nginx -t` may warn that `listen … http2` is deprecated. That's harmless.
 
 ## 6. Contact form → mailcow
 
@@ -179,6 +182,43 @@ The log records only errors, never names or messages.
 - nginx allows 5 form posts per minute per visitor.
 - The service allows 5 messages per 10 minutes per visitor.
 - A hidden "honeypot" field catches simple bots.
+
+## Test site (before the real domains point here)
+
+You can try everything on your own domain first:
+
+| Address | Site |
+|---|---|
+| `drvasileva.vasilevdigital.com` | English, `dist/en` |
+| `bg.drvasileva.vasilevdigital.com` | Bulgarian, `dist/bg` |
+
+The EN / BG switch moves between these two addresses, and search engines are told not to index them.
+
+> **Don't point nginx at the repo folder or at `mockup/`.** Those are the preview files, and their BG link goes to `site-bg.html`. The `root` must be `dist/en` or `dist/bg`.
+
+1. Add a DNS **A** record for `bg.drvasileva.vasilevdigital.com` pointing to the VPS.
+2. **Remove** the nginx config you made for `drvasileva.vasilevdigital.com` so far, then reload nginx.
+3. Get one certificate covering both names. While you have no working config for them, use the temporary port-80 config:
+   ```
+   mkdir -p /var/www/letsencrypt
+   sed 's/server_name .*/server_name drvasileva.vasilevdigital.com bg.drvasileva.vasilevdigital.com;/' \
+       /var/www/dr-vasileva/deploy/nginx/drvasileva-first-certs.conf > /etc/nginx/conf.d/drvasileva-test.conf
+   nginx -t && systemctl reload nginx
+   certbot certonly --webroot -w /var/www/letsencrypt --cert-name drvasileva.vasilevdigital.com \
+       -d drvasileva.vasilevdigital.com -d bg.drvasileva.vasilevdigital.com --deploy-hook "systemctl reload nginx"
+   ```
+   If certbot asks whether to update an existing certificate, answer yes.
+4. Put the real test config in place:
+   ```
+   cp /var/www/dr-vasileva/deploy/nginx/drvasileva-common.conf /etc/nginx/snippets/
+   cp /var/www/dr-vasileva/deploy/nginx/drvasileva-limits.conf /etc/nginx/conf.d/
+   cp /var/www/dr-vasileva/deploy/nginx/drvasileva-test.conf /etc/nginx/conf.d/drvasileva-test.conf
+   nginx -t && systemctl reload nginx
+   ```
+
+When the real domains go live, follow steps 4–5 above. You can keep the test site or delete `/etc/nginx/conf.d/drvasileva-test.conf`.
+
+The contact form works on the test site too. Messages sent from the `bg.` address go to the Bulgarian inbox.
 
 ## 7. Updating the site later
 
