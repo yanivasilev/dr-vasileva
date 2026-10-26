@@ -2,7 +2,7 @@
 
 ## 1. The plan in one sentence
 
-One website, two domains: **drvasileva.bg** shows the site in Bulgarian, **drvasileva.co.uk** shows it in English. Same design, same photos, same code.
+One website, two domains: **drvasileva.bg** shows the site in Bulgarian, **drvasileva.co.uk** shows it in English. Same content, same design, same photos, same code. Only the language changes.
 
 ---
 
@@ -12,14 +12,15 @@ One website, two domains: **drvasileva.bg** shows the site in Bulgarian, **drvas
 
 ```
 drvasileva.bg     ─┐
-                   ├──►  one website  ──►  .bg     = Bulgarian, prices in EUR
-drvasileva.co.uk  ─┘                       .co.uk  = English,   prices in GBP
+                   ├──►  one website  ──►  .bg     = Bulgarian
+drvasileva.co.uk  ─┘                       .co.uk  = English
 ```
 
 - We build the site **once**. Every text exists in two languages.
 - Both domains point to the **same hosting**.
 - The site looks at which domain the visitor typed and picks the language.
-- A **BG / EN** button in the menu takes you to the same page on the other domain.
+- **The content is identical on both.** Only the language changes.
+- A **BG / EN** button in the menu takes you to the same page on the other domain (see "Switching language" below).
 - Change a photo or her bio once → both sites update.
 
 ### Steps
@@ -27,40 +28,48 @@ drvasileva.co.uk  ─┘                       .co.uk  = English,   prices in GB
 1. **Buy the domains**
    - `drvasileva.co.uk` from any registrar (Cloudflare, Namecheap, GoDaddy…).
    - `drvasileva.bg` from Register.bg or a Bulgarian registrar.
-2. **Pick a host.** Vercel, Netlify or Cloudflare Pages are free for a site like this, and HTTPS (the padlock) is included.
+2. **Pick a host.** Cloudflare Pages, Netlify or Vercel are free for a site like this, and HTTPS (the padlock) is included.
 3. **Connect both domains** to the same project on the host (the host shows you the DNS records to copy into the registrar).
-4. **Build the site** with two languages (e.g. Astro or Next.js, which both support "language by domain").
+4. **Build the site** with two languages (Astro).
 5. **Tell Google** (see below).
 
-### What differs between the two sites
+### Same on both sites ✅
 
-| | drvasileva.bg | drvasileva.co.uk |
-|---|---|---|
-| Language | Bulgarian | English |
-| Currency | EUR (€) – Bulgaria uses the euro since 1 Jan 2026 | GBP (£) |
-| Time zone for sessions | Bulgaria (EET) | UK (GMT/BST) – 2 hours behind |
-| Appointments offered | **Online only** | **Online and in person** |
-| Phone number | +44 7999 334778 | 07999 334778 |
-| Email | contact@drvasileva.bg | contact@drvasileva.co.uk |
-| Chat button | **Viber** | **WhatsApp** |
-| Socials | Facebook | Facebook |
-| Payment | Bank transfer, Revolut | Bank transfer, Revolut |
-| Address | Not shown | Not shown |
-| Opening hours | Not shown (she's flexible) | Not shown (she's flexible) |
-| Legal pages | Privacy policy under EU GDPR | Privacy policy under UK GDPR |
+Everything is the same on both sites, just in a different language:
 
-### Contact buttons
+| | Both sites |
+|---|---|
+| Appointments | **Online and in person** (individual, couples, family, group) |
+| Session languages | **Bulgarian and English** (group sessions too) |
+| Phone | **+44 7999 334778** |
+| Chat buttons | **Viber and WhatsApp**, both shown |
+| Email | `contact@drvasileva.bg` on .bg and `contact@drvasileva.co.uk` on .co.uk, both going to one inbox |
+| Socials | Facebook |
+| Payment | Bank transfer, Revolut |
+| Cancellation | 24 hours' notice |
+| Prices | Decided after the site is finished. Suggestion: show **both £ and €** on both sites |
+| Address | Not shown. Details for in-person sessions are given when people get in touch |
+| Opening hours | Not shown (she's flexible) |
+| Privacy policy | One policy covering **UK GDPR and EU GDPR** |
 
-She has one phone number (UK), so both sites use it. Only the chat app changes:
+The only thing that differs is the **language** (Bulgarian on .bg, English on .co.uk).
 
-- **drvasileva.bg → Viber** (what most people in Bulgaria use). Link: `viber://chat?number=%2B447999334778`
-- **drvasileva.co.uk → WhatsApp** (what most people in the UK use). Link: `https://wa.me/447999334778`
-- **Phone:** shown as `+44 7999 334778` on .bg (so it works when dialled from Bulgaria) and `07999 334778` on .co.uk. Both link to `tel:+447999334778`.
-- **Email:** `contact@drvasileva.bg` on .bg, `contact@drvasileva.co.uk` on .co.uk. Both can forward into one inbox she already uses.
-- **Facebook** is her only social account, so it's linked in the footer of both sites: <https://www.facebook.com/share/1Bh2hqG1Ac/>. This is a share link. Before launch, open it and copy the page's real address (`facebook.com/<her-page>`), which is more reliable.
-- **No address on either site.** For in-person sessions in the UK, she gives the details when people message or call her.
+### Contact buttons (same on both)
 
-> The Viber link only opens if the visitor has Viber installed (normal in Bulgaria). Show the number as text next to the button as a fallback.
+- **Call:** `+44 7999 334778` → `tel:+447999334778`. Written with +44 so it works from Bulgaria too.
+- **Viber:** `viber://chat?number=%2B447999334778`
+- **WhatsApp:** `https://wa.me/447999334778`
+- **Email:** `contact@drvasileva.bg` / `contact@drvasileva.co.uk` → `mailto:` link
+- **Facebook:** <https://www.facebook.com/share/1Bh2hqG1Ac/>. This is a share link. Before launch, open it and copy the page's real address (`facebook.com/<her-page>`), which is more reliable.
+
+> The Viber link only opens if the visitor has Viber installed. The number is always shown as text next to the buttons as a fallback.
+
+### Switching language (BG ↔ EN)
+
+- Clicking **BG / EN** opens the **same page in the other language** on the other domain. For example, `drvasileva.co.uk/about` ↔ `drvasileva.bg/za-men`.
+- It's a normal page load, exactly like clicking any link. The site is static (plain HTML, no heavy app), so the new page appears almost instantly. There's no flash or wait.
+- The button sits in the same spot on both sites, so the switch feels seamless.
+- Why not switch without loading? Then Google would only see one language, and the .bg / .co.uk split would stop helping in search.
 
 ### Google search – do's and don'ts
 
@@ -270,7 +279,7 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 
 | # | Page | drvasileva.co.uk | drvasileva.bg | What's on it |
 |---|---|---|---|---|
-| 1 | **Home** | `/` | `/` | Photo, one-line promise, who I help, online & in person (.co.uk) / online only (.bg), "Featured in", call + chat buttons |
+| 1 | **Home** | `/` | `/` | Photo, one-line promise, who I help, online & in person, sessions in BG & EN, "Featured in", call + Viber + WhatsApp buttons |
 | 2 | **About me** | `/about` | `/za-men` | Photo, her story, 21 years since 2005, PhD, education, experience timeline, **awards**, BPS membership, CBT, languages, charity work |
 | 3 | **Who I help** | `/who-i-help` | `/s-kogo-rabotya` | Overview page, linking to 3a–3f |
 | 3a | – Adults | `/who-i-help/adults` | `/s-kogo-rabotya/vazrastni` | Individual CBT therapy: anxiety, depression, panic, stress |
@@ -278,11 +287,11 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 | 3c | – Children & teens | `/who-i-help/children-teens` | `/s-kogo-rabotya/deca-i-tiyneydzhari` | Consultations for children and teens, support for parents |
 | 3d | – Special educational needs | `/who-i-help/special-educational-needs` | `/s-kogo-rabotya/specialni-obrazovatelni-potrebnosti` | Autism, ADHD, dyslexia, dyspraxia, learning difficulties, assessments and reports |
 | 3e | – Organisations & schools | `/who-i-help/organisations` | `/s-kogo-rabotya/organizacii` | Group training: professional stress, teamwork, relationships |
-| 3f | – Group sessions | `/who-i-help/group-sessions` | `/s-kogo-rabotya/grupovi-sesii` | What group sessions are, who they're for, how they work, online / in person |
+| 3f | – Group sessions | `/who-i-help/group-sessions` | `/s-kogo-rabotya/grupovi-sesii` | What group sessions are, who they're for, how they work, online / in person, **in Bulgarian and English** |
 | 4 | **What I help with** | `/issues` | `/problemi` | Grid of issue pages (see list below) |
-| 5 | **Fees** | `/fees` | `/ceni` | **.co.uk:** GBP, online + in person. **.bg:** EUR, online only. Session length, assessments & reports, how online sessions work, time zones UK ↔ BG, **payment by bank transfer or Revolut**, **cancellation: 24 hours' notice**. *Prices added after the site is finished.* |
+| 5 | **Fees** | `/fees` | `/ceni` | Online + in person, **£ and €**. Session length, assessments & reports, how online sessions work, time zones UK ↔ BG, **payment by bank transfer or Revolut**, **cancellation: 24 hours' notice**. *Prices added after the site is finished.* |
 | 6 | **Articles & publications** | `/articles` | `/statii` | Her "School of Psychology" columns (all of them, see section 6), plus her scientific publications |
-| 7 | **Contact** | `/contact` | `/kontakti` | **No form, no booking.** Big buttons: call **07999 334778**, chat (**Viber** on .bg, **WhatsApp** on .co.uk), email (**contact@drvasileva.bg / .co.uk**), Facebook. **No hours, no address or map** |
+| 7 | **Contact** | `/contact` | `/kontakti` | **No form, no booking.** Big buttons: call **+44 7999 334778**, **Viber**, **WhatsApp**, email, Facebook. **No hours, no address or map** |
 
 ### Issue pages (from her CV)
 
@@ -310,18 +319,18 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 
 | Page | .co.uk | .bg | Notes |
 |---|---|---|---|
-| **FAQ** | `/faq` | `/chesto-zadavani-vaprosi` | Is it confidential? How many sessions? How do online sessions work? Cancellations? (.co.uk also: online vs in person) |
+| **FAQ** | `/faq` | `/chesto-zadavani-vaprosi` | Full list of questions and answers in section 7 |
 | **Press / Featured in** | `/press` | `/medii` | BG BEN column, "Doctor" newspaper interview (2015), BG Radio interview (2019), university lectures |
 | **Crisis help** | `/crisis` | `/spesht-pomosht` | UK: 999, NHS 111, Samaritans 116 123. BG: 112. "I'm not an emergency service." |
-| **Privacy policy** | `/privacy` | `/poveritelnost` | UK GDPR / EU GDPR – health data |
+| **Privacy policy** | `/privacy` | `/poveritelnost` | One policy covering UK GDPR + EU GDPR – health data |
 | **Cookies** | `/cookies` | `/biskvitki` | Cookie banner + policy |
 | **Terms** | `/terms` | `/obshti-usloviya` | Payment (bank transfer / Revolut), **24-hour cancellation** |
 
 ### On every page
 
 - Header: logo · menu · **BG / EN switch** · "Contact me" button (goes to the contact page)
-- Footer: phone number, chat button (Viber on .bg / WhatsApp on .co.uk), email, Facebook, crisis link, legal links. No address, no hours.
-- Bottom of each page: "Ready to talk? Call or message me" block with the phone and chat buttons
+- Footer: phone number, Viber, WhatsApp, email, Facebook, crisis link, legal links. No address, no hours.
+- Bottom of each page: "Ready to talk? Call or message me" block with the phone, Viber and WhatsApp buttons
 
 ### Total to build first
 
@@ -399,3 +408,151 @@ The CV says 21 scientific publications on peer relationships, the family environ
 
 - *"Self murderers are people who want to be noticed"*, newspaper **"Doctor"**, issue 15 (2015)
 - *"Covid-19 and Panic Attacks"*, **BG Radio** (2019)
+
+---
+
+## 7. FAQ (draft – for her to check)
+
+The same questions go on both sites: English on .co.uk, Bulgarian on .bg. Anything in *[brackets]* gets filled in once prices are set.
+
+### English (drvasileva.co.uk/faq)
+
+**1. Is everything I say confidential?**
+Yes. What you share stays between us. The only exception is if I believe you or someone else, especially a child, is at serious risk of harm. Then I may have to tell the right services, as the law and my professional code require. I would always try to talk to you about it first.
+
+**2. What languages do you work in?**
+Bulgarian and English. This includes individual, couples, family and group sessions.
+
+**3. Do you offer online or in-person sessions?**
+Both. Online sessions take place over a secure video call, so you can join from anywhere: the UK, Bulgaria or elsewhere. In-person sessions take place in the UK. I share the location when we arrange your appointment.
+
+**4. How do I make an appointment?**
+Simply get in touch by phone, Viber, WhatsApp, email or Facebook. Tell me a little about what you need, and we'll find a time that suits you.
+
+**5. How long is a session?**
+*[Session length, e.g. 50 minutes, to be confirmed.]*
+
+**6. How many sessions will I need?**
+It depends on you and what you'd like to work on. Some people feel a difference after a few sessions, others prefer longer support. We'll agree a plan together at the start and review your progress along the way.
+
+**7. What approach do you use?**
+Mainly cognitive behavioural therapy (CBT), a practical, well-researched approach. It helps you understand the link between your thoughts, feelings and behaviour, and learn tools to change them.
+
+**8. Do you work with children and teenagers?**
+Yes. I have many years of experience with children, teenagers and children with special educational needs (autism, ADHD, dyslexia, dyspraxia and other learning difficulties). Parents are involved, and for children under 18 a parent or guardian gives consent.
+
+**9. Do you work with couples and families?**
+Yes. I offer couples therapy and family therapy, helping you understand each other, communicate better and get through difficult times together.
+
+**10. What are group sessions?**
+Small groups of people working on similar topics, guided by me. They run in Bulgarian and in English, online or in person. Groups are a supportive way to learn from others who understand what you're going through.
+
+**11. Do you offer training for organisations and schools?**
+Yes. I run group trainings on topics such as professional stress, effective teamwork and relationships at work and at school.
+
+**12. How much does it cost?**
+*[See the Fees page.]*
+
+**13. How do I pay?**
+By bank transfer or Revolut.
+
+**14. What if I need to cancel?**
+Please give at least **24 hours' notice**. Sessions cancelled with less notice may be charged in full.
+
+**15. I live in Bulgaria and you're in the UK. What about the time difference?**
+No problem. Bulgaria is 2 hours ahead of the UK. We always agree the time in your local time zone.
+
+**16. Do I need a referral from my doctor?**
+No. You can contact me directly.
+
+**17. What if I'm in crisis?**
+I'm not an emergency service. If you or someone else is in immediate danger, call **999** in the UK or **112** in Bulgaria. In the UK you can also call **Samaritans on 116 123** (free, 24/7). See the Crisis help page for more.
+
+### Български (drvasileva.bg/chesto-zadavani-vaprosi)
+
+**1. Поверително ли е всичко, което споделям?**
+Да. Това, което споделяте, остава между нас. Единственото изключение е, ако смятам, че Вие или някой друг, особено дете, сте в сериозна опасност. Тогава може да се наложи да уведомя съответните служби, както изискват законът и професионалната ми етика. Винаги ще се опитам първо да говоря с Вас за това.
+
+**2. На какви езици работите?**
+На български и английски. Това включва индивидуални, семейни и групови сесии, както и консултации за двойки.
+
+**3. Предлагате ли онлайн или присъствени консултации?**
+И двете. Онлайн консултациите се провеждат чрез сигурен видеоразговор, така че можете да се включите отвсякъде: от България, Великобритания или друга държава. Присъствените консултации са във Великобритания. Мястото Ви съобщавам, когато уговорим час.
+
+**4. Как да си запазя час?**
+Просто се свържете с мен по телефона, Viber, WhatsApp, имейл или Facebook. Разкажете ми накратко от какво имате нужда и ще намерим удобно за Вас време.
+
+**5. Колко продължава една консултация?**
+*[Продължителност, напр. 50 минути, предстои да бъде потвърдена.]*
+
+**6. Колко консултации ще са ми нужни?**
+Зависи от Вас и от това, върху което искате да работим. Някои хора усещат промяна след няколко срещи, други предпочитат по-дълга подкрепа. В началото заедно ще изготвим план и ще следим напредъка Ви.
+
+**7. Какъв подход използвате?**
+Основно когнитивно-поведенческа терапия (КПТ), практичен и научно доказан подход. Тя помага да разберете връзката между мислите, чувствата и поведението си и да научите начини да ги промените.
+
+**8. Работите ли с деца и тийнейджъри?**
+Да. Имам дългогодишен опит с деца, тийнейджъри и деца със специални образователни потребности (аутизъм, ADHD, дислексия, диспраксия и други обучителни затруднения). Родителите участват в процеса, а за деца под 18 години е нужно съгласие от родител или настойник.
+
+**9. Работите ли с двойки и семейства?**
+Да. Предлагам терапия за двойки и семейна терапия, за да се разбирате по-добре, да общувате по-лесно и да преминете заедно през трудните моменти.
+
+**10. Какво представляват груповите сесии?**
+Малки групи от хора, които работят по сходни теми под мое ръководство. Провеждат се на български и на английски, онлайн или присъствено. Групата е подкрепяща среда, в която се учите от хора, които разбират през какво преминавате.
+
+**11. Предлагате ли обучения за организации и училища?**
+Да. Провеждам групови обучения на теми като професионален стрес, ефективна работа в екип и взаимоотношения на работното място и в училище.
+
+**12. Колко струва?**
+*[Вижте страница „Цени“.]*
+
+**13. Как мога да платя?**
+С банков превод или Revolut.
+
+**14. Какво става, ако трябва да откажа час?**
+Моля, уведомете ме поне **24 часа** предварително. При по-късно отказване консултацията може да бъде таксувана изцяло.
+
+**15. Живея в България, а Вие сте във Великобритания. Как стои въпросът с часовата разлика?**
+Няма проблем. България е с 2 часа напред спрямо Великобритания. Винаги уговаряме часа по Вашето местно време.
+
+**16. Нужно ли ми е направление от лекар?**
+Не. Можете да се свържете директно с мен.
+
+**17. Какво да направя при криза?**
+Аз не съм спешна служба. Ако Вие или някой друг сте в непосредствена опасност, обадете се на **112** в България или на **999** във Великобритания. Във Великобритания можете да се обадите и на **Samaritans на 116 123** (безплатно, денонощно). Повече информация има на страница „Спешна помощ“.
+
+---
+
+## 8. Look & feel
+
+Taken from her photo: the **green** of her blouse and the soft **lilac/pink** of her scarf. Calm, warm and personal, not clinical.
+
+### Colours
+
+| Use | Colour | Hex |
+|---|---|---|
+| Main colour (buttons, headings) | Sage green | `#4F6F52` |
+| Dark green (hover, footer) | Deep green | `#344E38` |
+| Accent (highlights, small details) | Soft lilac | `#B9A3C9` |
+| Warm accent (awards, quotes) | Muted gold | `#C9A25A` |
+| Background | Warm cream | `#FAF7F2` |
+| Cards / sections | Light sand | `#F1ECE3` |
+| Text | Charcoal | `#2E2E2E` |
+
+### Fonts
+
+Both support **Cyrillic**, so Bulgarian looks just as good as English.
+
+- **Headings:** *Lora*, a soft, elegant serif
+- **Body text:** *Inter*, clean and very readable on phones
+
+### Logo
+
+A simple text logo: **Dr Mirena Vasileva** / **д-р Мирена Василева** in Lora, with a small leaf or soft circle symbol in sage green. We can get a designed logo later.
+
+### Style
+
+- Lots of white space, rounded corners and soft shadows
+- Her photo is large on Home and About
+- Big, easy-to-tap buttons for **Call · Viber · WhatsApp** (most visitors will be on a phone)
+- No stock photos of people "looking sad". Instead, calm nature and texture images, or none at all
