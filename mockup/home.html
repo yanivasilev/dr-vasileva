@@ -2,480 +2,737 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dr Mirena Vasileva – Psychologist & CBT Psychotherapist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dr Vasileva – Psychologist & CBT Psychotherapist</title>
 <meta name="description" content="Dr Mirena Vasileva, PhD – psychologist and CBT psychotherapist. Online and in-person sessions in Bulgarian and English for adults, couples, families, children and teenagers.">
+<meta name="theme-color" content="#2C4430">
+<link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,500;0,600;1,500&display=swap&subset=cyrillic" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
 <style>
   :root {
     --green: #4F6F52;
     --green-dark: #344E38;
+    --green-deep: #2C4430;
     --green-soft: #E4ECE3;
     --lilac: #B9A3C9;
+    --lilac-deep: #8E79A6;
     --lilac-soft: #EEE7F3;
     --gold: #C9A25A;
+    --gold-soft: #F6EEDC;
     --cream: #FAF7F2;
     --sand: #F1ECE3;
-    --text: #2E2E2E;
-    --muted: #5F625E;
+    --text: #2A2D2A;
+    --muted: #5E625D;
     --white: #FFFFFF;
-    --radius: 20px;
-    --shadow: 0 10px 30px rgba(52, 78, 56, .10);
-    --wrap: 1160px;
+    --whatsapp: #25D366;
+    --whatsapp-dark: #128C7E;
+    --viber: #7360F2;
+    --viber-dark: #59267C;
+    --facebook: #1877F2;
+    --serif: "Cormorant Garamond", Georgia, serif;
+    --sans: "Manrope", system-ui, sans-serif;
+    --ease: cubic-bezier(.22, 1, .36, 1);
+    --radius: 22px;
+    --shadow: 0 18px 50px -18px rgba(44, 68, 48, .28);
+    --wrap: 1200px;
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
   }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    font-family: "Inter", system-ui, sans-serif;
-    font-size: 17px;
-    line-height: 1.65;
-    color: var(--text);
-    background: var(--cream);
-  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { margin: 0; font-family: var(--sans); font-size: 17px; line-height: 1.7; color: var(--text); background: var(--cream); -webkit-font-smoothing: antialiased; overflow-x: hidden; font-variant-numeric: lining-nums; }
+  body.menu-open { overflow: hidden; }
   img { max-width: 100%; display: block; }
   a { color: inherit; }
-  h1, h2, h3 { font-family: "Lora", Georgia, serif; font-weight: 600; line-height: 1.2; margin: 0 0 .5em; }
-  h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); }
-  h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); }
-  h3 { font-size: 1.2rem; }
+  ::selection { background: var(--lilac); color: var(--green-deep); }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 6px; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.08; margin: 0 0 .45em; letter-spacing: -.005em; }
+  h1 { font-size: clamp(2.7rem, 5.6vw, 4.7rem); font-weight: 500; }
+  h2 { font-size: clamp(2.2rem, 4.4vw, 3.5rem); font-weight: 500; }
+  h3 { font-size: 1.55rem; }
+  em { font-style: italic; color: var(--lilac-deep); }
+  .on-dark em { color: var(--lilac); }
   p { margin: 0 0 1em; }
-  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
-  .eyebrow { font-size: .85rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--green); margin-bottom: .75rem; display: block; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+  section { padding: 120px 0; position: relative; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: .78rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--green); margin-bottom: 1.2rem; }
+  .eyebrow::before { content: ""; width: 34px; height: 1px; background: currentColor; opacity: .6; }
   .center { text-align: center; }
-  .lead { color: var(--muted); max-width: 640px; }
+  .center .eyebrow::after { content: ""; width: 34px; height: 1px; background: currentColor; opacity: .6; }
+  .lead { color: var(--muted); font-size: 1.12rem; max-width: 620px; }
   .center .lead { margin-left: auto; margin-right: auto; }
-  section { padding: 88px 0; }
-  .icon { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .icon { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .bi { width: 22px; height: 22px; fill: currentColor; stroke: none; flex-shrink: 0; }
+  .grain::after { content: ""; position: absolute; inset: 0; background-image: var(--grain); opacity: .09; mix-blend-mode: overlay; pointer-events: none; }
+
+  /* Reveal animations */
+  .js [data-reveal] { opacity: 0; transform: translateY(34px); transition: opacity 1s var(--ease), transform 1s var(--ease); transition-delay: var(--d, 0s); }
+  .js [data-reveal="fade"] { transform: none; }
+  .js [data-reveal="left"] { transform: translateX(-40px); }
+  .js [data-reveal="right"] { transform: translateX(40px); }
+  .js [data-reveal="zoom"] { transform: scale(.94); }
+  .js [data-reveal].in { opacity: 1; transform: none; }
 
   /* Buttons */
-  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; font-weight: 600; font-size: 1rem; text-decoration: none; border: 2px solid transparent; transition: transform .15s, background .15s, color .15s; cursor: pointer; }
-  .btn:hover { transform: translateY(-2px); }
-  .btn-light { background: var(--white); color: var(--green-dark); }
-  .btn-outline-light { border-color: rgba(255,255,255,.6); color: var(--white); }
-  .btn-outline-light:hover { background: rgba(255,255,255,.12); }
-  .btn-green { background: var(--green); color: var(--white); }
-  .btn-green:hover { background: var(--green-dark); }
+  .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 26px; border-radius: 999px; font-family: var(--sans); font-weight: 700; font-size: .98rem; text-decoration: none; border: 0; cursor: pointer; overflow: hidden; isolation: isolate; transition: transform .4s var(--ease), box-shadow .4s var(--ease); }
+  .btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(255,255,255,.18); transform: translateX(-101%); transition: transform .55s var(--ease); }
+  .btn:hover { transform: translateY(-3px); }
+  .btn:hover::before { transform: none; }
+  .btn .arrow-i { transition: transform .4s var(--ease); }
+  .btn:hover .arrow-i { transform: translateX(4px); }
+  .btn-cream { background: var(--cream); color: var(--green-deep); }
+  .btn-cream::before { background: var(--lilac-soft); }
+  .btn-green { background: var(--green-dark); color: var(--white); }
+  .btn-green:hover { box-shadow: 0 14px 30px -12px rgba(44,68,48,.6); }
+  .btn-whatsapp { background: var(--whatsapp); color: #08361C; }
+  .btn-whatsapp:hover { box-shadow: 0 14px 30px -10px rgba(37,211,102,.6); }
+  .btn-viber { background: var(--viber); color: var(--white); }
+  .btn-viber:hover { box-shadow: 0 14px 30px -10px rgba(115,96,242,.65); }
   .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
 
   /* Header */
-  header { position: sticky; top: 0; z-index: 50; background: var(--green-dark); color: var(--white); }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 20px; }
-  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: "Lora", serif; font-size: 1.25rem; font-weight: 600; white-space: nowrap; }
-  .logo .mark { width: 34px; height: 34px; border-radius: 50%; background: var(--lilac); display: grid; place-items: center; color: var(--green-dark); }
-  .nav-links { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-size: .95rem; }
-  .nav-links a { text-decoration: none; opacity: .85; }
-  .nav-links a:hover, .nav-links a[aria-current] { opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+  .site-header { position: fixed; inset: 0 0 auto; z-index: 100; color: var(--cream); transition: background .5s var(--ease), color .5s var(--ease), box-shadow .5s var(--ease), padding .5s var(--ease); padding: 18px 0; }
+  .site-header.scrolled { background: rgba(250, 247, 242, .86); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); color: var(--text); box-shadow: 0 1px 0 rgba(44,68,48,.08), 0 10px 30px -20px rgba(44,68,48,.35); padding: 10px 0; }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .logo { display: inline-flex; align-items: center; text-decoration: none; }
+  .logo .name { font-family: var(--serif); font-weight: 600; font-size: 1.85rem; line-height: 1; letter-spacing: .01em; white-space: nowrap; }
+  .nav-links { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; font-size: .93rem; font-weight: 600; }
+  .nav-links a { position: relative; text-decoration: none; padding: 6px 0; opacity: .9; }
+  .nav-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform .45s var(--ease); }
+  .nav-links a:hover::after, .nav-links a[aria-current]::after { transform: scaleX(1); transform-origin: left; }
   .nav-right { display: flex; align-items: center; gap: 14px; }
-  .lang { display: flex; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; overflow: hidden; font-size: .85rem; font-weight: 600; }
-  .lang a { padding: 6px 12px; text-decoration: none; }
-  .lang a.on { background: var(--white); color: var(--green-dark); }
-  .nav .btn { padding: 10px 18px; font-size: .92rem; }
-  .menu-btn { display: none; background: none; border: 0; color: var(--white); padding: 6px; cursor: pointer; }
-  .menu-btn .icon { width: 28px; height: 28px; }
+  .lang { position: relative; display: flex; border: 1px solid currentColor; border-radius: 999px; font-size: .78rem; font-weight: 700; letter-spacing: .06em; opacity: .9; }
+  .lang a { position: relative; z-index: 1; padding: 6px 12px; text-decoration: none; transition: color .3s; }
+  .lang a.on { color: var(--green-deep); }
+  .lang::before { content: ""; position: absolute; top: 2px; bottom: 2px; right: 2px; width: calc(50% - 2px); border-radius: 999px; background: var(--cream); transition: background .5s; }
+  .scrolled .lang::before { background: var(--lilac-soft); }
+  .nav .btn { padding: 11px 20px; font-size: .9rem; }
+  .scrolled .nav .btn-cream { background: var(--green-dark); color: var(--white); }
+  .burger { display: none; position: relative; z-index: 210; width: 46px; height: 46px; border-radius: 50%; border: 1px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
+  .burger span { position: absolute; left: 13px; right: 13px; height: 1.6px; background: currentColor; border-radius: 2px; transition: transform .5s var(--ease), opacity .3s, top .5s var(--ease); }
+  .burger span:nth-child(1) { top: 17px; }
+  .burger span:nth-child(2) { top: 22.5px; }
+  .burger span:nth-child(3) { top: 28px; }
+  .menu-open .burger { color: var(--cream); border-color: rgba(250,247,242,.5); }
+  .menu-open .burger span:nth-child(1) { top: 22.5px; transform: rotate(45deg); }
+  .menu-open .burger span:nth-child(2) { opacity: 0; }
+  .menu-open .burger span:nth-child(3) { top: 22.5px; transform: rotate(-45deg); }
+
+  /* Full-screen mobile menu */
+  .menu { position: fixed; inset: 0; z-index: 200; background: var(--green-deep); color: var(--cream); display: flex; flex-direction: column; padding: 100px 28px calc(28px + env(safe-area-inset-bottom)); clip-path: circle(0% at calc(100% - 47px) 41px); transition: clip-path .8s var(--ease); visibility: hidden; overflow-y: auto; }
+  .menu.grain::after { opacity: .12; }
+  .menu-open .menu { clip-path: circle(150% at calc(100% - 47px) 41px); visibility: visible; }
+  .menu-top { position: absolute; top: 18px; left: 24px; right: 24px; display: flex; justify-content: space-between; align-items: center; }
+  .menu ol { list-style: none; margin: 0; padding: 0; counter-reset: m; flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+  .menu li { counter-increment: m; overflow: hidden; }
+  .menu li a { display: flex; align-items: baseline; gap: 16px; font-family: var(--serif); font-size: clamp(2.1rem, 9vw, 3rem); font-weight: 500; line-height: 1.25; text-decoration: none; transform: translateY(110%); transition: transform .8s var(--ease), color .3s; transition-delay: 0s; }
+  .menu li a::before { content: "0" counter(m); font-family: var(--sans); font-size: .8rem; font-weight: 700; letter-spacing: .1em; color: var(--lilac); }
+  .menu li a:hover { color: var(--lilac); }
+  .menu-open .menu li a { transform: none; transition-delay: calc(.25s + var(--i) * .06s); }
+  .menu-foot { opacity: 0; transform: translateY(20px); transition: opacity .6s var(--ease), transform .6s var(--ease); margin-top: 28px; }
+  .menu-open .menu-foot { opacity: 1; transform: none; transition-delay: .7s; }
+  .menu-foot .btn-row .btn { flex: 1 1 140px; }
+  .menu-foot p { font-size: .85rem; opacity: .7; margin: 18px 0 0; }
 
   /* Hero */
-  .hero { background: var(--green-dark); color: var(--white); padding: 56px 0 120px; position: relative; overflow: hidden; }
-  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+  .hero { min-height: 100vh; min-height: 100svh; background: var(--green-deep); color: var(--cream); padding: 150px 0 120px; display: flex; align-items: center; overflow: hidden; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; pointer-events: none; animation: drift 18s ease-in-out infinite alternate; }
+  .blob.b1 { width: 520px; height: 520px; background: #6E8E70; top: -140px; right: -80px; }
+  .blob.b2 { width: 420px; height: 420px; background: #8E79A6; bottom: -160px; left: -120px; opacity: .35; animation-duration: 22s; animation-delay: -6s; }
+  .blob.b3 { width: 260px; height: 260px; background: var(--gold); top: 40%; left: 42%; opacity: .14; animation-duration: 26s; }
+  @keyframes drift { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(40px, 30px) scale(1.08); } 100% { transform: translate(-30px, 50px) scale(.95); } }
+  .hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: center; width: 100%; }
   .hero .eyebrow { color: var(--lilac); }
-  .hero p.lead { color: rgba(255,255,255,.85); font-size: 1.1rem; margin-bottom: 1.75rem; }
-  .hero-note { margin-top: 1.25rem; font-size: .92rem; color: rgba(255,255,255,.75); display: flex; flex-wrap: wrap; gap: 6px 18px; }
-  .hero-note span { display: inline-flex; align-items: center; gap: 6px; }
-  .hero-note .icon { width: 16px; height: 16px; color: var(--lilac); }
-  .hero-photo { position: relative; justify-self: center; width: min(420px, 100%); isolation: isolate; }
-  .arch { position: relative; border-radius: 220px 220px 28px 28px; overflow: hidden; aspect-ratio: 4 / 5; border: 6px solid rgba(255,255,255,.14); }
-  .arch img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
-  .hero-photo::before { content: ""; position: absolute; inset: -18px -18px 30px 30px; border-radius: 220px 220px 28px 28px; background: var(--lilac); opacity: .35; z-index: -1; }
-  .float { position: absolute; background: var(--white); color: var(--text); border-radius: 16px; padding: 12px 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; font-size: .9rem; font-weight: 600; line-height: 1.3; }
-  .float .ico { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: var(--green-soft); color: var(--green); }
-  .float small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
-  .float-1 { left: -36px; bottom: 70px; }
-  .float-2 { right: -24px; top: 48px; }
-  .leaf-deco { position: absolute; color: rgba(255,255,255,.07); pointer-events: none; }
-  .leaf-deco.a { width: 260px; height: 260px; left: -70px; bottom: -60px; transform: rotate(-20deg); }
-  .leaf-deco.b { width: 140px; height: 140px; right: 6%; top: 18px; transform: rotate(35deg); }
-  .wave { position: absolute; bottom: -1px; left: 0; width: 100%; height: 70px; color: var(--cream); }
+  .hero h1 .line { display: block; overflow: hidden; padding-bottom: .06em; }
+  .hero h1 .line > span { display: inline-block; transform: translateY(105%); animation: rise 1.1s var(--ease) forwards; animation-delay: calc(.15s + var(--i) * .12s); }
+  @keyframes rise { to { transform: none; } }
+  .hero .lead { color: rgba(250,247,242,.82); font-size: 1.18rem; margin: 1.6rem 0 2.2rem; }
+  .hero-fade { opacity: 0; transform: translateY(20px); animation: fadeUp 1s var(--ease) forwards; animation-delay: var(--d); }
+  @keyframes fadeUp { to { opacity: 1; transform: none; } }
+  .hero-meta { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(250,247,242,.08); border: 1px solid rgba(250,247,242,.14); font-size: .85rem; font-weight: 600; color: rgba(250,247,242,.9); }
+  .chip .icon { width: 16px; height: 16px; color: var(--lilac); }
 
-  /* Badges */
-  .badges { margin-top: -64px; position: relative; z-index: 2; padding: 0; }
-  .badge-row { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 28px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
-  .badge { display: flex; align-items: center; gap: 10px; font-size: .88rem; font-weight: 600; line-height: 1.3; }
-  .badge .ico { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--green-soft); color: var(--green); flex-shrink: 0; }
-  .badge.gold .ico { background: #F6EEDC; color: var(--gold); }
+  .hero-visual { position: relative; justify-self: center; width: min(440px, 100%); }
+  .arch { position: relative; border-radius: 999px 999px 32px 32px; overflow: hidden; aspect-ratio: 4 / 5.1; box-shadow: 0 40px 80px -30px rgba(0,0,0,.55); clip-path: inset(100% 0 0 0 round 999px 999px 32px 32px); animation: unveil 1.5s var(--ease) .35s forwards; }
+  @keyframes unveil { to { clip-path: inset(0 0 0 0 round 999px 999px 32px 32px); } }
+  .arch img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; transform: scale(1.18); animation: settle 2.2s var(--ease) .35s forwards; }
+  @keyframes settle { to { transform: scale(1.02); } }
+  .arch-outline { position: absolute; inset: -16px; border: 1px solid rgba(185,163,201,.45); border-radius: 999px 999px 40px 40px; pointer-events: none; }
+  .ring { position: absolute; width: 150px; height: 150px; left: -62px; bottom: 34px; z-index: 3; }
+  .ring .spin { width: 100%; height: 100%; animation: spin 24s linear infinite; }
+  .ring text { font-family: var(--sans); font-size: 10.2px; font-weight: 700; letter-spacing: .26em; fill: var(--cream); }
+  .ring .core { position: absolute; inset: 34px; border-radius: 50%; background: var(--lilac); display: grid; place-items: center; color: var(--green-deep); box-shadow: 0 10px 30px -10px rgba(0,0,0,.4); }
+  .ring .core svg { width: 34px; height: 34px; stroke-width: 1.6; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .float { position: absolute; z-index: 3; background: rgba(250,247,242,.96); color: var(--text); border-radius: 18px; padding: 14px 18px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; font-size: .9rem; font-weight: 700; line-height: 1.25; animation: bob 6s ease-in-out infinite; }
+  .float .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--green-soft); color: var(--green); }
+  .float small { display: block; font-weight: 500; color: var(--muted); font-size: .78rem; }
+  .float-years { right: -34px; top: 56px; }
+  .float-years strong { font-family: var(--serif); font-size: 2rem; line-height: 1; font-weight: 600; color: var(--green-dark); }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .scroll-cue { position: absolute; left: 50%; bottom: 28px; z-index: 2; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; font-size: .7rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(250,247,242,.6); text-decoration: none; }
+  .scroll-cue span { width: 1px; height: 46px; background: linear-gradient(rgba(250,247,242,.7), transparent); position: relative; overflow: hidden; }
+  .scroll-cue span::after { content: ""; position: absolute; left: 0; top: -50%; width: 1px; height: 50%; background: var(--lilac); animation: cue 2.2s var(--ease) infinite; }
+  @keyframes cue { to { top: 110%; } }
+
+  /* Credentials marquee */
+  .marquee { padding: 30px 0; background: var(--cream); border-bottom: 1px solid var(--sand); overflow: hidden; }
+  .marquee-track { display: flex; width: max-content; animation: marquee 42s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-group { display: flex; align-items: center; gap: 56px; padding-right: 56px; }
+  .cred { display: inline-flex; align-items: center; gap: 14px; white-space: nowrap; font-family: var(--serif); font-size: 1.45rem; font-weight: 600; color: var(--green-dark); }
+  .cred .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--green-soft); color: var(--green); }
+  .cred.gold .ico { background: var(--gold-soft); color: var(--gold); }
+  .cred.lilac .ico { background: var(--lilac-soft); color: var(--lilac-deep); }
+  .sep { width: 7px; height: 7px; border-radius: 50%; background: var(--lilac); flex-shrink: 0; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
 
   /* Who I help */
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 44px; }
-  .card { background: var(--white); border-radius: var(--radius); padding: 28px; border: 1px solid var(--sand); transition: background .2s, color .2s, transform .2s, box-shadow .2s; text-decoration: none; display: flex; flex-direction: column; }
-  .card .ico { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: var(--green-soft); color: var(--green); margin-bottom: 18px; transition: background .2s, color .2s; }
-  .card .ico .icon { width: 26px; height: 26px; }
-  .card p { color: var(--muted); font-size: .95rem; flex: 1; transition: color .2s; }
-  .more { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .9rem; color: var(--green); transition: color .2s; }
-  .more .icon { width: 18px; height: 18px; transition: transform .2s; }
-  .card:hover, .card:focus-visible { background: var(--green); color: var(--white); transform: translateY(-4px); box-shadow: var(--shadow); }
-  .card:hover p, .card:focus-visible p, .card:hover .more, .card:focus-visible .more { color: rgba(255,255,255,.9); }
-  .card:hover .ico, .card:focus-visible .ico { background: rgba(255,255,255,.16); color: var(--white); }
-  .card:hover .more .icon { transform: translateX(4px); }
+  .section-head { display: flex; justify-content: space-between; align-items: end; gap: 40px; flex-wrap: wrap; margin-bottom: 56px; }
+  .section-head h2 { max-width: 620px; margin: 0; }
+  .section-head .lead { margin: 0; max-width: 420px; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .card { position: relative; overflow: hidden; isolation: isolate; background: var(--white); border-radius: var(--radius); padding: 34px 30px 30px; text-decoration: none; display: flex; flex-direction: column; min-height: 320px; border: 1px solid rgba(44,68,48,.07); transition: transform .6s var(--ease), box-shadow .6s var(--ease), color .5s var(--ease); }
+  .card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--green-dark); clip-path: circle(0% at 100% 100%); transition: clip-path .8s var(--ease); }
+  .card::after { content: ""; position: absolute; inset: 0; z-index: -1; background-image: var(--grain); opacity: 0; mix-blend-mode: overlay; transition: opacity .6s; }
+  .card .num { position: absolute; top: 24px; right: 28px; font-family: var(--serif); font-size: 3.4rem; line-height: 1; font-weight: 500; color: var(--sand); transition: color .5s; }
+  .card .ico { width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; background: var(--green-soft); color: var(--green); transition: background .5s, color .5s, transform .6s var(--ease); }
+  .card .ico .icon { width: 28px; height: 28px; }
+  .card h3 { margin: 40px 0 10px; }
+  .card p { color: var(--muted); font-size: .96rem; margin-bottom: 22px; flex: 1; transition: color .5s; }
+  .card .go { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(44,68,48,.18); display: grid; place-items: center; color: var(--green); transition: background .5s, color .5s, transform .6s var(--ease), border-color .5s; }
+  .card:hover, .card:focus-visible { transform: translateY(-8px); box-shadow: var(--shadow); color: var(--cream); }
+  .card:hover::before, .card:focus-visible::before { clip-path: circle(150% at 100% 100%); }
+  .card:hover::after { opacity: .1; }
+  .card:hover .num { color: rgba(250,247,242,.12); }
+  .card:hover p { color: rgba(250,247,242,.78); }
+  .card:hover .ico { background: rgba(250,247,242,.1); color: var(--lilac); transform: rotate(-8deg) scale(1.05); }
+  .card:hover .go { background: var(--lilac); border-color: var(--lilac); color: var(--green-deep); transform: rotate(-45deg); }
 
-  /* About preview */
-  .about { background: var(--white); }
-  .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 64px; align-items: center; }
-  .about-photo { position: relative; }
-  .about-photo img { border-radius: var(--radius); aspect-ratio: 1; object-fit: cover; width: 100%; height: auto; }
-  .about-photo::before { content: ""; position: absolute; width: 140px; height: 140px; top: -22px; left: -22px; border-radius: 28px; background: radial-gradient(var(--lilac) 2px, transparent 2.5px) 0 0 / 18px 18px; opacity: .8; z-index: 0; }
-  .about-photo img { position: relative; z-index: 1; }
-  .years { position: absolute; z-index: 2; right: -20px; bottom: 32px; background: var(--green); color: var(--white); border-radius: 18px; padding: 18px 22px; box-shadow: var(--shadow); }
-  .years strong { display: block; font-family: "Lora", serif; font-size: 2.4rem; line-height: 1; }
-  .years > span { font-size: .9rem; opacity: .9; }
-  .points { list-style: none; padding: 0; margin: 28px 0 32px; display: grid; gap: 20px; }
-  .points li { display: flex; gap: 16px; }
-  .num { width: 40px; height: 40px; border-radius: 50%; background: var(--lilac-soft); color: var(--green-dark); font-weight: 600; display: grid; place-items: center; flex-shrink: 0; font-size: .9rem; }
-  .points h3 { margin: 0 0 2px; font-size: 1.08rem; }
-  .points p { margin: 0; color: var(--muted); font-size: .95rem; }
+  /* About */
+  .about { background: var(--white); overflow: hidden; }
+  .about-grid { display: grid; grid-template-columns: .95fr 1.05fr; gap: 90px; align-items: center; }
+  .about-photo { position: relative; padding: 0 0 40px 40px; }
+  .about-photo .frame { position: absolute; left: 0; bottom: 0; width: 78%; height: 78%; border-radius: var(--radius); background: var(--lilac-soft); }
+  .about-photo .frame::before { content: ""; position: absolute; inset: 22px; border-radius: 14px; background: radial-gradient(var(--lilac) 1.6px, transparent 2px) 0 0 / 16px 16px; opacity: .7; }
+  .about-photo .img { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 1; box-shadow: var(--shadow); }
+  .about-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease); }
+  .about-photo:hover img { transform: scale(1.04); }
+  .years { position: absolute; z-index: 2; right: -28px; bottom: 76px; background: var(--green-dark); color: var(--cream); border-radius: 20px; padding: 22px 26px; box-shadow: var(--shadow); overflow: hidden; }
+  .years strong { display: flex; align-items: flex-start; font-family: var(--serif); font-size: 3.6rem; line-height: .9; font-weight: 600; }
+  .years strong sup { font-size: 1.6rem; color: var(--lilac); margin-left: 2px; }
+  .years > span { font-size: .85rem; font-weight: 600; opacity: .85; letter-spacing: .02em; }
+  .about-text .lead { font-size: 1.15rem; }
+  .signature { font-family: var(--serif); font-style: italic; font-size: 2.2rem; color: var(--lilac-deep); line-height: 1; margin: 4px 0 30px; }
+  .points { list-style: none; padding: 0; margin: 0 0 40px; border-top: 1px solid var(--sand); }
+  .points li { display: grid; grid-template-columns: 64px 1fr; gap: 10px; padding: 22px 0; border-bottom: 1px solid var(--sand); }
+  .points .n { font-family: var(--serif); font-size: 1.9rem; font-weight: 600; color: var(--lilac-deep); line-height: 1; }
+  .points h3 { font-size: 1.35rem; margin: 0 0 4px; }
+  .points p { margin: 0; color: var(--muted); font-size: .96rem; }
+
+  /* Process */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 70px; position: relative; }
+  .steps::before { content: ""; position: absolute; top: 37px; left: 12%; right: 12%; height: 1px; background: repeating-linear-gradient(90deg, var(--lilac) 0 8px, transparent 8px 16px); transform: scaleX(0); transform-origin: left; transition: transform 1.6s var(--ease) .3s; }
+  .steps.in::before { transform: scaleX(1); }
+  .step { text-align: center; position: relative; }
+  .step .dot { width: 76px; height: 76px; margin: 0 auto 26px; border-radius: 50%; background: var(--cream); border: 1px solid var(--lilac); display: grid; place-items: center; font-family: var(--serif); font-size: 1.9rem; font-weight: 600; color: var(--green-dark); position: relative; box-shadow: 0 0 0 10px var(--cream); }
+  .step .dot::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid var(--lilac); opacity: 0; animation: pulse 3s var(--ease) infinite; animation-delay: var(--d); }
+  @keyframes pulse { 0% { transform: scale(.85); opacity: .8; } 100% { transform: scale(1.35); opacity: 0; } }
+  .step h3 { margin-bottom: 8px; }
+  .step p { color: var(--muted); font-size: .98rem; max-width: 300px; margin: 0 auto; }
 
   /* Why */
-  .why-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; align-items: start; }
-  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px 28px; }
-  .feature .ico { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 14px; color: var(--white); }
-  .feature:nth-child(1) .ico { background: var(--green); }
-  .feature:nth-child(2) .ico { background: #8E79A6; }
-  .feature:nth-child(3) .ico { background: var(--gold); }
-  .feature:nth-child(4) .ico { background: var(--green-dark); }
-  .feature h3 { margin-bottom: 6px; }
-  .feature p { color: var(--muted); font-size: .95rem; margin: 0; }
+  .why { background: var(--green-deep); color: var(--cream); overflow: hidden; }
+  .why .eyebrow { color: var(--lilac); }
+  .why .lead { color: rgba(250,247,242,.75); }
+  .why-grid { position: relative; z-index: 1; display: grid; grid-template-columns: .85fr 1.15fr; gap: 70px; align-items: center; }
+  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .feature { background: rgba(250,247,242,.05); border: 1px solid rgba(250,247,242,.1); border-radius: var(--radius); padding: 30px 28px; transition: background .5s, transform .6s var(--ease), border-color .5s; }
+  .feature:hover { background: rgba(250,247,242,.09); border-color: rgba(185,163,201,.4); transform: translateY(-6px); }
+  .feature .ico { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; margin-bottom: 20px; background: rgba(185,163,201,.16); color: var(--lilac); }
+  .feature h3 { font-size: 1.45rem; margin-bottom: 8px; }
+  .feature p { color: rgba(250,247,242,.7); font-size: .95rem; margin: 0; }
+  .why .blob.b1 { top: auto; bottom: -260px; right: -200px; opacity: .3; }
 
-  /* Contact banner */
-  .banner { padding: 0; }
-  .banner-box { background: var(--green); color: var(--white); border-radius: 28px; padding: 56px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; position: relative; overflow: hidden; }
-  .banner-box p { color: rgba(255,255,255,.85); }
-  .banner-box .leaf-deco { width: 300px; height: 300px; right: -60px; top: -60px; color: rgba(255,255,255,.08); transform: rotate(20deg); }
-  .contact-list { display: grid; gap: 12px; position: relative; }
-  .contact-list a { background: var(--white); color: var(--green-dark); border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 600; transition: transform .15s; }
-  .contact-list a:hover { transform: translateX(4px); }
-  .contact-list small { display: block; font-weight: 400; color: var(--muted); font-size: .82rem; }
+  /* Quote */
+  .quote { padding: 130px 0; text-align: center; overflow: hidden; }
+  .quote .mark { font-family: var(--serif); font-size: 9rem; line-height: .6; color: var(--lilac); height: 60px; display: block; }
+  .quote blockquote { margin: 0 auto; max-width: 900px; font-family: var(--serif); font-size: clamp(1.9rem, 4vw, 3.1rem); line-height: 1.22; font-weight: 500; color: var(--green-deep); }
+  .quote blockquote .w { display: inline-block; opacity: .15; transition: opacity .6s var(--ease); transition-delay: calc(var(--i) * 40ms); }
+  .quote.in blockquote .w { opacity: 1; }
+  .quote cite { display: block; margin-top: 32px; font-style: normal; font-size: .85rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--green); }
 
-  /* Columns carousel */
-  .col-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
-  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 24px; }
-  .tab { border: 1px solid var(--green-soft); background: var(--white); color: var(--green-dark); padding: 8px 16px; border-radius: 999px; font: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; }
-  .tab[aria-pressed="true"] { background: var(--green-dark); color: var(--white); border-color: var(--green-dark); }
-  .arrows { display: flex; gap: 10px; }
-  .arrow { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--green); background: transparent; color: var(--green); display: grid; place-items: center; cursor: pointer; }
-  .arrow:hover { background: var(--green); color: var(--white); }
-  .track { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 3 * 20px) / 4); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+  /* Articles */
+  .articles { background: var(--sand); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tab { position: relative; border: 1px solid rgba(44,68,48,.16); background: transparent; color: var(--green-dark); padding: 9px 18px; border-radius: 999px; font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; transition: background .4s, color .4s, border-color .4s; }
+  .tab:hover { border-color: var(--green-dark); }
+  .tab[aria-pressed="true"] { background: var(--green-dark); color: var(--cream); border-color: var(--green-dark); }
+  .track { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 3 * 22px) / 4); gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 8px 0 18px; margin-top: 36px; cursor: grab; }
+  .track.dragging { cursor: grabbing; scroll-snap-type: none; }
+  .track.dragging a { pointer-events: none; }
   .track::-webkit-scrollbar { display: none; }
-  .article { scroll-snap-align: start; background: var(--white); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--sand); text-decoration: none; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
-  .article:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-  .article .top { height: 120px; display: grid; place-items: center; color: var(--white); }
-  .article .top .icon { width: 40px; height: 40px; opacity: .9; }
-  .t-anxiety .top { background: linear-gradient(135deg, #6F8F72, var(--green)); }
-  .t-parents .top { background: linear-gradient(135deg, #C3AFD1, #8E79A6); }
-  .t-relationships .top { background: linear-gradient(135deg, #D9B97A, var(--gold)); }
-  .t-growth .top { background: linear-gradient(135deg, #4F6F52, var(--green-dark)); }
-  .article .body { padding: 18px 20px 22px; display: flex; flex-direction: column; flex: 1; }
-  .article .tag { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--green); }
-  .article h3 { font-size: 1.05rem; margin: 6px 0 10px; flex: 1; }
-  .article time { font-size: .82rem; color: var(--muted); }
+  .article { scroll-snap-align: start; background: var(--cream); border-radius: var(--radius); overflow: hidden; text-decoration: none; display: flex; flex-direction: column; transition: transform .6s var(--ease), box-shadow .6s var(--ease); user-select: none; }
+  .article:hover { transform: translateY(-8px); box-shadow: var(--shadow); }
+  .article .top { position: relative; height: 170px; overflow: hidden; }
+  .article .top .bg { position: absolute; inset: 0; transition: transform 1.2s var(--ease); }
+  .article:hover .top .bg { transform: scale(1.08); }
+  .article .top .bg::after { content: ""; position: absolute; inset: 0; background-image: var(--grain); opacity: .25; mix-blend-mode: overlay; }
+  .article .top svg.motif { position: absolute; right: -26px; bottom: -26px; width: 150px; height: 150px; color: rgba(255,255,255,.22); stroke-width: 1; }
+  .article .top .label { position: absolute; left: 20px; bottom: 16px; font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.95); background: rgba(0,0,0,.16); padding: 5px 10px; border-radius: 999px; backdrop-filter: blur(4px); }
+  .t-anxiety .bg { background: linear-gradient(135deg, #7E9C80, #3E5A41); }
+  .t-parents .bg { background: linear-gradient(135deg, #C9B6D6, #7C6797); }
+  .t-relationships .bg { background: linear-gradient(135deg, #DEC189, #A9823D); }
+  .t-growth .bg { background: linear-gradient(135deg, #5F7F62, #24392A); }
+  .article .body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
+  .article h3 { font-size: 1.35rem; margin: 0 0 16px; flex: 1; }
+  .article .meta { display: flex; justify-content: space-between; align-items: center; font-size: .82rem; font-weight: 600; color: var(--muted); }
+  .article .meta .icon { width: 18px; height: 18px; color: var(--green); transition: transform .5s var(--ease); }
+  .article:hover .meta .icon { transform: translateX(5px); }
   .article[hidden] { display: none; }
+  .track-ui { display: flex; align-items: center; gap: 24px; margin-top: 10px; }
+  .progress { flex: 1; height: 2px; background: rgba(44,68,48,.12); border-radius: 2px; overflow: hidden; }
+  .progress span { display: block; height: 100%; width: 25%; background: var(--green-dark); border-radius: 2px; transition: width .3s, transform .3s; }
+  .arrows { display: flex; gap: 10px; }
+  .arrow { width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(44,68,48,.25); background: transparent; color: var(--green-dark); display: grid; place-items: center; cursor: pointer; transition: background .4s, color .4s, transform .4s var(--ease); }
+  .arrow:hover { background: var(--green-dark); color: var(--cream); transform: scale(1.06); }
 
   /* Recognition */
-  .recog { background: var(--white); }
-  .recog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 40px; }
-  .award { background: var(--cream); border-radius: var(--radius); padding: 28px; display: flex; gap: 18px; align-items: flex-start; }
-  .award .ico { width: 56px; height: 56px; border-radius: 50%; background: #F6EEDC; color: var(--gold); display: grid; place-items: center; flex-shrink: 0; }
-  .award .ico .icon { width: 28px; height: 28px; }
-  .award p { margin: 0; color: var(--muted); font-size: .95rem; }
-  .featured { margin-top: 48px; text-align: center; }
-  .featured .eyebrow { color: var(--muted); }
-  .press { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px 48px; font-family: "Lora", serif; font-size: 1.35rem; color: #8A8D88; }
-  .press span small { display: block; font-family: "Inter", sans-serif; font-size: .78rem; color: var(--muted); }
+  .recog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 56px; }
+  .award { position: relative; overflow: hidden; background: var(--white); border-radius: var(--radius); padding: 40px 36px; border: 1px solid rgba(201,162,90,.25); }
+  .award::before { content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%; background: linear-gradient(100deg, transparent, rgba(201,162,90,.18), transparent); transform: skewX(-18deg); transition: left 1.2s var(--ease); }
+  .award:hover::before { left: 130%; }
+  .award .medal { width: 70px; height: 70px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 30% 30%, #E9CF97, var(--gold)); color: var(--white); margin-bottom: 24px; box-shadow: 0 10px 24px -10px rgba(201,162,90,.8); }
+  .award .medal .icon { width: 32px; height: 32px; }
+  .award .year { position: absolute; top: 34px; right: 36px; font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--gold); }
+  .award p { margin: 0; color: var(--muted); }
+  .press { margin-top: 70px; padding-top: 44px; border-top: 1px solid var(--sand); display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; }
+  .press .eyebrow { margin: 0; color: var(--muted); }
+  .press-list { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 24px 40px; }
+  .press-item { text-align: center; font-family: var(--serif); font-size: 1.8rem; font-weight: 600; color: #8C918A; transition: color .4s; }
+  .press-item:hover { color: var(--green-dark); }
+  .press-item small { display: block; font-family: var(--sans); font-size: .76rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; }
+
+  /* Contact */
+  .contact { background: var(--green-deep); color: var(--cream); overflow: hidden; }
+  .contact .eyebrow { color: var(--lilac); }
+  .contact-grid { position: relative; z-index: 1; display: grid; grid-template-columns: .9fr 1.1fr; gap: 70px; align-items: center; }
+  .contact h2 { font-size: clamp(2.5rem, 5vw, 4rem); }
+  .contact .lead { color: rgba(250,247,242,.78); }
+  .contact-note { display: flex; gap: 12px; align-items: center; margin-top: 28px; font-size: .92rem; color: rgba(250,247,242,.75); }
+  .contact-note .icon { color: var(--lilac); }
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .tile { --c: var(--green); --c2: var(--green-dark); --glow: rgba(79,111,82,.6); position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; gap: 26px; padding: 26px; border-radius: 24px; text-decoration: none; color: var(--white); background: linear-gradient(140deg, var(--c), var(--c2)); min-height: 190px; transition: transform .6s var(--ease), box-shadow .6s var(--ease); }
+  .tile::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: var(--grain); opacity: .16; mix-blend-mode: overlay; }
+  .tile::after { content: ""; position: absolute; top: 0; left: -70%; width: 50%; height: 100%; z-index: -1; background: linear-gradient(100deg, transparent, rgba(255,255,255,.28), transparent); transform: skewX(-18deg); transition: left 1s var(--ease); }
+  .tile:hover { transform: translateY(-8px) rotate(-.6deg); box-shadow: 0 26px 50px -18px var(--glow); }
+  .tile:hover::after { left: 130%; }
+  .tile .logo-circle { width: 58px; height: 58px; border-radius: 18px; display: grid; place-items: center; background: rgba(255,255,255,.18); backdrop-filter: blur(6px); transition: transform .6s var(--ease); }
+  .tile:hover .logo-circle { transform: scale(1.08) rotate(-6deg); }
+  .tile .logo-circle svg { width: 30px; height: 30px; }
+  .tile .t-label { font-size: .78rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; opacity: .85; }
+  .tile .t-value { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-family: var(--serif); font-size: 1.55rem; font-weight: 600; line-height: 1.15; word-break: break-word; }
+  .tile .t-value .icon { width: 22px; height: 22px; transition: transform .5s var(--ease); }
+  .tile:hover .t-value .icon { transform: translate(4px, -4px); }
+  .tile.call { --c: #6C8E6F; --c2: #3E5A41; --glow: rgba(108,142,111,.7); }
+  .tile.whatsapp { --c: #25D366; --c2: #128C7E; --glow: rgba(37,211,102,.55); }
+  .tile.viber { --c: #8F5DB7; --c2: #59267C; --glow: rgba(115,96,242,.6); background: linear-gradient(140deg, #7360F2, #59267C); }
+  .tile.email { --glow: rgba(185,163,201,.6); background: linear-gradient(140deg, #C7B3D6, #8E79A6); }
+  .tile.facebook { --glow: rgba(24,119,242,.55); background: linear-gradient(140deg, #3B8DFF, #1559C4); grid-column: span 2; flex-direction: row; align-items: center; min-height: auto; gap: 18px; }
+  .tile.facebook .t-value { flex: 1; font-size: 1.35rem; }
+  .contact .blob.b2 { left: auto; right: -160px; bottom: -200px; opacity: .25; }
 
   /* Footer */
-  footer { background: var(--green-dark); color: rgba(255,255,255,.85); padding: 64px 0 28px; font-size: .95rem; }
-  .foot-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.2fr; gap: 36px; }
-  footer h4 { font-family: "Lora", serif; color: var(--white); font-size: 1.05rem; margin: 0 0 14px; }
-  footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
-  footer a { text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
-  footer .logo { color: var(--white); margin-bottom: 14px; }
-  .f-contact li { display: flex; align-items: center; gap: 10px; }
-  .f-contact .icon { width: 18px; height: 18px; color: var(--lilac); }
-  .crisis { margin-top: 44px; padding: 16px 20px; border-radius: 14px; background: rgba(255,255,255,.07); font-size: .88rem; }
-  .crisis strong { color: var(--white); }
-  .copy { margin-top: 28px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.15); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: .85rem; color: rgba(255,255,255,.6); }
-  .copy ul { display: flex; gap: 18px; }
+  footer { background: #22362A; color: rgba(250,247,242,.72); padding: 90px 0 34px; font-size: .95rem; position: relative; overflow: hidden; }
+  .foot-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.1fr; gap: 40px; }
+  footer .logo { color: var(--cream); margin-bottom: 18px; }
+  footer h4 { font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--lilac); margin: 8px 0 18px; }
+  footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  footer a { text-decoration: none; transition: color .3s; }
+  footer a:hover { color: var(--cream); }
+  .socials { display: flex; gap: 10px; margin-top: 22px; }
+  .social { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: rgba(250,247,242,.07); color: var(--cream); border: 1px solid rgba(250,247,242,.12); transition: background .4s, transform .5s var(--ease), border-color .4s; }
+  .social svg { width: 20px; height: 20px; }
+  .social:hover { transform: translateY(-4px); border-color: transparent; }
+  .social.whatsapp:hover { background: var(--whatsapp); }
+  .social.viber:hover { background: var(--viber); }
+  .social.facebook:hover { background: var(--facebook); }
+  .social.phone:hover { background: var(--green); }
+  .social.mail:hover { background: var(--lilac-deep); }
+  .crisis { margin-top: 60px; padding: 20px 24px; border-radius: 16px; background: rgba(250,247,242,.05); border: 1px solid rgba(250,247,242,.08); font-size: .9rem; display: flex; gap: 14px; align-items: flex-start; }
+  .crisis .icon { color: var(--gold); margin-top: 2px; }
+  .crisis strong { color: var(--cream); }
+  .bigname { font-family: var(--serif); font-weight: 600; font-size: clamp(4rem, 14vw, 12rem); line-height: .8; color: rgba(250,247,242,.04); letter-spacing: -.02em; white-space: nowrap; margin: 60px 0 -10px; user-select: none; }
+  .copy { padding-top: 24px; border-top: 1px solid rgba(250,247,242,.1); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: .84rem; color: rgba(250,247,242,.5); }
+  .copy ul { display: flex; gap: 20px; }
 
   /* Mobile contact bar */
   .mobile-bar { display: none; }
 
   /* Responsive */
-  @media (max-width: 1020px) {
-    .nav-links { display: none; }
-    .menu-btn { display: block; }
-    .nav-links.open { display: grid; position: absolute; top: 72px; left: 0; right: 0; background: var(--green-dark); padding: 12px 20px 24px; gap: 4px; }
-    .nav-links.open a { display: block; padding: 10px 0; font-size: 1.05rem; }
-    .badge-row { grid-template-columns: repeat(3, 1fr); }
-    .track { grid-auto-columns: calc((100% - 2 * 20px) / 3); }
+  @media (max-width: 1080px) {
+    .nav-links, .nav .btn { display: none; }
+    .burger { display: block; }
+    .track { grid-auto-columns: calc((100% - 2 * 22px) / 3); }
   }
-  @media (max-width: 860px) {
-    section { padding: 64px 0; }
-    .hero { padding: 36px 0 110px; }
-    .hero-grid, .about-grid, .why-grid, .banner-box, .recog-grid { grid-template-columns: 1fr; }
-    .hero-grid { gap: 40px; }
-    .hero-photo { width: min(340px, 82%); }
+  @media (min-width: 1081px) { .menu { display: none; } }
+  @media (max-width: 900px) {
+    section { padding: 88px 0; }
+    .hero { padding: 120px 0 110px; }
+    .hero-grid, .about-grid, .why-grid, .contact-grid, .recog-grid { grid-template-columns: 1fr; }
+    .hero-grid { gap: 70px; }
+    .hero-visual { width: min(360px, 80%); }
     .cards { grid-template-columns: repeat(2, 1fr); }
-    .about-grid { gap: 40px; }
-    .about-photo { max-width: 460px; }
-    .foot-grid { grid-template-columns: 1fr 1fr; }
-    .banner-box { padding: 40px 28px; }
+    .about-grid { gap: 60px; }
+    .about-photo { max-width: 520px; }
+    .steps { grid-template-columns: 1fr; gap: 50px; }
+    .steps::before { top: 0; bottom: 0; left: 50%; right: auto; width: 1px; height: auto; background: repeating-linear-gradient(180deg, var(--lilac) 0 8px, transparent 8px 16px); transform: scaleY(0); transform-origin: top; }
+    .steps.in::before { transform: scaleY(1); }
+    .step { background: var(--cream); padding: 10px 0; }
+    .foot-top { grid-template-columns: 1fr 1fr; }
     .track { grid-auto-columns: 46%; }
+    .press { grid-template-columns: 1fr; text-align: center; }
+    .press .eyebrow { justify-content: center; }
   }
-  @media (max-width: 560px) {
-    body { font-size: 16px; padding-bottom: 74px; }
-    .wrap { padding: 0 16px; }
-    .nav .btn { display: none; }
-    .logo { font-size: 1.08rem; }
-    .logo .mark { width: 30px; height: 30px; }
-    .hero .btn-row .btn { flex: 1 1 100%; justify-content: center; }
-    .float-1 { left: -14px; bottom: 40px; }
-    .float-2 { right: -14px; top: 24px; }
-    .float { padding: 10px 12px; font-size: .82rem; }
-    .float .ico { width: 32px; height: 32px; }
-    .badge-row { grid-template-columns: 1fr 1fr; padding: 20px; }
-    .cards, .features { grid-template-columns: 1fr; }
-    .years { right: 12px; bottom: 16px; padding: 14px 18px; }
-    .years strong { font-size: 2rem; }
-    .track { grid-auto-columns: 80%; }
-    .foot-grid { grid-template-columns: 1fr; }
-    .mobile-bar { display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--white); box-shadow: 0 -6px 20px rgba(0,0,0,.08); padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); gap: 8px; }
-    .mobile-bar a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 12px; text-decoration: none; font-size: .78rem; font-weight: 600; color: var(--green-dark); background: var(--green-soft); }
-    .mobile-bar a .icon { width: 20px; height: 20px; }
+  @media (max-width: 600px) {
+    body { font-size: 16px; padding-bottom: 84px; }
+    .wrap { padding: 0 18px; }
+    section { padding: 76px 0; }
+    .logo .name { font-size: 1.6rem; }
+    .lang { display: none; }
+    .menu .lang { display: flex; }
+    .hero { padding: 110px 0 100px; }
+    .hero .btn-row .btn { flex: 1 1 100%; }
+    .hero-visual { width: 78%; }
+    .ring { width: 116px; height: 116px; left: -40px; bottom: 20px; }
+    .ring text { font-size: 9.6px; }
+    .ring .core { inset: 27px; }
+    .ring .core svg { width: 26px; height: 26px; }
+    .float-years { right: -26px; top: 26px; padding: 10px 14px; }
+    .float-years strong { font-size: 1.6rem; }
+    .float .ico { width: 34px; height: 34px; }
+    .scroll-cue { display: none; }
+    .cred { font-size: 1.2rem; }
+    .section-head { margin-bottom: 36px; }
+    .cards, .features, .tiles { grid-template-columns: 1fr; }
+    .card { min-height: 0; padding: 26px 24px 24px; }
+    .card h3 { margin-top: 20px; }
+    .card .num { font-size: 2.6rem; top: 20px; right: 22px; }
+    .about-photo { padding: 0 0 26px 26px; }
+    .years { right: 10px; bottom: 50px; padding: 16px 18px; }
+    .years strong { font-size: 2.8rem; }
+    .points li { grid-template-columns: 48px 1fr; }
+    .track { grid-auto-columns: 82%; }
+    .tile.facebook { grid-column: auto; }
+    .tile { min-height: 0; }
+    .foot-top { grid-template-columns: 1fr; }
+    .quote { padding: 90px 0; }
+    .mobile-bar { display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 90; background: rgba(250,247,242,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 14px 40px -12px rgba(0,0,0,.35); padding: 7px; gap: 7px; border-radius: 22px; transform: translateY(140%); transition: transform .6s var(--ease); }
+    .mobile-bar.show { transform: none; }
+    .menu-open .mobile-bar { transform: translateY(140%); }
+    .mobile-bar a { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 12px 6px; border-radius: 16px; text-decoration: none; font-size: .84rem; font-weight: 700; color: var(--white); }
+    .mobile-bar a svg { width: 19px; height: 19px; }
+    .mobile-bar .m-call { background: var(--green-dark); }
+    .mobile-bar .m-wa { background: var(--whatsapp); color: #08361C; }
+    .mobile-bar .m-viber { background: var(--viber); }
   }
   @media (prefers-reduced-motion: reduce) {
-    * { transition: none !important; scroll-behavior: auto !important; }
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+    .js [data-reveal] { opacity: 1; transform: none; }
+    .marquee-track { animation: none; }
   }
 </style>
 </head>
 <body>
 
-<!-- Icon sprite (Lucide-style strokes) -->
+<!-- Icons: Lucide-style strokes (.icon) and brand marks (.bi) -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="b-whatsapp" viewBox="0 0 24 24"><path d="M12 2.2a9.8 9.8 0 0 0-8.43 14.8L2.2 21.8l4.93-1.3A9.8 9.8 0 1 0 12 2.2Zm0 1.75a8.05 8.05 0 1 1-4.1 14.98l-.3-.18-2.9.77.78-2.83-.2-.31A8.05 8.05 0 0 1 12 3.95Z"/><path d="M9.05 7.2c.2-.03.42-.03.62-.02.18 0 .4.02.57.42.22.5.68 1.68.74 1.8.06.13.1.27.02.43-.08.17-.13.27-.25.42l-.38.44c-.12.13-.25.27-.11.53.15.26.65 1.07 1.4 1.74.96.86 1.77 1.12 2.03 1.25.25.12.4.1.55-.06.15-.17.64-.74.81-1 .17-.25.34-.21.57-.13.24.09 1.48.7 1.74.83.25.12.42.19.48.29.06.11.06.6-.14 1.18-.2.58-1.2 1.13-1.66 1.17-.43.05-.96.07-1.55-.1-.36-.11-.82-.27-1.4-.52-2.48-1.07-4.1-3.57-4.22-3.73-.12-.17-1-1.33-1-2.54 0-1.2.63-1.8.86-2.04.2-.22.44-.28.62-.3Z"/></symbol>
+  <symbol id="b-viber" viewBox="0 0 24 24"><path d="M12 2.6c4.2 0 7.7 1.2 8.1 5.7.2 2.1.2 4 0 5.8-.5 4.1-3.6 5.1-7.4 5.1H11l-2.7 2.45c-.3.27-.75.06-.75-.34V19c-2.95-.85-4.1-2.55-4.33-4.9-.2-1.8-.2-3.7 0-5.8C3.62 3.8 7.8 2.6 12 2.6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9.15 6.85c.32-.12.66-.02.86.26l.92 1.36c.2.3.15.7-.1.94l-.5.43c.42 1.15 1.25 2.06 2.37 2.62l.42-.5c.23-.27.63-.33.93-.13l1.38.9c.3.2.42.6.25.92l-.36.62c-.38.66-1.2.92-1.9.62-2.36-1-4.05-2.86-4.92-5.16-.27-.73.03-1.55.65-1.88Z"/><path d="M13 5.7a4.1 4.1 0 0 1 3.7 3.7M13 7.9a2 2 0 0 1 1.6 1.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
+  <symbol id="b-facebook" viewBox="0 0 24 24"><path d="M13.5 21.5v-8h2.7l.4-3.1h-3.1V8.45c0-.9.25-1.5 1.55-1.5h1.65V4.18c-.29-.04-1.27-.12-2.4-.12-2.38 0-4 1.45-4 4.1v2.28H7.6v3.1h2.7v8h3.2Z"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
-  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
-  <symbol id="i-chat-dots" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></symbol>
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
-  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
   <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
-  <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></symbol>
+  <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></symbol>
   <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10 3h4v1.5a2 2 0 1 0 4 0V3h3v7h-1.5a2 2 0 1 0 0 4H21v7h-7v-1.5a2 2 0 1 0-4 0V21H3v-7h1.5a2 2 0 1 0 0-4H3V3h7z"/></symbol>
   <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
   <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></symbol>
   <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.22 3.48a.5.5 0 0 0 .78-.42V7.87a.5.5 0 0 0-.75-.43L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
   <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
-  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
   <symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5M22 10v6"/></symbol>
   <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></symbol>
-  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
   <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
   <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
   <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
-  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
-  <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
-  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
   <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="i-feather" viewBox="0 0 24 24"><path d="M12.67 19a2 2 0 0 0 1.42-.59l6.31-6.31a6 6 0 0 0-8.5-8.5L5.6 9.91A2 2 0 0 0 5 11.33V19zM16 8 2 22M17.5 15H9"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
 </svg>
 
-<header>
+<header class="site-header" id="header">
   <div class="wrap nav">
-    <a class="logo" href="#"><span class="mark"><svg class="icon"><use href="#i-leaf"/></svg></span>Dr Mirena Vasileva</a>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="#" aria-current="page">Home</a></li>
+    <a class="logo" href="#top" aria-label="Dr Vasileva – home">
+      <span class="name">Dr Vasileva</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#top" aria-current="page">Home</a></li>
       <li><a href="#about">About me</a></li>
       <li><a href="#who">Who I help</a></li>
       <li><a href="#">What I help with</a></li>
       <li><a href="#articles">Articles</a></li>
       <li><a href="#">FAQ</a></li>
-      <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
-      <div class="lang" aria-label="Language">
-        <a href="https://drvasileva.bg/" hreflang="bg" lang="bg">BG</a>
-        <a href="#" class="on" aria-current="true">EN</a>
-      </div>
-      <a class="btn btn-light" href="#contact">Contact me</a>
-      <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><svg class="icon"><use href="#i-menu"/></svg></button>
+      <div class="lang" aria-label="Language"><a href="https://drvasileva.bg/" hreflang="bg" lang="bg">BG</a><a href="#" class="on" aria-current="true">EN</a></div>
+      <a class="btn btn-cream" href="#contact">Get in touch</a>
+      <button class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </header>
 
-<main>
+<!-- Full-screen menu (phones & tablets) -->
+<div class="menu grain" id="menu" aria-hidden="true">
+  <div class="menu-top">
+    <a class="logo" href="#top" data-close><span class="name">Dr Vasileva</span></a>
+  </div>
+  <ol>
+    <li><a href="#top" data-close style="--i:0">Home</a></li>
+    <li><a href="#about" data-close style="--i:1">About me</a></li>
+    <li><a href="#who" data-close style="--i:2">Who I help</a></li>
+    <li><a href="#" data-close style="--i:3">What I help with</a></li>
+    <li><a href="#articles" data-close style="--i:4">Articles</a></li>
+    <li><a href="#" data-close style="--i:5">FAQ</a></li>
+    <li><a href="#contact" data-close style="--i:6">Contact</a></li>
+  </ol>
+  <div class="menu-foot">
+    <div class="btn-row">
+      <a class="btn btn-whatsapp" href="https://wa.me/447999334778"><svg class="bi"><use href="#b-whatsapp"/></svg>WhatsApp</a>
+      <a class="btn btn-viber" href="viber://chat?number=%2B447999334778"><svg class="bi"><use href="#b-viber"/></svg>Viber</a>
+      <a class="btn btn-cream" href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg>Call</a>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:22px">
+      <div class="lang" aria-label="Language"><a href="https://drvasileva.bg/" hreflang="bg" lang="bg">BG</a><a href="#" class="on" aria-current="true">EN</a></div>
+      <a class="social facebook" href="https://www.facebook.com/share/1Bh2hqG1Ac/" aria-label="Facebook"><svg class="bi"><use href="#b-facebook"/></svg></a>
+    </div>
+    <p>Online &amp; in person · Bulgarian &amp; English</p>
+  </div>
+</div>
+
+<main id="top">
   <!-- Hero -->
-  <section class="hero">
-    <svg class="leaf-deco a icon" style="stroke-width:1"><use href="#i-leaf"/></svg>
-    <svg class="leaf-deco b icon" style="stroke-width:1"><use href="#i-leaf"/></svg>
+  <section class="hero grain on-dark">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
     <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow">Dr Mirena Vasileva, PhD · Psychologist &amp; CBT Psychotherapist</span>
-        <h1>A calm space to talk, in Bulgarian or English</h1>
-        <p class="lead">I help adults, couples, families, children and teenagers through anxiety, stress, relationship difficulties and life's big changes, online or in person.</p>
-        <div class="btn-row">
-          <a class="btn btn-light" href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg>Call me</a>
-          <a class="btn btn-outline-light" href="https://wa.me/447999334778"><svg class="icon"><use href="#i-chat"/></svg>WhatsApp</a>
-          <a class="btn btn-outline-light" href="viber://chat?number=%2B447999334778"><svg class="icon"><use href="#i-chat-dots"/></svg>Viber</a>
+        <span class="eyebrow hero-fade" style="--d:.1s">Dr Mirena Vasileva, PhD</span>
+        <h1>
+          <span class="line"><span style="--i:0">A calm space to</span></span>
+          <span class="line"><span style="--i:1"><em>talk</em>, in Bulgarian</span></span>
+          <span class="line"><span style="--i:2">or English</span></span>
+        </h1>
+        <p class="lead hero-fade" style="--d:.65s">Psychologist and CBT psychotherapist helping adults, couples, families, children and teenagers through anxiety, stress, relationship difficulties and life's big changes.</p>
+        <div class="btn-row hero-fade" style="--d:.8s">
+          <a class="btn btn-cream" href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg>Call me</a>
+          <a class="btn btn-whatsapp" href="https://wa.me/447999334778"><svg class="bi"><use href="#b-whatsapp"/></svg>WhatsApp</a>
+          <a class="btn btn-viber" href="viber://chat?number=%2B447999334778"><svg class="bi"><use href="#b-viber"/></svg>Viber</a>
         </div>
-        <div class="hero-note">
-          <span><svg class="icon"><use href="#i-video"/></svg>Online &amp; in person</span>
-          <span><svg class="icon"><use href="#i-globe"/></svg>Български &amp; English</span>
-          <span><svg class="icon"><use href="#i-lock"/></svg>Confidential</span>
+        <div class="hero-meta hero-fade" style="--d:.95s">
+          <span class="chip"><svg class="icon"><use href="#i-video"/></svg>Online &amp; in person</span>
+          <span class="chip"><svg class="icon"><use href="#i-globe"/></svg>Български &amp; English</span>
+          <span class="chip"><svg class="icon"><use href="#i-lock"/></svg>Confidential</span>
         </div>
       </div>
-      <div class="hero-photo">
-        <div class="arch"><img src="../images/dr-vasileva.jpg" alt="Dr Mirena Vasileva smiling" width="1242" height="1242"></div>
-        <div class="float float-1"><span class="ico"><svg class="icon"><use href="#i-cap"/></svg></span><span>PhD in Psychology<small>Developmental psychology</small></span></div>
-        <div class="float float-2"><span class="ico"><svg class="icon"><use href="#i-sun"/></svg></span><span><span class="js-years">21</span> years<small>of experience</small></span></div>
+      <div class="hero-visual">
+        <div class="arch-outline hero-fade" style="--d:1.2s"></div>
+        <div class="arch"><img src="../images/dr-vasileva.jpg" alt="Dr Mirena Vasileva" width="1242" height="1242" fetchpriority="high"></div>
+        <div class="ring hero-fade" style="--d:1.3s" aria-hidden="true">
+          <svg class="spin" viewBox="0 0 150 150"><defs><path id="circ" d="M75 75m-61 0a61 61 0 1 1 122 0a61 61 0 1 1-122 0"/></defs><text><textPath href="#circ">PSYCHOLOGIST · CBT PSYCHOTHERAPIST · ONLINE ·</textPath></text></svg>
+          <span class="core"><svg class="icon"><use href="#i-leaf"/></svg></span>
+        </div>
+        <div class="float float-years hero-fade" style="--d:1.45s"><span class="ico"><svg class="icon"><use href="#i-sun"/></svg></span><span><strong><span class="js-years">21</span></strong> years<small>of experience</small></span></div>
       </div>
     </div>
-    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 40c240 30 480 30 720 10s480-30 720 0v20H0z"/></svg>
+    <a class="scroll-cue hero-fade" style="--d:1.6s" href="#creds">Scroll<span></span></a>
   </section>
 
-  <!-- Badges -->
-  <section class="badges" aria-label="Qualifications">
-    <div class="wrap">
-      <div class="badge-row">
-        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-cap"/></svg></span>PhD in Psychology</div>
-        <div class="badge gold"><span class="ico"><svg class="icon"><use href="#i-award"/></svg></span>Gold Ring award</div>
-        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-bulb"/></svg></span>Diploma in CBT</div>
-        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-puzzle"/></svg></span>Diploma in SEND</div>
-        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-users"/></svg></span>Member, British Psychological Society</div>
-        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-shield"/></svg></span>Safeguarding Children Level 3</div>
+  <!-- Credentials marquee -->
+  <div class="marquee" id="creds" aria-label="Qualifications and awards">
+    <div class="marquee-track">
+      <div class="marquee-group">
+        <span class="cred"><span class="ico"><svg class="icon"><use href="#i-cap"/></svg></span>PhD in Psychology</span><span class="sep"></span>
+        <span class="cred gold"><span class="ico"><svg class="icon"><use href="#i-award"/></svg></span>Gold Ring award</span><span class="sep"></span>
+        <span class="cred lilac"><span class="ico"><svg class="icon"><use href="#i-bulb"/></svg></span>Diploma in CBT</span><span class="sep"></span>
+        <span class="cred"><span class="ico"><svg class="icon"><use href="#i-puzzle"/></svg></span>Diploma in SEND</span><span class="sep"></span>
+        <span class="cred lilac"><span class="ico"><svg class="icon"><use href="#i-users"/></svg></span>Member, British Psychological Society</span><span class="sep"></span>
+        <span class="cred"><span class="ico"><svg class="icon"><use href="#i-shield"/></svg></span>Safeguarding Children Level 3</span><span class="sep"></span>
+        <span class="cred gold"><span class="ico"><svg class="icon"><use href="#i-award"/></svg></span>First Prize, Best Master's Thesis</span><span class="sep"></span>
+        <span class="cred lilac"><span class="ico"><svg class="icon"><use href="#i-feather"/></svg></span>Columnist, BG BEN</span><span class="sep"></span>
       </div>
+      <div class="marquee-group" aria-hidden="true"></div>
     </div>
-  </section>
+  </div>
 
   <!-- Who I help -->
   <section id="who">
     <div class="wrap">
-      <div class="center">
-        <span class="eyebrow">Who I help</span>
-        <h2>Support for every stage of life</h2>
-        <p class="lead">Whatever you're going through, alone or together with the people close to you, we'll find a way forward at your pace.</p>
+      <div class="section-head">
+        <div data-reveal>
+          <span class="eyebrow">Who I help</span>
+          <h2>Support for every <em>stage</em> of life</h2>
+        </div>
+        <p class="lead" data-reveal style="--d:.1s">Whatever you're going through, on your own or with the people close to you, we'll find a way forward at your pace.</p>
       </div>
       <div class="cards">
-        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-user"/></svg></span><h3>Adults</h3><p>Individual CBT therapy for anxiety, panic attacks, depression and stress.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
-        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-heart"/></svg></span><h3>Couples &amp; families</h3><p>Understand each other, communicate better and get through difficult times together.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
-        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-smile"/></svg></span><h3>Children &amp; teenagers</h3><p>Help with emotions, behaviour and the teenage years, with parents involved.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
-        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-puzzle"/></svg></span><h3>Special educational needs</h3><p>Autism, ADHD, dyslexia, dyspraxia and learning difficulties, including assessments and reports.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
-        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-users"/></svg></span><h3>Group sessions</h3><p>Small, supportive groups in Bulgarian and in English, online or in person.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
-        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-building"/></svg></span><h3>Organisations &amp; schools</h3><p>Group training on professional stress, teamwork and relationships at work and school.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#" data-reveal style="--d:0s"><span class="num">01</span><span class="ico"><svg class="icon"><use href="#i-user"/></svg></span><h3>Adults</h3><p>Individual CBT therapy for anxiety, panic attacks, depression and stress.</p><span class="go"><svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#" data-reveal style="--d:.08s"><span class="num">02</span><span class="ico"><svg class="icon"><use href="#i-heart"/></svg></span><h3>Couples &amp; families</h3><p>Understand each other, communicate better and get through difficult times together.</p><span class="go"><svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#" data-reveal style="--d:.16s"><span class="num">03</span><span class="ico"><svg class="icon"><use href="#i-smile"/></svg></span><h3>Children &amp; teenagers</h3><p>Help with emotions, behaviour and the teenage years, with parents involved.</p><span class="go"><svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#" data-reveal style="--d:0s"><span class="num">04</span><span class="ico"><svg class="icon"><use href="#i-puzzle"/></svg></span><h3>Special educational needs</h3><p>Autism, ADHD, dyslexia, dyspraxia and learning difficulties, including assessments and reports.</p><span class="go"><svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#" data-reveal style="--d:.08s"><span class="num">05</span><span class="ico"><svg class="icon"><use href="#i-users"/></svg></span><h3>Group sessions</h3><p>Small, supportive groups in Bulgarian and in English, online or in person.</p><span class="go"><svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#" data-reveal style="--d:.16s"><span class="num">06</span><span class="ico"><svg class="icon"><use href="#i-building"/></svg></span><h3>Organisations &amp; schools</h3><p>Group training on professional stress, teamwork and relationships at work and school.</p><span class="go"><svg class="icon"><use href="#i-arrow"/></svg></span></a>
       </div>
     </div>
   </section>
 
-  <!-- About preview -->
+  <!-- About -->
   <section class="about" id="about">
     <div class="wrap about-grid">
-      <div class="about-photo">
-        <img src="../images/dr-vasileva.jpg" alt="Portrait of Dr Mirena Vasileva" width="1242" height="1242" loading="lazy">
-        <div class="years"><strong><span class="js-years">21</span>+</strong><span>years of experience</span></div>
+      <div class="about-photo" data-reveal="left">
+        <span class="frame"></span>
+        <div class="img"><img src="../images/dr-vasileva.jpg" alt="Portrait of Dr Mirena Vasileva" width="1242" height="1242" loading="lazy"></div>
+        <div class="years"><strong><span class="js-count" data-to="21">0</span><sup>+</sup></strong><span>years of experience</span></div>
       </div>
-      <div>
-        <span class="eyebrow">About me</span>
-        <h2>Hello, I'm Mirena</h2>
-        <p class="lead">For 21 years, since 2005, I have been doing the work I love most: helping people understand themselves, heal and find their way forward.</p>
+      <div class="about-text">
+        <span class="eyebrow" data-reveal>About me</span>
+        <h2 data-reveal style="--d:.05s">Hello, I'm <em>Mirena</em></h2>
+        <p class="lead" data-reveal style="--d:.1s">For 21 years, since 2005, I have been doing the work I love most: helping people understand themselves, heal and find their way forward.</p>
         <ul class="points">
-          <li><span class="num">01</span><div><h3>PhD in Pedagogical &amp; Developmental Psychology</h3><p>My research explored how the family shapes the way teenagers cope with stress.</p></div></li>
-          <li><span class="num">02</span><div><h3>Practical, evidence-based CBT</h3><p>Tools that work in your everyday life, at a pace that feels right for you.</p></div></li>
-          <li><span class="num">03</span><div><h3>Between two countries</h3><p>Born in Bulgaria, in London since 2016. I know what it's like to build a life in two places.</p></div></li>
+          <li data-reveal style="--d:.15s"><span class="n">01</span><div><h3>PhD in Developmental Psychology</h3><p>My research explored how the family shapes the way teenagers cope with stress.</p></div></li>
+          <li data-reveal style="--d:.22s"><span class="n">02</span><div><h3>Practical, evidence-based CBT</h3><p>Tools that work in your everyday life, at a pace that feels right for you.</p></div></li>
+          <li data-reveal style="--d:.29s"><span class="n">03</span><div><h3>Between two countries</h3><p>Born in Bulgaria, in London since 2016. I know what it's like to build a life in two places.</p></div></li>
         </ul>
-        <a class="btn btn-green" href="#">More about me <svg class="icon"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-green" href="#" data-reveal style="--d:.35s">More about me <svg class="icon arrow-i"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section>
+    <div class="wrap">
+      <div class="center" data-reveal>
+        <span class="eyebrow">How it works</span>
+        <h2>Three simple <em>steps</em></h2>
+      </div>
+      <div class="steps" data-reveal="fade">
+        <div class="step" data-reveal style="--d:.1s"><div class="dot" style="--d:0s">1</div><h3>Get in touch</h3><p>Call or message me on WhatsApp or Viber, in Bulgarian or English.</p></div>
+        <div class="step" data-reveal style="--d:.25s"><div class="dot" style="--d:1s">2</div><h3>A first conversation</h3><p>We talk about what you need and agree a time, online or in person.</p></div>
+        <div class="step" data-reveal style="--d:.4s"><div class="dot" style="--d:2s">3</div><h3>We work together</h3><p>Step by step, with a plan that fits you and regular reviews along the way.</p></div>
       </div>
     </div>
   </section>
 
   <!-- Why work with me -->
-  <section>
+  <section class="why grain on-dark">
+    <span class="blob b1"></span>
     <div class="wrap why-grid">
-      <div>
+      <div data-reveal>
         <span class="eyebrow">Why work with me</span>
-        <h2>Therapy that fits your life</h2>
+        <h2>Therapy that fits <em>your</em> life</h2>
         <p class="lead">Wherever you are, in the UK, in Bulgaria or anywhere else, you can talk to me in the language you feel most at home in.</p>
       </div>
       <div class="features">
-        <div class="feature"><span class="ico"><svg class="icon"><use href="#i-video"/></svg></span><h3>Online &amp; in person</h3><p>Secure video sessions from anywhere, or meet in person in the UK.</p></div>
-        <div class="feature"><span class="ico"><svg class="icon"><use href="#i-globe"/></svg></span><h3>Bulgarian &amp; English</h3><p>All sessions, including groups, in either language.</p></div>
-        <div class="feature"><span class="ico"><svg class="icon"><use href="#i-lock"/></svg></span><h3>Confidential</h3><p>What you share stays between us, in a safe space without judgement.</p></div>
-        <div class="feature"><span class="ico"><svg class="icon"><use href="#i-calendar"/></svg></span><h3>Flexible times</h3><p>We find a time that suits you, always agreed in your local time zone.</p></div>
+        <div class="feature" data-reveal style="--d:0s"><span class="ico"><svg class="icon"><use href="#i-video"/></svg></span><h3>Online &amp; in person</h3><p>Secure video sessions from anywhere, or meet in person in the UK.</p></div>
+        <div class="feature" data-reveal style="--d:.1s"><span class="ico"><svg class="icon"><use href="#i-globe"/></svg></span><h3>Bulgarian &amp; English</h3><p>All sessions, including groups, in either language.</p></div>
+        <div class="feature" data-reveal style="--d:.2s"><span class="ico"><svg class="icon"><use href="#i-lock"/></svg></span><h3>Confidential</h3><p>What you share stays between us, in a safe space without judgement.</p></div>
+        <div class="feature" data-reveal style="--d:.3s"><span class="ico"><svg class="icon"><use href="#i-calendar"/></svg></span><h3>Flexible times</h3><p>We find a time that suits you, always agreed in your local time zone.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- Contact banner -->
-  <section class="banner" id="contact">
+  <!-- Quote -->
+  <section class="quote" id="quote">
     <div class="wrap">
-      <div class="banner-box">
-        <svg class="leaf-deco icon" style="stroke-width:1"><use href="#i-leaf"/></svg>
-        <div>
-          <span class="eyebrow" style="color:var(--lilac)">Ready to talk?</span>
-          <h2>You don't have to go through it alone</h2>
-          <p>Call or message me in Bulgarian or English. Tell me a little about what you need, and we'll find a time that suits you.</p>
-        </div>
-        <div class="contact-list">
-          <a href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg><span>+44 7999 334778<small>Call me</small></span></a>
-          <a href="https://wa.me/447999334778"><svg class="icon"><use href="#i-chat"/></svg><span>WhatsApp<small>Send a message</small></span></a>
-          <a href="viber://chat?number=%2B447999334778"><svg class="icon"><use href="#i-chat-dots"/></svg><span>Viber<small>Send a message</small></span></a>
-          <a href="mailto:contact@drvasileva.co.uk"><svg class="icon"><use href="#i-mail"/></svg><span>contact@drvasileva.co.uk<small>Email me</small></span></a>
-        </div>
-      </div>
+      <span class="mark" aria-hidden="true">“</span>
+      <blockquote id="quote-text">When we understand the relationships around us, we can change the way we feel.</blockquote>
+      <cite>Dr Mirena Vasileva</cite>
     </div>
   </section>
 
-  <!-- Columns -->
-  <section id="articles">
+  <!-- Articles -->
+  <section class="articles" id="articles">
     <div class="wrap">
-      <div class="col-head">
-        <div>
+      <div class="section-head" style="margin-bottom:0">
+        <div data-reveal>
           <span class="eyebrow">School of Psychology</span>
-          <h2>From my BG BEN column</h2>
+          <h2>From my <em>BG BEN</em> column</h2>
         </div>
+        <div class="tabs" role="group" aria-label="Filter by topic" data-reveal style="--d:.1s">
+          <button class="tab" aria-pressed="true" data-filter="all">All</button>
+          <button class="tab" aria-pressed="false" data-filter="anxiety">Anxiety &amp; stress</button>
+          <button class="tab" aria-pressed="false" data-filter="parents">Parents &amp; children</button>
+          <button class="tab" aria-pressed="false" data-filter="relationships">Relationships</button>
+          <button class="tab" aria-pressed="false" data-filter="growth">Self-growth</button>
+        </div>
+      </div>
+      <div class="track" id="track" data-reveal="right"></div>
+      <div class="track-ui">
+        <div class="progress"><span id="progress"></span></div>
         <div class="arrows">
-          <button class="arrow" data-dir="-1" aria-label="Previous"><svg class="icon"><use href="#i-left"/></svg></button>
-          <button class="arrow" data-dir="1" aria-label="Next"><svg class="icon"><use href="#i-right"/></svg></button>
+          <button class="arrow" data-dir="-1" aria-label="Previous articles"><svg class="icon"><use href="#i-left"/></svg></button>
+          <button class="arrow" data-dir="1" aria-label="Next articles"><svg class="icon"><use href="#i-right"/></svg></button>
         </div>
       </div>
-      <div class="tabs" role="group" aria-label="Filter by topic">
-        <button class="tab" aria-pressed="true" data-filter="all">All</button>
-        <button class="tab" aria-pressed="false" data-filter="anxiety">Anxiety &amp; stress</button>
-        <button class="tab" aria-pressed="false" data-filter="parents">Parents &amp; children</button>
-        <button class="tab" aria-pressed="false" data-filter="relationships">Relationships</button>
-        <button class="tab" aria-pressed="false" data-filter="growth">Self-growth</button>
-      </div>
-      <div class="track" id="track"></div>
     </div>
   </section>
 
   <!-- Recognition -->
-  <section class="recog">
+  <section>
     <div class="wrap">
-      <div class="center">
+      <div class="center" data-reveal>
         <span class="eyebrow">Recognition</span>
-        <h2>Awards &amp; achievements</h2>
+        <h2>Awards &amp; <em>achievements</em></h2>
       </div>
       <div class="recog-grid">
-        <div class="award"><span class="ico"><svg class="icon"><use href="#i-award"/></svg></span><div><h3>Gold Ring of Varna Free University</h3><p>Awarded for graduating with honours, Master's in Psychology and Psychopathology of Development (2006).</p></div></div>
-        <div class="award"><span class="ico"><svg class="icon"><use href="#i-award"/></svg></span><div><h3>First Prize, Best Master's Thesis</h3><p>"Stress effects on the family environment and the upbringing of children" (2005–2006).</p></div></div>
+        <div class="award" data-reveal style="--d:0s"><span class="year">2006</span><span class="medal"><svg class="icon"><use href="#i-award"/></svg></span><h3>Gold Ring of Varna Free University</h3><p>Awarded for graduating with honours, Master's in Psychology and Psychopathology of Development.</p></div>
+        <div class="award" data-reveal style="--d:.12s"><span class="year">2006</span><span class="medal"><svg class="icon"><use href="#i-award"/></svg></span><h3>First Prize, Best Master's Thesis</h3><p>"Stress effects on the family environment and the upbringing of children."</p></div>
       </div>
-      <div class="featured">
+      <div class="press" data-reveal>
         <span class="eyebrow">Featured in</span>
-        <div class="press">
-          <span>BG BEN<small>"School of Psychology" column</small></span>
-          <span>"Doctor"<small>Newspaper interview, 2015</small></span>
-          <span>BG Radio<small>Interview, 2019</small></span>
+        <div class="press-list">
+          <span class="press-item">BG BEN<small>"School of Psychology" column</small></span>
+          <span class="press-item">"Doctor"<small>Newspaper interview · 2015</small></span>
+          <span class="press-item">BG Radio<small>Interview · 2019</small></span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="contact grain on-dark" id="contact">
+    <span class="blob b2"></span>
+    <div class="wrap contact-grid">
+      <div data-reveal>
+        <span class="eyebrow">Get in touch</span>
+        <h2>You don't have to go through it <em>alone</em></h2>
+        <p class="lead">Call or message me in Bulgarian or English. Tell me a little about what you need, and we'll find a time that suits you.</p>
+        <div class="contact-note"><svg class="icon"><use href="#i-lock"/></svg>Everything you share is confidential.</div>
+      </div>
+      <div class="tiles">
+        <a class="tile whatsapp" href="https://wa.me/447999334778" data-reveal="zoom" style="--d:0s"><span class="logo-circle"><svg class="bi"><use href="#b-whatsapp"/></svg></span><span><span class="t-label">WhatsApp</span><span class="t-value">Send a message <svg class="icon"><use href="#i-arrow-up"/></svg></span></span></a>
+        <a class="tile viber" href="viber://chat?number=%2B447999334778" data-reveal="zoom" style="--d:.08s"><span class="logo-circle"><svg class="bi"><use href="#b-viber"/></svg></span><span><span class="t-label">Viber</span><span class="t-value">Send a message <svg class="icon"><use href="#i-arrow-up"/></svg></span></span></a>
+        <a class="tile call" href="tel:+447999334778" data-reveal="zoom" style="--d:.16s"><span class="logo-circle"><svg class="icon"><use href="#i-phone"/></svg></span><span><span class="t-label">Call me</span><span class="t-value">+44 7999 334778 <svg class="icon"><use href="#i-arrow-up"/></svg></span></span></a>
+        <a class="tile email" href="mailto:contact@drvasileva.co.uk" data-reveal="zoom" style="--d:.24s"><span class="logo-circle"><svg class="icon"><use href="#i-mail"/></svg></span><span><span class="t-label">Email</span><span class="t-value" style="font-size:1.25rem">contact@<wbr>drvasileva.co.uk <svg class="icon"><use href="#i-arrow-up"/></svg></span></span></a>
+        <a class="tile facebook" href="https://www.facebook.com/share/1Bh2hqG1Ac/" data-reveal="zoom" style="--d:.32s"><span class="logo-circle"><svg class="bi"><use href="#b-facebook"/></svg></span><span class="t-value"><span><span class="t-label" style="display:block;font-family:var(--sans)">Facebook</span>Follow my page</span><svg class="icon"><use href="#i-arrow-up"/></svg></span></a>
       </div>
     </div>
   </section>
@@ -483,42 +740,33 @@
 
 <footer>
   <div class="wrap">
-    <div class="foot-grid">
+    <div class="foot-top">
       <div>
-        <a class="logo" href="#"><span class="mark"><svg class="icon"><use href="#i-leaf"/></svg></span>Dr Mirena Vasileva</a>
-        <p>PhD · Psychologist &amp; CBT Psychotherapist. Online and in person, in Bulgarian and English.</p>
+        <a class="logo" href="#top"><span class="name">Dr Vasileva</span></a>
+        <p>Dr Mirena Vasileva, PhD. Psychologist &amp; CBT psychotherapist, online and in person, in Bulgarian and English.</p>
+        <div class="socials">
+          <a class="social whatsapp" href="https://wa.me/447999334778" aria-label="WhatsApp"><svg class="bi"><use href="#b-whatsapp"/></svg></a>
+          <a class="social viber" href="viber://chat?number=%2B447999334778" aria-label="Viber"><svg class="bi"><use href="#b-viber"/></svg></a>
+          <a class="social facebook" href="https://www.facebook.com/share/1Bh2hqG1Ac/" aria-label="Facebook"><svg class="bi"><use href="#b-facebook"/></svg></a>
+          <a class="social phone" href="tel:+447999334778" aria-label="Call"><svg class="icon" style="width:19px;height:19px"><use href="#i-phone"/></svg></a>
+          <a class="social mail" href="mailto:contact@drvasileva.co.uk" aria-label="Email"><svg class="icon" style="width:19px;height:19px"><use href="#i-mail"/></svg></a>
+        </div>
       </div>
       <div>
-        <h4>Pages</h4>
-        <ul>
-          <li><a href="#">About me</a></li>
-          <li><a href="#">Who I help</a></li>
-          <li><a href="#">What I help with</a></li>
-          <li><a href="#">Articles</a></li>
-          <li><a href="#">Fees</a></li>
-        </ul>
+        <h4>Explore</h4>
+        <ul><li><a href="#about">About me</a></li><li><a href="#who">Who I help</a></li><li><a href="#">What I help with</a></li><li><a href="#articles">Articles</a></li><li><a href="#">Fees</a></li></ul>
       </div>
       <div>
         <h4>Help</h4>
-        <ul>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Press</a></li>
-          <li><a href="#">Crisis help</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
+        <ul><li><a href="#">FAQ</a></li><li><a href="#">Press</a></li><li><a href="#">Crisis help</a></li><li><a href="#contact">Contact</a></li></ul>
       </div>
       <div>
-        <h4>Get in touch</h4>
-        <ul class="f-contact">
-          <li><svg class="icon"><use href="#i-phone"/></svg><a href="tel:+447999334778">+44 7999 334778</a></li>
-          <li><svg class="icon"><use href="#i-chat"/></svg><a href="https://wa.me/447999334778">WhatsApp</a></li>
-          <li><svg class="icon"><use href="#i-chat-dots"/></svg><a href="viber://chat?number=%2B447999334778">Viber</a></li>
-          <li><svg class="icon"><use href="#i-mail"/></svg><a href="mailto:contact@drvasileva.co.uk">contact@drvasileva.co.uk</a></li>
-          <li><svg class="icon"><use href="#i-facebook"/></svg><a href="https://www.facebook.com/share/1Bh2hqG1Ac/">Facebook</a></li>
-        </ul>
+        <h4>Contact</h4>
+        <ul><li><a href="tel:+447999334778">+44 7999 334778</a></li><li><a href="mailto:contact@drvasileva.co.uk">contact@drvasileva.co.uk</a></li><li>Online &amp; in person</li><li>Български · English</li></ul>
       </div>
     </div>
-    <div class="crisis"><strong>In an emergency:</strong> I'm not an emergency service. If you or someone else is in immediate danger, call <strong>999</strong> (UK) or <strong>112</strong> (Bulgaria). In the UK you can also call Samaritans free on <strong>116 123</strong>, 24/7.</div>
+    <div class="crisis"><svg class="icon"><use href="#i-alert"/></svg><span><strong>In an emergency:</strong> I'm not an emergency service. If you or someone else is in immediate danger, call <strong>999</strong> (UK) or <strong>112</strong> (Bulgaria). In the UK you can also call Samaritans free on <strong>116 123</strong>, 24/7.</span></div>
+    <div class="bigname" aria-hidden="true">Dr Vasileva</div>
     <div class="copy">
       <span>© <span id="year">2026</span> Dr Mirena Vasileva</span>
       <ul><li><a href="#">Privacy</a></li><li><a href="#">Cookies</a></li><li><a href="#">Terms</a></li></ul>
@@ -526,27 +774,73 @@
   </div>
 </footer>
 
-<nav class="mobile-bar" aria-label="Quick contact">
-  <a href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg>Call</a>
-  <a href="https://wa.me/447999334778"><svg class="icon"><use href="#i-chat"/></svg>WhatsApp</a>
-  <a href="viber://chat?number=%2B447999334778"><svg class="icon"><use href="#i-chat-dots"/></svg>Viber</a>
+<nav class="mobile-bar" id="mobile-bar" aria-label="Quick contact">
+  <a class="m-call" href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg>Call</a>
+  <a class="m-wa" href="https://wa.me/447999334778"><svg class="bi"><use href="#b-whatsapp"/></svg>WhatsApp</a>
+  <a class="m-viber" href="viber://chat?number=%2B447999334778"><svg class="bi"><use href="#b-viber"/></svg>Viber</a>
 </nav>
 
 <script>
-  // Years of experience, counted from 2005
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const years = new Date().getFullYear() - 2005;
   document.querySelectorAll('.js-years').forEach(el => el.textContent = years);
+  document.querySelectorAll('.js-count').forEach(el => el.dataset.to = years);
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Mobile menu
-  const menuBtn = document.querySelector('.menu-btn');
-  const links = document.getElementById('nav-links');
-  menuBtn.addEventListener('click', () => {
-    const open = links.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', open);
-  });
+  // Header style on scroll + mobile contact bar
+  const header = document.getElementById('header');
+  const bar = document.getElementById('mobile-bar');
+  const onScroll = () => {
+    header.classList.toggle('scrolled', scrollY > 40);
+    bar.classList.toggle('show', scrollY > innerHeight * .6);
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 
-  // School of Psychology columns (newest first)
+  // Full-screen menu
+  const burger = document.querySelector('.burger');
+  const menu = document.getElementById('menu');
+  const setMenu = open => {
+    document.body.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open);
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menu.setAttribute('aria-hidden', !open);
+  };
+  burger.addEventListener('click', () => setMenu(!document.body.classList.contains('menu-open')));
+  menu.querySelectorAll('[data-close]').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
+  // Marquee: duplicate the group for a seamless loop
+  const groups = document.querySelectorAll('.marquee-group');
+  groups[1].innerHTML = groups[0].innerHTML;
+
+  // Quote: split into words for a reading-style reveal
+  const q = document.getElementById('quote-text');
+  q.innerHTML = q.textContent.split(' ').map((w, i) => `<span class="w" style="--i:${i}">${w}</span>`).join(' ');
+
+  // Count-up for years
+  const countUp = el => {
+    const to = +el.dataset.to;
+    if (reduce) { el.textContent = to; return; }
+    const start = performance.now(), dur = 1600;
+    const tick = now => {
+      const p = Math.min((now - start) / dur, 1);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  // Reveal on scroll
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll?.('.js-count').forEach(countUp);
+    io.unobserve(e.target);
+  }), { threshold: .15, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('[data-reveal], .quote, .about-photo').forEach(el => io.observe(el));
+
+  // Columns (newest first)
   const columns = [
     ['2026-09-19', 'Expired gratitude', 'growth', 'https://www.bgben.co.uk/blagodarnostta-s-iztekul-srok'],
     ['2026-07-08', 'The alphabet of the human soul', 'growth', 'https://www.bgben.co.uk/azbukata-na-choveshkata-dusha'],
@@ -554,12 +848,12 @@
     ['2026-04-04', 'Why it is important to make peace with ourselves', 'growth', 'https://bgben.co.uk/zashto-e-vazhno-da-se-pomirim-sus-sebe-si'],
     ['2026-03-13', 'Practical guidelines for preventing violence in children', 'parents', 'https://bgben.co.uk/prakticheski-nasoki-za-predotvratyavane-na-nasilieto-pri-detsata'],
     ['2026-01-13', 'The quiet revolution of the soul', 'growth', 'https://bgben.co.uk/tihata-revolyutsiya-na-dushata'],
-    ['2025-12-01', 'Holiday stress and the invisible loneliness of the holidays', 'anxiety', 'https://bgben.co.uk/praznichen-stres-i-nevidimata-samota-po-vreme-na-praznitsite-'],
+    ['2025-12', 'Holiday stress and the invisible loneliness of the holidays', 'anxiety', 'https://bgben.co.uk/praznichen-stres-i-nevidimata-samota-po-vreme-na-praznitsite-'],
     ['2025-09-25', 'The child within us and the path to ourselves', 'growth', 'https://www.bgben.co.uk/deteto-v-nas-i-putyat-kum-sebe-si-'],
     ['2025-04-21', 'A conversation with gratitude', 'growth', 'https://bgben.co.uk/v-uchilishte-po-psihologiya-dnes-razgovor-s-blagodarnostta'],
-    ['2025-03-01', 'Self-help for panic attacks and anxiety (part two)', 'anxiety', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-vtora'],
+    ['2025-03', 'Self-help for panic attacks and anxiety (part two)', 'anxiety', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-vtora'],
     ['2025-02-10', 'Self-help for panic attacks and anxiety (part one)', 'anxiety', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-purva'],
-    ['2025-01-01', 'Several successful steps to preserve love in marriage', 'relationships', 'https://bgben.co.uk/nyakolko-uspeshni-stupki-za-suhranenie-na-lyubovta-v-braka'],
+    ['2025', 'Several successful steps to preserve love in marriage', 'relationships', 'https://bgben.co.uk/nyakolko-uspeshni-stupki-za-suhranenie-na-lyubovta-v-braka'],
     ['2024-09-13', 'How to be ourselves and learn the skill of understanding', 'growth', 'https://bgben.co.uk/files/pdf_1739664087_506.pdf'],
     ['2024-01-12', 'Invitation to happiness', 'growth', 'https://bgben.co.uk/files/pdf_1739663720_498.pdf'],
     ['2023-08-11', 'Understanding emotional intelligence, and where we are', 'growth', 'https://bgben.co.uk/files/pdf_1739663529_492.pdf'],
@@ -573,25 +867,56 @@
     relationships: ['Relationships', 'i-heart'],
     growth: ['Self-growth', 'i-leaf'],
   };
-  // Dates the source only gives as a month or a year are shown that way
-  const fuzzy = { '2025-12-01': 'December 2025', '2025-03-01': 'March 2025', '2025-01-01': '2025' };
-  const fmt = d => fuzzy[d] || new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  // The source gives some dates only as a month or a year
+  const fmt = d => {
+    const [y, m, day] = d.split('-');
+    if (!m) return y;
+    const opts = day ? { day: 'numeric', month: 'long', year: 'numeric' } : { month: 'long', year: 'numeric' };
+    return new Date(+y, +m - 1, +(day || 1)).toLocaleDateString('en-GB', opts);
+  };
   const track = document.getElementById('track');
   track.innerHTML = columns.map(([date, title, tag, url]) => `
     <a class="article t-${tag}" data-tag="${tag}" href="${url}">
-      <div class="top"><svg class="icon"><use href="#${tagInfo[tag][1]}"/></svg></div>
-      <div class="body"><span class="tag">${tagInfo[tag][0]}</span><h3>${title}</h3><time datetime="${date}">${fmt(date)}</time></div>
+      <div class="top"><span class="bg"></span><svg class="icon motif"><use href="#${tagInfo[tag][1]}"/></svg><span class="label">${tagInfo[tag][0]}</span></div>
+      <div class="body"><h3>${title}</h3><div class="meta"><time datetime="${date}">${fmt(date)}</time><svg class="icon"><use href="#i-arrow"/></svg></div></div>
     </a>`).join('');
+
+  const progress = document.getElementById('progress');
+  const updateProgress = () => {
+    const max = track.scrollWidth - track.clientWidth;
+    const ratio = track.clientWidth / track.scrollWidth;
+    progress.style.width = (ratio * 100) + '%';
+    progress.style.transform = `translateX(${max > 0 ? (track.scrollLeft / max) * (1 / ratio - 1) * 100 : 0}%)`;
+  };
+  track.addEventListener('scroll', updateProgress, { passive: true });
+  addEventListener('resize', updateProgress);
+  updateProgress();
 
   document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t === tab));
     const f = tab.dataset.filter;
     track.querySelectorAll('.article').forEach(a => a.hidden = f !== 'all' && a.dataset.tag !== f);
     track.scrollTo({ left: 0 });
+    updateProgress();
   }));
   document.querySelectorAll('.arrow').forEach(btn => btn.addEventListener('click', () => {
-    track.scrollBy({ left: btn.dataset.dir * track.clientWidth * 0.8, behavior: 'smooth' });
+    track.scrollBy({ left: btn.dataset.dir * track.clientWidth * .8, behavior: 'smooth' });
   }));
+
+  // Drag to scroll (mouse)
+  let down = false, startX = 0, startLeft = 0, moved = false;
+  track.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse') return;
+    down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
+  });
+  addEventListener('pointermove', e => {
+    if (!down) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) > 5) { moved = true; track.classList.add('dragging'); }
+    track.scrollLeft = startLeft - dx;
+  });
+  addEventListener('pointerup', () => { down = false; setTimeout(() => track.classList.remove('dragging'), 0); });
+  track.addEventListener('click', e => { if (moved) e.preventDefault(); }, true);
 </script>
 </body>
 </html>

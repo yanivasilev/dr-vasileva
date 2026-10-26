@@ -533,6 +533,7 @@ Taken from her photo: the **green** of her blouse and the soft **lilac/pink** of
 | Use | Colour | Hex |
 |---|---|---|
 | Main colour (buttons, headings) | Sage green | `#4F6F52` |
+| Darkest green (hero, contact) | Forest green | `#2C4430` |
 | Dark green (hover, footer) | Deep green | `#344E38` |
 | Accent (highlights, small details) | Soft lilac | `#B9A3C9` |
 | Warm accent (awards, quotes) | Muted gold | `#C9A25A` |
@@ -544,18 +545,23 @@ Taken from her photo: the **green** of her blouse and the soft **lilac/pink** of
 
 Both support **Cyrillic**, so Bulgarian looks just as good as English.
 
-- **Headings:** *Lora*, a soft, elegant serif
-- **Body text:** *Inter*, clean and very readable on phones
+- **Headings:** *Cormorant Garamond*, an elegant, editorial serif
+- **Body text:** *Manrope*, clean and very readable on phones
 
 ### Logo
 
-A simple text logo: **Dr Mirena Vasileva** / **д-р Мирена Василева** in Lora, with a small leaf or soft circle symbol in sage green. We can get a designed logo later.
+**Just the text "Dr Vasileva"**, in Cormorant Garamond, one colour, no symbol, nothing fancy. Dark green on light backgrounds and cream on dark ones.
+
+- `images/logo.svg`: the text logo
+- `images/favicon.svg`: browser tab icon ("DV" on dark green)
 
 ### Style
 
 - Lots of white space, rounded corners and soft shadows
 - Her photo is large on Home and About
-- Big, easy-to-tap buttons for **Call · Viber · WhatsApp** (most visitors will be on a phone)
+- Big, easy-to-tap buttons for **Call · Viber · WhatsApp** (most visitors will be on a phone), in each app's **own brand colours**: WhatsApp green `#25D366`, Viber purple `#7360F2`, Facebook blue `#1877F2`
+- Gentle animations: sections fade up as you scroll, the headline rises in line by line, the photo is unveiled, and the credentials scroll past slowly. All motion switches off for visitors who've set "reduce motion" on their device
+- Phone menu opens **full-screen**
 - No stock photos of people "looking sad". Instead, calm nature and texture images, or none at all
 
 ---
