@@ -88,7 +88,7 @@ rep('<ul><li><a href="#">Privacy</a></li><li><a href="#">Cookies</a></li><li><a 
     '<ul><li><a href="#/privacy">Privacy</a></li><li><a href="#/cookies">Cookies</a></li><li><a href="#/terms">Terms</a></li></ul>')
 rep('''      <div class="track-ui">''', '''      <div class="track-ui">
         <a class="btn btn-green" href="#/articles" style="padding:12px 20px;font-size:.9rem">All articles <svg class="icon arrow-i"><use href="#i-arrow"/></svg></a>''')
-s, n = re.subn(r'<span class="press-item">(<span class="p-ico">.*?</small></span>)</span>', r'<a class="press-item" href="#/press" style="text-decoration:none">\1</a>', s)
+s, n = re.subn(r'<span class="press-item">(<span class="p-(?:ico|logo)">.*?</small></span>)</span>', r'<a class="press-item" href="#/press" style="text-decoration:none">\1</a>', s)
 assert n == 3
 
 # ---- Why work with me: bento

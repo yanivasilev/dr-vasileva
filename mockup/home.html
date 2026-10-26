@@ -324,6 +324,24 @@
   .press-item:hover .p-ico { transform: rotate(-8deg); background: var(--green-dark); color: var(--cream); }
   .press-item small { display: block; font-family: var(--sans); font-size: .76rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; margin-top: 4px; }
 
+
+  /* Partner logos */
+  .cred .lg { width: 50px; height: 50px; border-radius: 50%; background: #fff; display: grid; place-items: center; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(44,68,48,.1); }
+  .cred .lg img { width: 70%; height: 70%; object-fit: contain; }
+  .cred .lg.round img { width: 100%; height: 100%; }
+  .press-item .p-logo { height: 72px; min-width: 72px; padding: 8px 12px; background: #fff; border-radius: 18px; display: grid; place-items: center; border: 1px solid rgba(44,68,48,.08); box-shadow: 0 10px 24px -18px rgba(44,68,48,.5); transition: transform .6s var(--ease); }
+  .press-item .p-logo img { height: 56px; width: auto; max-width: 150px; object-fit: contain; }
+  .press-item:hover .p-logo { transform: translateY(-4px) rotate(-2deg); }
+  .award .by { display: flex; align-items: center; gap: 12px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--sand); font-size: .8rem; font-weight: 600; color: var(--muted); }
+  .award .by img { height: 40px; width: auto; max-width: none; }
+  .press { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+  .press .eyebrow { justify-content: center; }
+  .press .eyebrow::after { content: ""; width: 34px; height: 1px; background: currentColor; opacity: .6; }
+  .press-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; justify-content: stretch; }
+  .press-item { justify-content: center; text-align: left; }
+  @media (max-width: 900px) { .press-list { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; } .press-item { justify-content: flex-start; } }
+  @media (max-width: 600px) { .cred .lg { width: 44px; height: 44px; } .press-item .p-logo { height: 60px; min-width: 60px; width: 96px; } .press-item .p-logo img { height: 46px; max-width: 80px; } }
+
   /* Contact */
   .contact { background: var(--green-deep); color: var(--cream); overflow: hidden; }
   .contact .eyebrow { color: var(--lilac); }
@@ -589,7 +607,7 @@
   <!-- Credentials marquee -->
   <div class="marquee" id="creds" aria-label="Qualifications and awards">
     <div class="marquee-track">
-      <div class="marquee-group"><span class="cred"><svg aria-hidden="true"><use href="#em-phd"/></svg><span><b>PhD in Psychology</b><small>Varna Free University</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-ring"/></svg><span><b>Gold Ring award</b><small>Varna Free University · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-prize"/></svg><span><b>First Prize</b><small>Best Master's Thesis · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-bps"/></svg><span><b>British Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-cbt"/></svg><span><b>Diploma in CBT</b><small>Cognitive behavioural therapy</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-send"/></svg><span><b>Diploma in SEND</b><small>Special educational needs</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-bg"/></svg><span><b>Bulgarian Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-shield"/></svg><span><b>Safeguarding Children</b><small>Level 3</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-news"/></svg><span><b>BG BEN columnist</b><small>"School of Psychology"</small></span></span></div>
+      <div class="marquee-group"><span class="cred"><span class="lg"><img src="../images/logos/varna-free-university-mark.png" alt="Varna Free University" width="224" height="225"></span><span><b>PhD in Psychology</b><small>Varna Free University</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-ring"/></svg><span><b>Gold Ring award</b><small>Varna Free University · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-prize"/></svg><span><b>First Prize</b><small>Best Master's Thesis · 2006</small></span></span><span class="cred"><span class="lg"><img src="../images/logos/bps-mark.png" alt="The British Psychological Society" width="153" height="200"></span><span><b>British Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-cbt"/></svg><span><b>Diploma in CBT</b><small>Cognitive behavioural therapy</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-send"/></svg><span><b>Diploma in SEND</b><small>Special educational needs</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-bg"/></svg><span><b>Bulgarian Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-shield"/></svg><span><b>Safeguarding Children</b><small>Level 3</small></span></span><span class="cred"><span class="lg round"><img src="../images/logos/bg-ben.png" alt="BG BEN" width="400" height="400"></span><span><b>BG BEN columnist</b><small>"School of Psychology"</small></span></span></div>
       <div class="marquee-group" aria-hidden="true"></div>
     </div>
   </div>
@@ -714,15 +732,15 @@
         <h2>Awards &amp; <em>achievements</em></h2>
       </div>
       <div class="recog-grid">
-        <div class="award" data-reveal style="--d:0s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner"><svg class="icon"><use href="#i-ring"/></svg></span></span><h3>Gold Ring of Varna Free University</h3><p>Awarded for graduating with honours, Master's in Psychology and Psychopathology of Development.</p></div>
-        <div class="award" data-reveal style="--d:.12s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master's Thesis</h3><p>"Stress effects on the family environment and the upbringing of children."</p></div>
+        <div class="award" data-reveal style="--d:0s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner"><svg class="icon"><use href="#i-ring"/></svg></span></span><h3>Gold Ring of Varna Free University</h3><p>Awarded for graduating with honours, Master's in Psychology and Psychopathology of Development.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University "Chernorizets Hrabar"</span></div>
+        <div class="award" data-reveal style="--d:.12s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master's Thesis</h3><p>"Stress effects on the family environment and the upbringing of children."</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University "Chernorizets Hrabar"</span></div>
       </div>
       <div class="press" data-reveal>
         <span class="eyebrow">Featured in</span>
         <div class="press-list">
-          <span class="press-item"><span class="p-ico"><svg class="icon"><use href="#i-news"/></svg></span><span>BG BEN<small>"School of Psychology" column</small></span></span>
-          <span class="press-item"><span class="p-ico"><svg class="icon"><use href="#i-mic"/></svg></span><span>"Doctor"<small>Newspaper interview · 2015</small></span></span>
-          <span class="press-item"><span class="p-ico"><svg class="icon"><use href="#i-radio"/></svg></span><span>BG Radio<small>Interview · 2019</small></span></span>
+          <span class="press-item"><span class="p-logo"><img src="../images/logos/bg-ben.png" alt="BG BEN" width="400" height="400"></span><span>BG BEN<small>"School of Psychology" column</small></span></span>
+          <span class="press-item"><span class="p-logo"><img src="../images/logos/zdraveto.png" alt="Zdraveto (blitz.bg)" width="326" height="100"></span><span>"Doctor"<small>Newspaper interview · Zdraveto · 2015</small></span></span>
+          <span class="press-item"><span class="p-logo"><img src="../images/logos/bg-radio.png" alt="BG Radio" width="203" height="203"></span><span>BG Radio<small>Interview · 2019</small></span></span>
         </div>
       </div>
     </div>

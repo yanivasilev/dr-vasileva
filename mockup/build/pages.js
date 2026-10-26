@@ -153,6 +153,7 @@
   /* =====================================================================
      Building blocks
      ===================================================================== */
+  const logo = (file, alt, w, h) => `<span class="ico logo-tile"><img src="../images/logos/${file}" alt="${alt}" width="${w}" height="${h}" loading="lazy"></span>`;
   const ic = (id, cls = 'icon') => `<svg class="${cls}"><use href="#${id}"/></svg>`;
   const ctaButtons = `
     <a class="btn btn-whatsapp" href="${WA}">${ic('b-whatsapp', 'bi')}WhatsApp</a>
@@ -235,8 +236,8 @@
 
         <h2 data-reveal>Awards</h2>
         <div class="recog-grid" style="margin-top:20px">
-          <div class="award" data-reveal><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">${ic('i-ring')}</span></span><h3>Gold Ring of Varna Free University</h3><p>For graduating with honours.</p></div>
-          <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master’s Thesis</h3><p>"Best diploma thesis" competition.</p></div>
+          <div class="award" data-reveal><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">${ic('i-ring')}</span></span><h3>Gold Ring of Varna Free University</h3><p>For graduating with honours.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
+          <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master’s Thesis</h3><p>"Best diploma thesis" competition.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
         </div>
       </div>
       <aside class="aside">
@@ -248,6 +249,10 @@
           <li>${ic('i-video')}Online &amp; in person</li>
           <li>${ic('i-feather')}"School of Psychology" columnist, BG BEN</li>
         </ul></div>
+        <div class="box" data-reveal><h3>Studied at &amp; member of</h3><div class="affil">
+          <img src="../images/logos/varna-free-university.png" alt="Varna Free University Chernorizets Hrabar" width="500" height="225" loading="lazy">
+          <img src="../images/logos/bps.png" alt="The British Psychological Society" width="400" height="200" loading="lazy">
+        </div></div>
         <div data-reveal>${contactBox}</div>
       </aside>
     </div></section>
@@ -329,7 +334,7 @@
         <ol class="pubs" data-reveal>${PUBS.map(p => `<li><span>${p}</span></li>`).join('')}</ol>
       </div>
       <aside class="aside"><div class="box" data-reveal><h3>Interviews</h3><div class="links-list">
-        <a href="#/press">"Self murderers are people who want to be noticed" · <i>Doctor</i>, 2015${ic('i-arrow')}</a>
+        <a href="#/press">"Suicide is often a cry to be noticed" · <i>Doctor</i> (Zdraveto), 2015${ic('i-arrow')}</a>
         <a href="#/press">"Covid-19 and panic attacks" · BG Radio, 2019${ic('i-arrow')}</a>
       </div></div></aside>
     </div></section>
@@ -366,9 +371,9 @@
   PAGES['/press'] = () => `
     ${hero({ crumbs: [['Press']], eyebrow: 'Press', title: 'Featured <em>in</em>', lead: 'Columns, interviews and lectures.', icon: 'i-mic' })}
     <section class="page-body"><div class="wrap"><div class="issue-grid">
-      <a class="issue" href="#/articles" data-reveal><span class="ico">${ic('i-news')}</span><span><h3>BG BEN</h3><p>"School of Psychology", my regular column, 2023 – now.</p></span></a>
-      <div class="issue" data-reveal style="--d:.07s"><span class="ico">${ic('i-mic')}</span><span><h3>"Doctor" newspaper</h3><p>Interview: "Self murderers are people who want to be noticed", issue 15, 2015.</p></span></div>
-      <div class="issue" data-reveal style="--d:.14s"><span class="ico">${ic('i-radio')}</span><span><h3>BG Radio</h3><p>Interview: "Covid-19 and panic attacks", 2019.</p></span></div>
+      <a class="issue" href="#/articles" data-reveal>${logo('bg-ben.png', 'BG BEN', 400, 400)}<span><h3>BG BEN</h3><p>"School of Psychology", my regular column, 2023 – now.</p></span></a>
+      <div class="issue" data-reveal style="--d:.07s">${logo('zdraveto.png', 'Zdraveto (blitz.bg)', 326, 100).replace('logo-tile', 'logo-tile wide')}<span><h3>"Doctor" newspaper</h3><p>Published by Zdraveto (blitz.bg). Interview: "Suicide is often a cry to be noticed", issue 15, 2015.</p></span></div>
+      <div class="issue" data-reveal style="--d:.14s">${logo('bg-radio.png', 'BG Radio', 203, 203)}<span><h3>BG Radio</h3><p>Interview: "Covid-19 and panic attacks", 2019.</p></span></div>
       <div class="issue" data-reveal><span class="ico">${ic('i-cap')}</span><span><h3>Burgas Free University</h3><p>Lectures in Experimental and Pedagogical Psychology, art therapy in crisis intervention, and family stress in adolescence.</p></span></div>
       <div class="issue" data-reveal style="--d:.07s"><span class="ico">${ic('i-award')}</span><span><h3>Bulgarian Academy of Sciences</h3><p>Six scientific and applied contributions from my doctoral research.</p></span></div>
     </div></div></section>

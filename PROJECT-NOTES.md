@@ -164,7 +164,7 @@ Bulgarian (native), English (fluent), Russian (good), German (basic).
 ### Media & public work
 
 - **"School of Psychology" ("Училище по психология")**, her regular column in BG BEN, the UK newspaper for Bulgarians (2023 – now). Full list in section 6.
-- Interview, *"Self murderers are people who want to be noticed"*, newspaper **"Doctor"**, issue 15 (2015)
+- Interview, *"Self murderers are people who want to be noticed"* (EN on the site: *"Suicide is often a cry to be noticed"*), newspaper **"Doctor"**, published by **Здравето / Zdraveto (blitz.bg)**, issue 15 (2015)
 - Interview, *"Covid-19 and Panic Attacks"*, **BG Radio** (2019)
 - Lectures at Burgas Free University: Experimental Psychology, Pedagogical Psychology, "Art therapy methods in crisis intervention", "Family environment and experience of stress in adolescence"
 - 6 scientific and applied contributions from her PhD, recognised at the **Bulgarian Academy of Sciences**
@@ -558,6 +558,20 @@ Both support **Cyrillic**, so Bulgarian looks just as good as English.
 | `images/logo-light.svg` | Cream logo for dark backgrounds |
 
 The same logo is used on both .bg and .co.uk (it's her name, so it doesn't need translating).
+
+### Partner logos (`images/logos/`)
+
+Supplied by you. Used in the credentials strip, "Featured in", the award cards, the Press page and the About page.
+
+| File | Organisation |
+|---|---|
+| `bg-ben.png` | BG BEN (her column) |
+| `bg-radio.png` | BG Radio (2019 interview) |
+| `zdraveto.png` | Здравето / blitz.bg, publisher of the "Doctor" newspaper (2015 interview) |
+| `bps.png`, `bps-mark.png` | The British Psychological Society (full logo / emblem only) |
+| `varna-free-university.png`, `varna-free-university-mark.png` | Varna Free University "Chernorizets Hrabar" (full logo / emblem only) |
+
+> Before launch: the BPS limits how members use its logo. Check her membership grade allows it (her BPS portal or the BPS brand guidelines); if not, we swap back to the "Ψ" badge.
 
 ### Icons & share images
 

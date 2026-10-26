@@ -187,6 +187,13 @@
   .track-ui { flex-wrap: wrap; }
   .articles, .page-body { overflow-x: clip; }
   @media (max-width: 600px) { .track-ui .btn { order: 3; flex: 1 1 100%; } }
+  .issue .logo-tile { width: 72px; height: 72px; background: #fff; border: 1px solid rgba(44,68,48,.1); overflow: hidden; }
+  .issue .logo-tile img { width: 82%; height: 82%; object-fit: contain; }
+  .issue .logo-tile.wide { width: 112px; }
+  .issue .logo-tile.wide img { width: 88%; height: 60%; }
+  .issue:hover .logo-tile { background: #fff; transform: rotate(-4deg); }
+  .affil { display: grid; gap: 14px; }
+  .affil img { width: 100%; max-width: 240px; height: auto; background: #fff; border-radius: 12px; padding: 10px 14px; border: 1px solid var(--sand); }
   @media (max-width: 1080px) {
     .split { grid-template-columns: 1fr; }
     .aside { position: static; }
