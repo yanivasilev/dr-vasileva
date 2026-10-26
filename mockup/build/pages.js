@@ -252,6 +252,7 @@
         <div class="box" data-reveal><h3>Studied at &amp; member of</h3><div class="affil">
           <img src="../images/logos/varna-free-university.png" alt="Varna Free University Chernorizets Hrabar" width="500" height="225" loading="lazy">
           <img src="../images/logos/bps.png" alt="The British Psychological Society" width="400" height="200" loading="lazy">
+          <div class="affil-row"><img src="../images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"><span>Bulgarian Psychological Society</span></div>
         </div></div>
         <div data-reveal>${contactBox}</div>
       </aside>

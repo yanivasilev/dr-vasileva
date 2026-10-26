@@ -685,6 +685,8 @@
   .issue:hover .logo-tile { background: #fff; transform: rotate(-4deg); }
   .affil { display: grid; gap: 14px; }
   .affil img { width: 100%; max-width: 240px; height: auto; background: #fff; border-radius: 12px; padding: 10px 14px; border: 1px solid var(--sand); }
+  .affil-row { display: flex; align-items: center; gap: 14px; max-width: 240px; background: #fff; border-radius: 12px; padding: 10px 14px; border: 1px solid var(--sand); font-family: var(--serif); font-size: 1.15rem; font-weight: 600; line-height: 1.15; color: #8B1E3F; }
+  .affil-row img { width: 52px; height: 52px; max-width: none; padding: 0; border: 0; border-radius: 0; background: none; }
   @media (max-width: 1080px) {
     .split { grid-template-columns: 1fr; }
     .aside { position: static; }
@@ -860,7 +862,7 @@
   <!-- Credentials marquee -->
   <div class="marquee" id="creds" aria-label="Qualifications and awards">
     <div class="marquee-track">
-      <div class="marquee-group"><span class="cred"><span class="lg"><img src="../images/logos/varna-free-university-mark.png" alt="Varna Free University" width="224" height="225"></span><span><b>PhD in Psychology</b><small>Varna Free University</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-ring"/></svg><span><b>Gold Ring award</b><small>Varna Free University · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-prize"/></svg><span><b>First Prize</b><small>Best Master's Thesis · 2006</small></span></span><span class="cred"><span class="lg"><img src="../images/logos/bps-mark.png" alt="The British Psychological Society" width="153" height="200"></span><span><b>British Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-cbt"/></svg><span><b>Diploma in CBT</b><small>Cognitive behavioural therapy</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-send"/></svg><span><b>Diploma in SEND</b><small>Special educational needs</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-bg"/></svg><span><b>Bulgarian Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-shield"/></svg><span><b>Safeguarding Children</b><small>Level 3</small></span></span><span class="cred"><span class="lg round"><img src="../images/logos/bg-ben.png" alt="BG BEN" width="400" height="400"></span><span><b>BG BEN columnist</b><small>"School of Psychology"</small></span></span></div>
+      <div class="marquee-group"><span class="cred"><span class="lg"><img src="../images/logos/varna-free-university-mark.png" alt="Varna Free University" width="224" height="225"></span><span><b>PhD in Psychology</b><small>Varna Free University</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-ring"/></svg><span><b>Gold Ring award</b><small>Varna Free University · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-prize"/></svg><span><b>First Prize</b><small>Best Master's Thesis · 2006</small></span></span><span class="cred"><span class="lg"><img src="../images/logos/bps-mark.png" alt="The British Psychological Society" width="153" height="200"></span><span><b>British Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-cbt"/></svg><span><b>Diploma in CBT</b><small>Cognitive behavioural therapy</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-send"/></svg><span><b>Diploma in SEND</b><small>Special educational needs</small></span></span><span class="cred"><span class="lg round"><img src="../images/logos/bulgarian-psychological-society.png" alt="Bulgarian Psychological Society" width="208" height="208"></span><span><b>Bulgarian Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-shield"/></svg><span><b>Safeguarding Children</b><small>Level 3</small></span></span><span class="cred"><span class="lg round"><img src="../images/logos/bg-ben.png" alt="BG BEN" width="400" height="400"></span><span><b>BG BEN columnist</b><small>"School of Psychology"</small></span></span></div>
       <div class="marquee-group" aria-hidden="true"></div>
     </div>
   </div>
@@ -1519,6 +1521,7 @@
         <div class="box" data-reveal><h3>Studied at &amp; member of</h3><div class="affil">
           <img src="../images/logos/varna-free-university.png" alt="Varna Free University Chernorizets Hrabar" width="500" height="225" loading="lazy">
           <img src="../images/logos/bps.png" alt="The British Psychological Society" width="400" height="200" loading="lazy">
+          <div class="affil-row"><img src="../images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"><span>Bulgarian Psychological Society</span></div>
         </div></div>
         <div data-reveal>${contactBox}</div>
       </aside>
