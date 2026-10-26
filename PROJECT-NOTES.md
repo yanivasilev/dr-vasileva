@@ -741,3 +741,19 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 5. Send a test message from both domains.
 
 > The privacy policy already mentions the form, Resend and Turnstile.
+
+---
+
+## 12. Bulgarian version ✅ (first full draft)
+
+- **Preview files:** `mockup/site.html` (English) and `mockup/site-bg.html` (Bulgarian). The BG / EN switch moves between them and keeps you on the same page.
+- **Live site:** the same switch will go to the same page on the other domain (`drvasileva.co.uk` ↔ `drvasileva.bg`), and URLs will use the Bulgarian slugs from section 5.
+- **How it's built:** the English site is built first; `mockup/build/bg/` then swaps in the Bulgarian content (`data1.js`, `data2.js`, `blocks.js`, `pages.js`) and translates the remaining interface text with exact pairs (`pairs.py`). The build stops if an English phrase isn't found, so changes to the English text can't silently leave English on the Bulgarian site.
+- **Bulgarian specifics:** email `contact@drvasileva.bg`, share image `og-bg.png`, BG listed first in the switch, Bulgarian crisis numbers listed first, prices shown as € / £, dates in Bulgarian.
+
+### For her to check
+
+- [ ] The whole text reads naturally in her voice (formal **„Вие“** is used throughout).
+- [ ] **Column titles** of the six older (PDF) columns are my back-translations from English: "Как да бъдем себе си…", "Покана за щастие", "Как да разбираме емоционалната интелигентност…", "Как страховете и емоциите ни разболяват", "Прошката е най-великият учител", "Как родителите могат да помогнат на децата си в юношеството". The other 12 come from the BG BEN web addresses and should be exact.
+- [ ] **Scientific publications**: the Bulgarian titles are back-translations of the English ones in her CV, so they need checking against the originals.
+- [ ] The interview title „Самоубийците са хора, които искат да бъдат забелязани“.

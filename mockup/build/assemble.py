@@ -109,5 +109,40 @@ rep("  document.querySelectorAll('[data-reveal], .quote, .about-photo').forEach(
 s = s.replace('</script>\n</body>', '</script>\n<script>' + pages + '</script>\n</body>', 1)
 assert 'const PAGES = {}' in s
 
+# ---- language switch: link to the other language's page, keeping the current page
+bg = {}
+exec(open(f'{B}/bg/pairs.py').read(), bg)
+rep('<div class="lang" aria-label="Language"><a href="https://drvasileva.bg/" hreflang="bg" lang="bg">BG</a><a href="#" class="on" aria-current="true">EN</a></div>', bg['LANG_EN'], 2)
+s = s.replace('</script>\n</body>', """  // Keep the same page when switching language (preview: the two files; live site: the two domains)
+  const syncLang = () => document.querySelectorAll('.lang a[data-base]').forEach(a => a.href = a.dataset.base + location.hash);
+  addEventListener('hashchange', syncLang);
+  syncLang();
+</script>\n</body>""", 1)
+
 open(f'{REPO}/mockup/site.html', 'w').write(s)
 print('site.html', len(s))
+
+# =====================================================================
+# Bulgarian version
+# =====================================================================
+b = s
+def swap(start, end, file):
+    global b
+    i = b.index(start); j = b.index(end, i)
+    assert b.count(start) == 1, start
+    b = b[:i] + open(f'{B}/bg/{file}').read() + b[j:]
+swap('  const WHO = [', '  /* =====================================================================\n     Building blocks', 'data1.js')
+swap('  const ctaButtons = `', '  const faqList =', 'blocks.js')
+swap('  /* Extra content for the "Who I help" pages */', '  /* =====================================================================\n     Pages\n', 'data2.js')
+swap("  PAGES['/about'] = () => `", '  function articleCards()', 'pages.js')
+for en, tr in bg['HEAD']:
+    assert b.count(en) == 1, ('HEAD', en[:70])
+    b = b.replace(en, tr)
+assert b.count(bg['LANG_EN']) == 2
+b = b.replace(bg['LANG_EN'], bg['LANG_BG'])
+missing = [en for en, tr in bg['PAIRS'] if en not in b]
+assert not missing, ('not found', missing)
+for en, tr in bg['PAIRS']:
+    b = b.replace(en, tr)
+open(f'{REPO}/mockup/site-bg.html', 'w').write(b)
+print('site-bg.html', len(b))
