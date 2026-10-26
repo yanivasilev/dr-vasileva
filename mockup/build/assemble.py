@@ -71,7 +71,7 @@ rep('''      <li><a href="#about">About me</a></li>
       <li><a href="#/issues">What I help with</a></li>
       <li><a href="#/articles">Articles</a></li>
       <li><a href="#/faq">FAQ</a></li>''')
-rep('<a class="btn btn-cream" href="#contact">Get in touch</a>', '<a class="btn btn-cream" href="#/contact">Get in touch</a>')
+rep('<a class="btn btn-cream roll" href="#contact">', '<a class="btn btn-cream roll" href="#/contact">')
 for t, h, i in [('Home', '#/', 0), ('About me', '#/about', 1), ('Who I help', '#/who-i-help', 2), ('What I help with', '#/issues', 3),
                 ('Articles', '#/articles', 4), ('FAQ', '#/faq', 5), ('Contact', '#/contact', 6)]:
     s, n = re.subn(r'<li><a href="[^"]*" data-close style="--i:%d">%s</a></li>' % (i, re.escape(t)), f'<li><a href="{h}" data-close style="--i:{i}">{t}</a></li>', s)

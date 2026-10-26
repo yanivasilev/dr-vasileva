@@ -323,7 +323,7 @@
           <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master’s Thesis</h3><p>"Best diploma thesis" competition.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
         </div>
       </div>
-      <aside class="aside static">
+      <aside class="aside">
         <div class="box" data-reveal><h3>Quick facts</h3><ul class="facts">
           <li>${ic('i-cap')}PhD in Pedagogical &amp; Developmental Psychology</li>
           <li>${ic('i-bulb')}CBT Psychotherapist</li>
@@ -333,9 +333,9 @@
           <li>${ic('i-feather')}"School of Psychology" columnist, BG BEN</li>
         </ul></div>
         <div class="box" data-reveal><h3>Studied at &amp; member of</h3><div class="affil">
-          <img src="../images/logos/varna-free-university.png" alt="Varna Free University Chernorizets Hrabar" width="500" height="225" loading="lazy">
-          <img src="../images/logos/bps.png" alt="The British Psychological Society" width="400" height="200" loading="lazy">
-          <div class="affil-row"><img src="../images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"><span>Bulgarian Psychological Society</span></div>
+          <figure><span><img src="../images/logos/varna-free-university-mark.png" alt="" width="224" height="225" loading="lazy"></span><figcaption>Varna Free University</figcaption></figure>
+          <figure><span><img src="../images/logos/bps-mark.png" alt="" width="153" height="200" loading="lazy"></span><figcaption>British Psychological Society</figcaption></figure>
+          <figure><span><img src="../images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"></span><figcaption>Bulgarian Psychological Society</figcaption></figure>
         </div></div>
       </aside>
     </div></section>
