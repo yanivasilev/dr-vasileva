@@ -171,7 +171,7 @@ Bulgarian (native), English (fluent), Russian (good), German (basic).
 
 ### Title (decided)
 
-**Dr Mirena Vasileva, PhD – Psychologist & CBT Psychotherapist · MBPsS**
+**Dr Mirena Vasileva, PhD – Psychologist & CBT Psychotherapist · MBPsS** *(letters to be checked, see section 10)*
 (BG: **д-р Мирена Василева – психолог и когнитивно-поведенчески психотерапевт**)
 
 Use this title everywhere: header, About page, page titles, Facebook.
@@ -199,7 +199,8 @@ Use this title everywhere: header, About page, page titles, Facebook.
 - [x] Columns: **translated into English** for .co.uk
 - [ ] **Full list of scientific papers** (she has more than the CV shows; coming soon)
 - [x] BG BEN: she can republish her columns in full ✅
-- [ ] A short "about me" paragraph in her own words (we can draft one from the CV for her to approve)
+- [x] About me: drafted in EN + BG (section 9), **waiting for her approval**
+- [ ] Check her current BPS letters (MBPsS → GMBPsS since 2022?), DBS date and Bulgarian society name (section 10)
 
 ---
 
@@ -280,7 +281,7 @@ Every page exists in both languages. URLs are in English on `.co.uk` and in Bulg
 | # | Page | drvasileva.co.uk | drvasileva.bg | What's on it |
 |---|---|---|---|---|
 | 1 | **Home** | `/` | `/` | Photo, one-line promise, who I help, online & in person, sessions in BG & EN, "Featured in", call + Viber + WhatsApp buttons |
-| 2 | **About me** | `/about` | `/za-men` | Photo, her story, 21 years since 2005, PhD, education, experience timeline, **awards**, BPS membership, CBT, languages, charity work |
+| 2 | **About me** | `/about` | `/za-men` | Photo, "About me" text (section 9), quick facts box, **badges** (section 10), education, experience timeline, awards, publications link |
 | 3 | **Who I help** | `/who-i-help` | `/s-kogo-rabotya` | Overview page, linking to 3a–3f |
 | 3a | – Adults | `/who-i-help/adults` | `/s-kogo-rabotya/vazrastni` | Individual CBT therapy: anxiety, depression, panic, stress |
 | 3b | – Couples & families | `/who-i-help/couples-families` | `/s-kogo-rabotya/dvoyki-i-semeystva` | CBT couples therapy, family therapy |
@@ -556,3 +557,103 @@ A simple text logo: **Dr Mirena Vasileva** / **д-р Мирена Василев
 - Her photo is large on Home and About
 - Big, easy-to-tap buttons for **Call · Viber · WhatsApp** (most visitors will be on a phone)
 - No stock photos of people "looking sad". Instead, calm nature and texture images, or none at all
+
+---
+
+## 9. About me (draft – for her to approve)
+
+Written in her voice, from her CV. Used on the **About me** page, with the short version on **Home**.
+
+### English
+
+**Short version (Home page)**
+
+> I'm Dr Mirena Vasileva, a psychologist and CBT psychotherapist with 21 years of experience. I help adults, couples, families, children and teenagers through anxiety, stress, relationship difficulties and life's big changes, in Bulgarian or in English, online or in person.
+
+**Full version (About me page)**
+
+## Hello, I'm Mirena
+
+For 21 years, since 2005, I have been doing the work I love most: helping people understand themselves, heal and find their way forward. I'm a psychologist and cognitive behavioural therapist (CBT) with a PhD in Pedagogical and Developmental Psychology. I work with adults, couples, families, children and teenagers.
+
+My path began in Bulgaria. For eight years I worked as a psychologist at a home for children with intellectual disabilities near Nessebar, where I learned that every child, whatever their needs, deserves to be truly seen. Alongside that, I built my private practice, worked as a psychotherapist at Viva Clinic in Sunny Beach, and taught Experimental and Pedagogical Psychology at Burgas Free University as a Chief Assistant Professor.
+
+In 2016 I moved to London. Since then I have worked with clients at the Doctors 4 You and Medi-Park clinics, and supported children with special educational needs at the Bulgarian school "Rodna Rech". Many of the people I see know what it's like to build a life between two countries. So do I.
+
+My doctoral research explored how the family environment shapes the way teenagers experience and cope with stress. It still guides my work today: I believe that when we understand the relationships around us, we can change the way we feel.
+
+In our sessions I mainly use CBT, a practical approach backed by research. Together we look at the link between your thoughts, feelings and behaviour, and find tools that work in your everyday life. I listen without judgement, and we go at your pace.
+
+Since 2023 I have written the "School of Psychology" column in BG BEN, the newspaper for Bulgarians in the UK. Outside the therapy room, I organise charity campaigns for children with intellectual disabilities and children without parental care.
+
+Whether you're facing anxiety, a difficult relationship, worries about your child, or you simply feel stuck, you don't have to go through it alone. Call or message me, in Bulgarian or in English.
+
+### Български
+
+**Кратка версия (начална страница)**
+
+> Аз съм д-р Мирена Василева – психолог и когнитивно-поведенчески психотерапевт с 21 години опит. Помагам на възрастни, двойки, семейства, деца и тийнейджъри да се справят с тревожност, стрес, трудности във взаимоотношенията и големите промени в живота – на български или на английски, онлайн или на живо.
+
+**Пълна версия (страница „За мен“)**
+
+## Здравейте, аз съм Мирена
+
+Вече 21 години – от 2005 г. – правя това, което обичам най-много: помагам на хората да разберат себе си, да се излекуват и да намерят своя път напред. Аз съм психолог и когнитивно-поведенчески психотерапевт (КПТ) с докторска степен по педагогическа и възрастова психология. Работя с възрастни, двойки, семейства, деца и тийнейджъри.
+
+Пътят ми започна в България. Осем години работих като психолог в дом за деца с интелектуални затруднения в община Несебър, където научих, че всяко дете, независимо от потребностите си, заслужава да бъде истински видяно. Успоредно с това развивах частната си практика, работих като психотерапевт във Viva Clinic в Слънчев бряг и преподавах експериментална и педагогическа психология в Бургаския свободен университет като главен асистент.
+
+През 2016 г. се преместих в Лондон. Оттогава работя с клиенти в клиниките Doctors 4 You и Medi-Park, а в българското училище „Родна реч“ подкрепях деца със специални образователни потребности. Много от хората, с които работя, знаят какво е да градиш живот между две държави. Знам го и аз.
+
+Докторското ми изследване беше посветено на това как семейната среда влияе на начина, по който тийнейджърите преживяват стреса и се справят с него. То и до днес ръководи работата ми: вярвам, че когато разберем отношенията около нас, можем да променим и начина, по който се чувстваме.
+
+В консултациите използвам основно КПТ – практичен и научно доказан подход. Заедно разглеждаме връзката между мислите, чувствата и поведението Ви и търсим инструменти, които работят в ежедневието Ви. Изслушвам Ви, без да съдя, и вървим с Вашето темпо.
+
+От 2023 г. пиша рубриката „Училище по психология“ във вестник BG BEN – изданието за българите във Великобритания. Извън кабинета организирам благотворителни кампании за деца с интелектуални затруднения и деца, лишени от родителска грижа.
+
+Независимо дали се борите с тревожност, трудна връзка, притеснения за детето си, или просто се чувствате в застой – не е нужно да минавате през това сами. Обадете ми се или ми пишете – на български или на английски.
+
+### Next to the text: quick facts box
+
+| | EN | BG |
+|---|---|---|
+| 🎓 | PhD in Pedagogical & Developmental Psychology | Доктор по педагогическа и възрастова психология |
+| 🧠 | CBT Psychotherapist | Когнитивно-поведенчески психотерапевт |
+| 🏆 | Gold Ring of Varna Free University · First Prize, Best Master's Thesis | Златен пръстен на ВСУ · Първа награда за най-добра дипломна работа |
+| 🌍 | Sessions in Bulgarian & English | Консултации на български и английски |
+| 💻 | Online & in person | Онлайн и на живо |
+| 📰 | "School of Psychology" columnist, BG BEN | Автор на рубриката „Училище по психология“, BG BEN |
+
+> **Private details left out on purpose:** date of birth, home address, family, personal email.
+
+---
+
+## 10. Badges (trust signals)
+
+### Rule: our own badges, not official logos
+
+We design **our own simple badges** (icon + short text, in the site colours). We **don't** use the official logos of the BPS, the universities, NSPCC or DBS. Organisations like these usually restrict who may use their logos, and a wrong logo can get a removal request or look misleading. Text badges are always safe, and they look cleaner.
+
+### Badges to show
+
+Shown as a row on **Home** and **About me**:
+
+| Badge | EN text | BG text | Show? |
+|---|---|---|---|
+| 🎓 | **PhD in Psychology** | **Доктор по психология** | ✅ |
+| 🏆 | **Gold Ring award**, Varna Free University | **Златен пръстен**, ВСУ „Черноризец Храбър“ | ✅ |
+| 🥇 | **First Prize, Best Master's Thesis** | **Първа награда** за най-добра магистърска теза | ✅ |
+| 🧠 | **Diploma in CBT** | **Диплома по КПТ** | ✅ |
+| 🧩 | **Diploma in SEND** (special educational needs) | **Диплома по СОП** | ✅ |
+| 🏛️ | **Member, British Psychological Society** | **Член на Британското психологическо дружество** | ✅ *(see check 1)* |
+| 🇧🇬 | **Member, Bulgarian Psychological Society** | **Член на Дружеството на психолозите в България** | ✅ *(see check 3)* |
+| 🛡️ | **Safeguarding Children – Level 3** | **Закрила на детето – ниво 3** | ✅ |
+| ⏳ | **21 years' experience** (auto-counted from 2005) | **21 години опит** | ✅ |
+| 🗣️ | **Bulgarian & English** | **Български и английски** | ✅ |
+| 📰 | **Columnist, BG BEN** | **Автор в BG BEN** | ✅ |
+| ✔️ | **Enhanced DBS checked** | **DBS проверка** | ⚠️ *(see check 2)* |
+
+### Checks before launch
+
+1. **BPS letters.** In **September 2022** the BPS changed the letters for graduate members from **MBPsS** to **GMBPsS**. Her CV still says MBPsS. She can see her current grade and letters in her BPS member portal. Until then, the badge just says "Member, British Psychological Society", which is true either way, and the letters after her name should match what the portal shows.
+2. **DBS.** Her Enhanced DBS is dated **July 2016**. A DBS check is a snapshot on the day it's issued. Only show the badge if she has a **recent** one or is on the **DBS Update Service**.
+3. **Bulgarian Psychological Society.** Confirm the exact name of the society she's a member of, so the badge text is correct.
