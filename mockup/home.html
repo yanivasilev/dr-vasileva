@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dr Mirena Vasileva – Psychologist & CBT Psychotherapist</title>
+<meta name="description" content="Dr Mirena Vasileva, PhD – psychologist and CBT psychotherapist. Online and in-person sessions in Bulgarian and English for adults, couples, families, children and teenagers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,500;0,600;1,500&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+  :root {
+    --green: #4F6F52;
+    --green-dark: #344E38;
+    --green-soft: #E4ECE3;
+    --lilac: #B9A3C9;
+    --lilac-soft: #EEE7F3;
+    --gold: #C9A25A;
+    --cream: #FAF7F2;
+    --sand: #F1ECE3;
+    --text: #2E2E2E;
+    --muted: #5F625E;
+    --white: #FFFFFF;
+    --radius: 20px;
+    --shadow: 0 10px 30px rgba(52, 78, 56, .10);
+    --wrap: 1160px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--text);
+    background: var(--cream);
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: "Lora", Georgia, serif; font-weight: 600; line-height: 1.2; margin: 0 0 .5em; }
+  h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); }
+  h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); }
+  h3 { font-size: 1.2rem; }
+  p { margin: 0 0 1em; }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
+  .eyebrow { font-size: .85rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--green); margin-bottom: .75rem; display: block; }
+  .center { text-align: center; }
+  .lead { color: var(--muted); max-width: 640px; }
+  .center .lead { margin-left: auto; margin-right: auto; }
+  section { padding: 88px 0; }
+  .icon { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; font-weight: 600; font-size: 1rem; text-decoration: none; border: 2px solid transparent; transition: transform .15s, background .15s, color .15s; cursor: pointer; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-light { background: var(--white); color: var(--green-dark); }
+  .btn-outline-light { border-color: rgba(255,255,255,.6); color: var(--white); }
+  .btn-outline-light:hover { background: rgba(255,255,255,.12); }
+  .btn-green { background: var(--green); color: var(--white); }
+  .btn-green:hover { background: var(--green-dark); }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  /* Header */
+  header { position: sticky; top: 0; z-index: 50; background: var(--green-dark); color: var(--white); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 20px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: "Lora", serif; font-size: 1.25rem; font-weight: 600; white-space: nowrap; }
+  .logo .mark { width: 34px; height: 34px; border-radius: 50%; background: var(--lilac); display: grid; place-items: center; color: var(--green-dark); }
+  .nav-links { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-size: .95rem; }
+  .nav-links a { text-decoration: none; opacity: .85; }
+  .nav-links a:hover, .nav-links a[aria-current] { opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+  .nav-right { display: flex; align-items: center; gap: 14px; }
+  .lang { display: flex; border: 1px solid rgba(255,255,255,.35); border-radius: 999px; overflow: hidden; font-size: .85rem; font-weight: 600; }
+  .lang a { padding: 6px 12px; text-decoration: none; }
+  .lang a.on { background: var(--white); color: var(--green-dark); }
+  .nav .btn { padding: 10px 18px; font-size: .92rem; }
+  .menu-btn { display: none; background: none; border: 0; color: var(--white); padding: 6px; cursor: pointer; }
+  .menu-btn .icon { width: 28px; height: 28px; }
+
+  /* Hero */
+  .hero { background: var(--green-dark); color: var(--white); padding: 56px 0 120px; position: relative; overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center; }
+  .hero .eyebrow { color: var(--lilac); }
+  .hero p.lead { color: rgba(255,255,255,.85); font-size: 1.1rem; margin-bottom: 1.75rem; }
+  .hero-note { margin-top: 1.25rem; font-size: .92rem; color: rgba(255,255,255,.75); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  .hero-note span { display: inline-flex; align-items: center; gap: 6px; }
+  .hero-note .icon { width: 16px; height: 16px; color: var(--lilac); }
+  .hero-photo { position: relative; justify-self: center; width: min(420px, 100%); isolation: isolate; }
+  .arch { position: relative; border-radius: 220px 220px 28px 28px; overflow: hidden; aspect-ratio: 4 / 5; border: 6px solid rgba(255,255,255,.14); }
+  .arch img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
+  .hero-photo::before { content: ""; position: absolute; inset: -18px -18px 30px 30px; border-radius: 220px 220px 28px 28px; background: var(--lilac); opacity: .35; z-index: -1; }
+  .float { position: absolute; background: var(--white); color: var(--text); border-radius: 16px; padding: 12px 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px; font-size: .9rem; font-weight: 600; line-height: 1.3; }
+  .float .ico { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; background: var(--green-soft); color: var(--green); }
+  .float small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
+  .float-1 { left: -36px; bottom: 70px; }
+  .float-2 { right: -24px; top: 48px; }
+  .leaf-deco { position: absolute; color: rgba(255,255,255,.07); pointer-events: none; }
+  .leaf-deco.a { width: 260px; height: 260px; left: -70px; bottom: -60px; transform: rotate(-20deg); }
+  .leaf-deco.b { width: 140px; height: 140px; right: 6%; top: 18px; transform: rotate(35deg); }
+  .wave { position: absolute; bottom: -1px; left: 0; width: 100%; height: 70px; color: var(--cream); }
+
+  /* Badges */
+  .badges { margin-top: -64px; position: relative; z-index: 2; padding: 0; }
+  .badge-row { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 28px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+  .badge { display: flex; align-items: center; gap: 10px; font-size: .88rem; font-weight: 600; line-height: 1.3; }
+  .badge .ico { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--green-soft); color: var(--green); flex-shrink: 0; }
+  .badge.gold .ico { background: #F6EEDC; color: var(--gold); }
+
+  /* Who I help */
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 44px; }
+  .card { background: var(--white); border-radius: var(--radius); padding: 28px; border: 1px solid var(--sand); transition: background .2s, color .2s, transform .2s, box-shadow .2s; text-decoration: none; display: flex; flex-direction: column; }
+  .card .ico { width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; background: var(--green-soft); color: var(--green); margin-bottom: 18px; transition: background .2s, color .2s; }
+  .card .ico .icon { width: 26px; height: 26px; }
+  .card p { color: var(--muted); font-size: .95rem; flex: 1; transition: color .2s; }
+  .more { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: .9rem; color: var(--green); transition: color .2s; }
+  .more .icon { width: 18px; height: 18px; transition: transform .2s; }
+  .card:hover, .card:focus-visible { background: var(--green); color: var(--white); transform: translateY(-4px); box-shadow: var(--shadow); }
+  .card:hover p, .card:focus-visible p, .card:hover .more, .card:focus-visible .more { color: rgba(255,255,255,.9); }
+  .card:hover .ico, .card:focus-visible .ico { background: rgba(255,255,255,.16); color: var(--white); }
+  .card:hover .more .icon { transform: translateX(4px); }
+
+  /* About preview */
+  .about { background: var(--white); }
+  .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 64px; align-items: center; }
+  .about-photo { position: relative; }
+  .about-photo img { border-radius: var(--radius); aspect-ratio: 1; object-fit: cover; width: 100%; height: auto; }
+  .about-photo::before { content: ""; position: absolute; width: 140px; height: 140px; top: -22px; left: -22px; border-radius: 28px; background: radial-gradient(var(--lilac) 2px, transparent 2.5px) 0 0 / 18px 18px; opacity: .8; z-index: 0; }
+  .about-photo img { position: relative; z-index: 1; }
+  .years { position: absolute; z-index: 2; right: -20px; bottom: 32px; background: var(--green); color: var(--white); border-radius: 18px; padding: 18px 22px; box-shadow: var(--shadow); }
+  .years strong { display: block; font-family: "Lora", serif; font-size: 2.4rem; line-height: 1; }
+  .years > span { font-size: .9rem; opacity: .9; }
+  .points { list-style: none; padding: 0; margin: 28px 0 32px; display: grid; gap: 20px; }
+  .points li { display: flex; gap: 16px; }
+  .num { width: 40px; height: 40px; border-radius: 50%; background: var(--lilac-soft); color: var(--green-dark); font-weight: 600; display: grid; place-items: center; flex-shrink: 0; font-size: .9rem; }
+  .points h3 { margin: 0 0 2px; font-size: 1.08rem; }
+  .points p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  /* Why */
+  .why-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 56px; align-items: start; }
+  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px 28px; }
+  .feature .ico { width: 50px; height: 50px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 14px; color: var(--white); }
+  .feature:nth-child(1) .ico { background: var(--green); }
+  .feature:nth-child(2) .ico { background: #8E79A6; }
+  .feature:nth-child(3) .ico { background: var(--gold); }
+  .feature:nth-child(4) .ico { background: var(--green-dark); }
+  .feature h3 { margin-bottom: 6px; }
+  .feature p { color: var(--muted); font-size: .95rem; margin: 0; }
+
+  /* Contact banner */
+  .banner { padding: 0; }
+  .banner-box { background: var(--green); color: var(--white); border-radius: 28px; padding: 56px; display: grid; grid-template-columns: 1.2fr .8fr; gap: 40px; align-items: center; position: relative; overflow: hidden; }
+  .banner-box p { color: rgba(255,255,255,.85); }
+  .banner-box .leaf-deco { width: 300px; height: 300px; right: -60px; top: -60px; color: rgba(255,255,255,.08); transform: rotate(20deg); }
+  .contact-list { display: grid; gap: 12px; position: relative; }
+  .contact-list a { background: var(--white); color: var(--green-dark); border-radius: 16px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 600; transition: transform .15s; }
+  .contact-list a:hover { transform: translateX(4px); }
+  .contact-list small { display: block; font-weight: 400; color: var(--muted); font-size: .82rem; }
+
+  /* Columns carousel */
+  .col-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 24px; }
+  .tab { border: 1px solid var(--green-soft); background: var(--white); color: var(--green-dark); padding: 8px 16px; border-radius: 999px; font: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; }
+  .tab[aria-pressed="true"] { background: var(--green-dark); color: var(--white); border-color: var(--green-dark); }
+  .arrows { display: flex; gap: 10px; }
+  .arrow { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--green); background: transparent; color: var(--green); display: grid; place-items: center; cursor: pointer; }
+  .arrow:hover { background: var(--green); color: var(--white); }
+  .track { display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 3 * 20px) / 4); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+  .track::-webkit-scrollbar { display: none; }
+  .article { scroll-snap-align: start; background: var(--white); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--sand); text-decoration: none; display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
+  .article:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .article .top { height: 120px; display: grid; place-items: center; color: var(--white); }
+  .article .top .icon { width: 40px; height: 40px; opacity: .9; }
+  .t-anxiety .top { background: linear-gradient(135deg, #6F8F72, var(--green)); }
+  .t-parents .top { background: linear-gradient(135deg, #C3AFD1, #8E79A6); }
+  .t-relationships .top { background: linear-gradient(135deg, #D9B97A, var(--gold)); }
+  .t-growth .top { background: linear-gradient(135deg, #4F6F52, var(--green-dark)); }
+  .article .body { padding: 18px 20px 22px; display: flex; flex-direction: column; flex: 1; }
+  .article .tag { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--green); }
+  .article h3 { font-size: 1.05rem; margin: 6px 0 10px; flex: 1; }
+  .article time { font-size: .82rem; color: var(--muted); }
+  .article[hidden] { display: none; }
+
+  /* Recognition */
+  .recog { background: var(--white); }
+  .recog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 40px; }
+  .award { background: var(--cream); border-radius: var(--radius); padding: 28px; display: flex; gap: 18px; align-items: flex-start; }
+  .award .ico { width: 56px; height: 56px; border-radius: 50%; background: #F6EEDC; color: var(--gold); display: grid; place-items: center; flex-shrink: 0; }
+  .award .ico .icon { width: 28px; height: 28px; }
+  .award p { margin: 0; color: var(--muted); font-size: .95rem; }
+  .featured { margin-top: 48px; text-align: center; }
+  .featured .eyebrow { color: var(--muted); }
+  .press { display: flex; justify-content: center; flex-wrap: wrap; gap: 18px 48px; font-family: "Lora", serif; font-size: 1.35rem; color: #8A8D88; }
+  .press span small { display: block; font-family: "Inter", sans-serif; font-size: .78rem; color: var(--muted); }
+
+  /* Footer */
+  footer { background: var(--green-dark); color: rgba(255,255,255,.85); padding: 64px 0 28px; font-size: .95rem; }
+  .foot-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1.2fr; gap: 36px; }
+  footer h4 { font-family: "Lora", serif; color: var(--white); font-size: 1.05rem; margin: 0 0 14px; }
+  footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  footer a { text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer .logo { color: var(--white); margin-bottom: 14px; }
+  .f-contact li { display: flex; align-items: center; gap: 10px; }
+  .f-contact .icon { width: 18px; height: 18px; color: var(--lilac); }
+  .crisis { margin-top: 44px; padding: 16px 20px; border-radius: 14px; background: rgba(255,255,255,.07); font-size: .88rem; }
+  .crisis strong { color: var(--white); }
+  .copy { margin-top: 28px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.15); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: .85rem; color: rgba(255,255,255,.6); }
+  .copy ul { display: flex; gap: 18px; }
+
+  /* Mobile contact bar */
+  .mobile-bar { display: none; }
+
+  /* Responsive */
+  @media (max-width: 1020px) {
+    .nav-links { display: none; }
+    .menu-btn { display: block; }
+    .nav-links.open { display: grid; position: absolute; top: 72px; left: 0; right: 0; background: var(--green-dark); padding: 12px 20px 24px; gap: 4px; }
+    .nav-links.open a { display: block; padding: 10px 0; font-size: 1.05rem; }
+    .badge-row { grid-template-columns: repeat(3, 1fr); }
+    .track { grid-auto-columns: calc((100% - 2 * 20px) / 3); }
+  }
+  @media (max-width: 860px) {
+    section { padding: 64px 0; }
+    .hero { padding: 36px 0 110px; }
+    .hero-grid, .about-grid, .why-grid, .banner-box, .recog-grid { grid-template-columns: 1fr; }
+    .hero-grid { gap: 40px; }
+    .hero-photo { width: min(340px, 82%); }
+    .cards { grid-template-columns: repeat(2, 1fr); }
+    .about-grid { gap: 40px; }
+    .about-photo { max-width: 460px; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .banner-box { padding: 40px 28px; }
+    .track { grid-auto-columns: 46%; }
+  }
+  @media (max-width: 560px) {
+    body { font-size: 16px; padding-bottom: 74px; }
+    .wrap { padding: 0 16px; }
+    .nav .btn { display: none; }
+    .logo { font-size: 1.08rem; }
+    .logo .mark { width: 30px; height: 30px; }
+    .hero .btn-row .btn { flex: 1 1 100%; justify-content: center; }
+    .float-1 { left: -14px; bottom: 40px; }
+    .float-2 { right: -14px; top: 24px; }
+    .float { padding: 10px 12px; font-size: .82rem; }
+    .float .ico { width: 32px; height: 32px; }
+    .badge-row { grid-template-columns: 1fr 1fr; padding: 20px; }
+    .cards, .features { grid-template-columns: 1fr; }
+    .years { right: 12px; bottom: 16px; padding: 14px 18px; }
+    .years strong { font-size: 2rem; }
+    .track { grid-auto-columns: 80%; }
+    .foot-grid { grid-template-columns: 1fr; }
+    .mobile-bar { display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; background: var(--white); box-shadow: 0 -6px 20px rgba(0,0,0,.08); padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); gap: 8px; }
+    .mobile-bar a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 4px; border-radius: 12px; text-decoration: none; font-size: .78rem; font-weight: 600; color: var(--green-dark); background: var(--green-soft); }
+    .mobile-bar a .icon { width: 20px; height: 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Icon sprite (Lucide-style strokes) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-chat-dots" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></symbol>
+  <symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M10 3h4v1.5a2 2 0 1 0 4 0V3h3v7h-1.5a2 2 0 1 0 0 4H21v7h-7v-1.5a2 2 0 1 0-4 0V21H3v-7h1.5a2 2 0 1 0 0-4H3V3h7z"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.22 3.48a.5.5 0 0 0 .78-.42V7.87a.5.5 0 0 0-.75-.43L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5M22 10v6"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6M10 22h4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+</svg>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#"><span class="mark"><svg class="icon"><use href="#i-leaf"/></svg></span>Dr Mirena Vasileva</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#" aria-current="page">Home</a></li>
+      <li><a href="#about">About me</a></li>
+      <li><a href="#who">Who I help</a></li>
+      <li><a href="#">What I help with</a></li>
+      <li><a href="#articles">Articles</a></li>
+      <li><a href="#">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang" aria-label="Language">
+        <a href="https://drvasileva.bg/" hreflang="bg" lang="bg">BG</a>
+        <a href="#" class="on" aria-current="true">EN</a>
+      </div>
+      <a class="btn btn-light" href="#contact">Contact me</a>
+      <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><svg class="icon"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <svg class="leaf-deco a icon" style="stroke-width:1"><use href="#i-leaf"/></svg>
+    <svg class="leaf-deco b icon" style="stroke-width:1"><use href="#i-leaf"/></svg>
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Dr Mirena Vasileva, PhD · Psychologist &amp; CBT Psychotherapist</span>
+        <h1>A calm space to talk, in Bulgarian or English</h1>
+        <p class="lead">I help adults, couples, families, children and teenagers through anxiety, stress, relationship difficulties and life's big changes, online or in person.</p>
+        <div class="btn-row">
+          <a class="btn btn-light" href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg>Call me</a>
+          <a class="btn btn-outline-light" href="https://wa.me/447999334778"><svg class="icon"><use href="#i-chat"/></svg>WhatsApp</a>
+          <a class="btn btn-outline-light" href="viber://chat?number=%2B447999334778"><svg class="icon"><use href="#i-chat-dots"/></svg>Viber</a>
+        </div>
+        <div class="hero-note">
+          <span><svg class="icon"><use href="#i-video"/></svg>Online &amp; in person</span>
+          <span><svg class="icon"><use href="#i-globe"/></svg>Български &amp; English</span>
+          <span><svg class="icon"><use href="#i-lock"/></svg>Confidential</span>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <div class="arch"><img src="../images/dr-vasileva.jpg" alt="Dr Mirena Vasileva smiling" width="1242" height="1242"></div>
+        <div class="float float-1"><span class="ico"><svg class="icon"><use href="#i-cap"/></svg></span><span>PhD in Psychology<small>Developmental psychology</small></span></div>
+        <div class="float float-2"><span class="ico"><svg class="icon"><use href="#i-sun"/></svg></span><span><span class="js-years">21</span> years<small>of experience</small></span></div>
+      </div>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path fill="currentColor" d="M0 40c240 30 480 30 720 10s480-30 720 0v20H0z"/></svg>
+  </section>
+
+  <!-- Badges -->
+  <section class="badges" aria-label="Qualifications">
+    <div class="wrap">
+      <div class="badge-row">
+        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-cap"/></svg></span>PhD in Psychology</div>
+        <div class="badge gold"><span class="ico"><svg class="icon"><use href="#i-award"/></svg></span>Gold Ring award</div>
+        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-bulb"/></svg></span>Diploma in CBT</div>
+        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-puzzle"/></svg></span>Diploma in SEND</div>
+        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-users"/></svg></span>Member, British Psychological Society</div>
+        <div class="badge"><span class="ico"><svg class="icon"><use href="#i-shield"/></svg></span>Safeguarding Children Level 3</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who I help -->
+  <section id="who">
+    <div class="wrap">
+      <div class="center">
+        <span class="eyebrow">Who I help</span>
+        <h2>Support for every stage of life</h2>
+        <p class="lead">Whatever you're going through, alone or together with the people close to you, we'll find a way forward at your pace.</p>
+      </div>
+      <div class="cards">
+        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-user"/></svg></span><h3>Adults</h3><p>Individual CBT therapy for anxiety, panic attacks, depression and stress.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-heart"/></svg></span><h3>Couples &amp; families</h3><p>Understand each other, communicate better and get through difficult times together.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-smile"/></svg></span><h3>Children &amp; teenagers</h3><p>Help with emotions, behaviour and the teenage years, with parents involved.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-puzzle"/></svg></span><h3>Special educational needs</h3><p>Autism, ADHD, dyslexia, dyspraxia and learning difficulties, including assessments and reports.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-users"/></svg></span><h3>Group sessions</h3><p>Small, supportive groups in Bulgarian and in English, online or in person.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+        <a class="card" href="#"><span class="ico"><svg class="icon"><use href="#i-building"/></svg></span><h3>Organisations &amp; schools</h3><p>Group training on professional stress, teamwork and relationships at work and school.</p><span class="more">Learn more <svg class="icon"><use href="#i-arrow"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- About preview -->
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <div class="about-photo">
+        <img src="../images/dr-vasileva.jpg" alt="Portrait of Dr Mirena Vasileva" width="1242" height="1242" loading="lazy">
+        <div class="years"><strong><span class="js-years">21</span>+</strong><span>years of experience</span></div>
+      </div>
+      <div>
+        <span class="eyebrow">About me</span>
+        <h2>Hello, I'm Mirena</h2>
+        <p class="lead">For 21 years, since 2005, I have been doing the work I love most: helping people understand themselves, heal and find their way forward.</p>
+        <ul class="points">
+          <li><span class="num">01</span><div><h3>PhD in Pedagogical &amp; Developmental Psychology</h3><p>My research explored how the family shapes the way teenagers cope with stress.</p></div></li>
+          <li><span class="num">02</span><div><h3>Practical, evidence-based CBT</h3><p>Tools that work in your everyday life, at a pace that feels right for you.</p></div></li>
+          <li><span class="num">03</span><div><h3>Between two countries</h3><p>Born in Bulgaria, in London since 2016. I know what it's like to build a life in two places.</p></div></li>
+        </ul>
+        <a class="btn btn-green" href="#">More about me <svg class="icon"><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why work with me -->
+  <section>
+    <div class="wrap why-grid">
+      <div>
+        <span class="eyebrow">Why work with me</span>
+        <h2>Therapy that fits your life</h2>
+        <p class="lead">Wherever you are, in the UK, in Bulgaria or anywhere else, you can talk to me in the language you feel most at home in.</p>
+      </div>
+      <div class="features">
+        <div class="feature"><span class="ico"><svg class="icon"><use href="#i-video"/></svg></span><h3>Online &amp; in person</h3><p>Secure video sessions from anywhere, or meet in person in the UK.</p></div>
+        <div class="feature"><span class="ico"><svg class="icon"><use href="#i-globe"/></svg></span><h3>Bulgarian &amp; English</h3><p>All sessions, including groups, in either language.</p></div>
+        <div class="feature"><span class="ico"><svg class="icon"><use href="#i-lock"/></svg></span><h3>Confidential</h3><p>What you share stays between us, in a safe space without judgement.</p></div>
+        <div class="feature"><span class="ico"><svg class="icon"><use href="#i-calendar"/></svg></span><h3>Flexible times</h3><p>We find a time that suits you, always agreed in your local time zone.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact banner -->
+  <section class="banner" id="contact">
+    <div class="wrap">
+      <div class="banner-box">
+        <svg class="leaf-deco icon" style="stroke-width:1"><use href="#i-leaf"/></svg>
+        <div>
+          <span class="eyebrow" style="color:var(--lilac)">Ready to talk?</span>
+          <h2>You don't have to go through it alone</h2>
+          <p>Call or message me in Bulgarian or English. Tell me a little about what you need, and we'll find a time that suits you.</p>
+        </div>
+        <div class="contact-list">
+          <a href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg><span>+44 7999 334778<small>Call me</small></span></a>
+          <a href="https://wa.me/447999334778"><svg class="icon"><use href="#i-chat"/></svg><span>WhatsApp<small>Send a message</small></span></a>
+          <a href="viber://chat?number=%2B447999334778"><svg class="icon"><use href="#i-chat-dots"/></svg><span>Viber<small>Send a message</small></span></a>
+          <a href="mailto:contact@drvasileva.co.uk"><svg class="icon"><use href="#i-mail"/></svg><span>contact@drvasileva.co.uk<small>Email me</small></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Columns -->
+  <section id="articles">
+    <div class="wrap">
+      <div class="col-head">
+        <div>
+          <span class="eyebrow">School of Psychology</span>
+          <h2>From my BG BEN column</h2>
+        </div>
+        <div class="arrows">
+          <button class="arrow" data-dir="-1" aria-label="Previous"><svg class="icon"><use href="#i-left"/></svg></button>
+          <button class="arrow" data-dir="1" aria-label="Next"><svg class="icon"><use href="#i-right"/></svg></button>
+        </div>
+      </div>
+      <div class="tabs" role="group" aria-label="Filter by topic">
+        <button class="tab" aria-pressed="true" data-filter="all">All</button>
+        <button class="tab" aria-pressed="false" data-filter="anxiety">Anxiety &amp; stress</button>
+        <button class="tab" aria-pressed="false" data-filter="parents">Parents &amp; children</button>
+        <button class="tab" aria-pressed="false" data-filter="relationships">Relationships</button>
+        <button class="tab" aria-pressed="false" data-filter="growth">Self-growth</button>
+      </div>
+      <div class="track" id="track"></div>
+    </div>
+  </section>
+
+  <!-- Recognition -->
+  <section class="recog">
+    <div class="wrap">
+      <div class="center">
+        <span class="eyebrow">Recognition</span>
+        <h2>Awards &amp; achievements</h2>
+      </div>
+      <div class="recog-grid">
+        <div class="award"><span class="ico"><svg class="icon"><use href="#i-award"/></svg></span><div><h3>Gold Ring of Varna Free University</h3><p>Awarded for graduating with honours, Master's in Psychology and Psychopathology of Development (2006).</p></div></div>
+        <div class="award"><span class="ico"><svg class="icon"><use href="#i-award"/></svg></span><div><h3>First Prize, Best Master's Thesis</h3><p>"Stress effects on the family environment and the upbringing of children" (2005–2006).</p></div></div>
+      </div>
+      <div class="featured">
+        <span class="eyebrow">Featured in</span>
+        <div class="press">
+          <span>BG BEN<small>"School of Psychology" column</small></span>
+          <span>"Doctor"<small>Newspaper interview, 2015</small></span>
+          <span>BG Radio<small>Interview, 2019</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#"><span class="mark"><svg class="icon"><use href="#i-leaf"/></svg></span>Dr Mirena Vasileva</a>
+        <p>PhD · Psychologist &amp; CBT Psychotherapist. Online and in person, in Bulgarian and English.</p>
+      </div>
+      <div>
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="#">About me</a></li>
+          <li><a href="#">Who I help</a></li>
+          <li><a href="#">What I help with</a></li>
+          <li><a href="#">Articles</a></li>
+          <li><a href="#">Fees</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Crisis help</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <ul class="f-contact">
+          <li><svg class="icon"><use href="#i-phone"/></svg><a href="tel:+447999334778">+44 7999 334778</a></li>
+          <li><svg class="icon"><use href="#i-chat"/></svg><a href="https://wa.me/447999334778">WhatsApp</a></li>
+          <li><svg class="icon"><use href="#i-chat-dots"/></svg><a href="viber://chat?number=%2B447999334778">Viber</a></li>
+          <li><svg class="icon"><use href="#i-mail"/></svg><a href="mailto:contact@drvasileva.co.uk">contact@drvasileva.co.uk</a></li>
+          <li><svg class="icon"><use href="#i-facebook"/></svg><a href="https://www.facebook.com/share/1Bh2hqG1Ac/">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="crisis"><strong>In an emergency:</strong> I'm not an emergency service. If you or someone else is in immediate danger, call <strong>999</strong> (UK) or <strong>112</strong> (Bulgaria). In the UK you can also call Samaritans free on <strong>116 123</strong>, 24/7.</div>
+    <div class="copy">
+      <span>© <span id="year">2026</span> Dr Mirena Vasileva</span>
+      <ul><li><a href="#">Privacy</a></li><li><a href="#">Cookies</a></li><li><a href="#">Terms</a></li></ul>
+    </div>
+  </div>
+</footer>
+
+<nav class="mobile-bar" aria-label="Quick contact">
+  <a href="tel:+447999334778"><svg class="icon"><use href="#i-phone"/></svg>Call</a>
+  <a href="https://wa.me/447999334778"><svg class="icon"><use href="#i-chat"/></svg>WhatsApp</a>
+  <a href="viber://chat?number=%2B447999334778"><svg class="icon"><use href="#i-chat-dots"/></svg>Viber</a>
+</nav>
+
+<script>
+  // Years of experience, counted from 2005
+  const years = new Date().getFullYear() - 2005;
+  document.querySelectorAll('.js-years').forEach(el => el.textContent = years);
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Mobile menu
+  const menuBtn = document.querySelector('.menu-btn');
+  const links = document.getElementById('nav-links');
+  menuBtn.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+  });
+
+  // School of Psychology columns (newest first)
+  const columns = [
+    ['2026-09-19', 'Expired gratitude', 'growth', 'https://www.bgben.co.uk/blagodarnostta-s-iztekul-srok'],
+    ['2026-07-08', 'The alphabet of the human soul', 'growth', 'https://www.bgben.co.uk/azbukata-na-choveshkata-dusha'],
+    ['2026-06-10', 'The silence of digital violence', 'parents', 'https://bgben.co.uk/v-uchilishte-po-psihologiya-tishinata-na-digitalnoto-nasilie'],
+    ['2026-04-04', 'Why it is important to make peace with ourselves', 'growth', 'https://bgben.co.uk/zashto-e-vazhno-da-se-pomirim-sus-sebe-si'],
+    ['2026-03-13', 'Practical guidelines for preventing violence in children', 'parents', 'https://bgben.co.uk/prakticheski-nasoki-za-predotvratyavane-na-nasilieto-pri-detsata'],
+    ['2026-01-13', 'The quiet revolution of the soul', 'growth', 'https://bgben.co.uk/tihata-revolyutsiya-na-dushata'],
+    ['2025-12-01', 'Holiday stress and the invisible loneliness of the holidays', 'anxiety', 'https://bgben.co.uk/praznichen-stres-i-nevidimata-samota-po-vreme-na-praznitsite-'],
+    ['2025-09-25', 'The child within us and the path to ourselves', 'growth', 'https://www.bgben.co.uk/deteto-v-nas-i-putyat-kum-sebe-si-'],
+    ['2025-04-21', 'A conversation with gratitude', 'growth', 'https://bgben.co.uk/v-uchilishte-po-psihologiya-dnes-razgovor-s-blagodarnostta'],
+    ['2025-03-01', 'Self-help for panic attacks and anxiety (part two)', 'anxiety', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-vtora'],
+    ['2025-02-10', 'Self-help for panic attacks and anxiety (part one)', 'anxiety', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-purva'],
+    ['2025-01-01', 'Several successful steps to preserve love in marriage', 'relationships', 'https://bgben.co.uk/nyakolko-uspeshni-stupki-za-suhranenie-na-lyubovta-v-braka'],
+    ['2024-09-13', 'How to be ourselves and learn the skill of understanding', 'growth', 'https://bgben.co.uk/files/pdf_1739664087_506.pdf'],
+    ['2024-01-12', 'Invitation to happiness', 'growth', 'https://bgben.co.uk/files/pdf_1739663720_498.pdf'],
+    ['2023-08-11', 'Understanding emotional intelligence, and where we are', 'growth', 'https://bgben.co.uk/files/pdf_1739663529_492.pdf'],
+    ['2023-06-30', 'How fears and emotions make us sick', 'anxiety', 'https://bgben.co.uk/files/pdf_1739663445_490.pdf'],
+    ['2023-04-14', 'Forgiveness is the greatest teacher', 'relationships', 'https://bgben.co.uk/files/pdf_1739663300_486.pdf'],
+    ['2023-01-27', 'How parents can help their children in adolescence', 'parents', 'https://bgben.co.uk/files/pdf_1739663167_482.pdf'],
+  ];
+  const tagInfo = {
+    anxiety: ['Anxiety & stress', 'i-sun'],
+    parents: ['Parents & children', 'i-smile'],
+    relationships: ['Relationships', 'i-heart'],
+    growth: ['Self-growth', 'i-leaf'],
+  };
+  // Dates the source only gives as a month or a year are shown that way
+  const fuzzy = { '2025-12-01': 'December 2025', '2025-03-01': 'March 2025', '2025-01-01': '2025' };
+  const fmt = d => fuzzy[d] || new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const track = document.getElementById('track');
+  track.innerHTML = columns.map(([date, title, tag, url]) => `
+    <a class="article t-${tag}" data-tag="${tag}" href="${url}">
+      <div class="top"><svg class="icon"><use href="#${tagInfo[tag][1]}"/></svg></div>
+      <div class="body"><span class="tag">${tagInfo[tag][0]}</span><h3>${title}</h3><time datetime="${date}">${fmt(date)}</time></div>
+    </a>`).join('');
+
+  document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t === tab));
+    const f = tab.dataset.filter;
+    track.querySelectorAll('.article').forEach(a => a.hidden = f !== 'all' && a.dataset.tag !== f);
+    track.scrollTo({ left: 0 });
+  }));
+  document.querySelectorAll('.arrow').forEach(btn => btn.addEventListener('click', () => {
+    track.scrollBy({ left: btn.dataset.dir * track.clientWidth * 0.8, behavior: 'smooth' });
+  }));
+</script>
+</body>
+</html>
