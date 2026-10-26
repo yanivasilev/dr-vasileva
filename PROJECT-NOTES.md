@@ -199,7 +199,7 @@ Use this title everywhere: header, About page, page titles, Facebook.
 - [x] Columns: **translated into English** for .co.uk
 - [ ] **Full list of scientific papers** (she has more than the CV shows; coming soon)
 - [x] BG BEN: she can republish her columns in full ✅
-- [x] About me: drafted in EN + BG (section 9), **waiting for her approval**
+- [x] About me: EN + BG (section 9), **approved by her** ✅
 - [ ] Check her current BPS letters (MBPsS → GMBPsS since 2022?), DBS date and Bulgarian society name (section 10)
 
 ---
@@ -560,7 +560,7 @@ A simple text logo: **Dr Mirena Vasileva** / **д-р Мирена Василев
 
 ---
 
-## 9. About me (draft – for her to approve)
+## 9. About me (approved ✅)
 
 Written in her voice, from her CV. Used on the **About me** page, with the short version on **Home**.
 
