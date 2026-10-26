@@ -200,7 +200,8 @@ Use this title everywhere: header, About page, page titles, Facebook.
 - [ ] **Full list of scientific papers** (she has more than the CV shows; coming soon)
 - [x] BG BEN: she can republish her columns in full ✅
 - [x] About me: EN + BG (section 9), **approved by her** ✅
-- [ ] **Waiting on her:** who issued the **Diploma in SEND**, the **Diploma in CBT** and **Safeguarding Children Level 3**, the date of each, and whether the safeguarding certificate is still current (usually renewed every 3 years). Then we add the issuer to each badge, or drop any that have expired.
+- [x] **Diploma in CBT** and **Diploma in SEND**: issued by **Burgas Free University** (shown with its logo). *Please confirm it's Burgas Free University and not the Bulgarian Academy of Sciences.*
+- [x] **Safeguarding Children Level 3**: removed from the site.
 - [ ] Check her current BPS letters (MBPsS → GMBPsS since 2022?), DBS date and Bulgarian society name (section 10)
 
 ---
@@ -572,6 +573,8 @@ Supplied by you. Used in the credentials strip, "Featured in", the award cards, 
 | `bps.png`, `bps-mark.png` | The British Psychological Society (full logo / emblem only) |
 | `varna-free-university.png`, `varna-free-university-mark.png` | Varna Free University "Chernorizets Hrabar" (full logo / emblem only) |
 | `bulgarian-psychological-society.png` | Bulgarian Psychological Society |
+| `burgas-free-university.png` | Burgas Free University (CBT & SEND diplomas, lectures) |
+| `bulgarian-academy-of-sciences.png` | Bulgarian Academy of Sciences (doctoral contributions) |
 
 > Before launch: the BPS limits how members use its logo. Check her membership grade allows it (her BPS portal or the BPS brand guidelines); if not, we swap back to the "Ψ" badge.
 

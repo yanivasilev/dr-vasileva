@@ -183,11 +183,11 @@
   @keyframes cue { to { top: 110%; } }
 
   /* Credentials marquee */
-  .marquee { padding: 26px 0; background: var(--white); border-bottom: 1px solid var(--sand); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+  .marquee { padding: 26px 0; background: var(--cream); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
   .marquee-track { display: flex; width: max-content; animation: marquee 55s linear infinite; }
   .marquee:hover .marquee-track { animation-play-state: paused; }
   .marquee-group { display: flex; align-items: center; gap: 22px; padding-right: 22px; }
-  .cred { display: inline-flex; align-items: center; gap: 14px; white-space: nowrap; padding: 10px 22px 10px 10px; border-radius: 999px; background: var(--cream); border: 1px solid rgba(44,68,48,.07); transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+  .cred { display: inline-flex; align-items: center; gap: 14px; white-space: nowrap; padding: 10px 22px 10px 10px; border-radius: 999px; background: var(--white); border: 1px solid rgba(44,68,48,.08); transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
   .cred:hover { transform: translateY(-3px); box-shadow: 0 12px 26px -16px rgba(44,68,48,.5); }
   .cred svg { width: 50px; height: 50px; flex-shrink: 0; }
   .cred b { display: block; font-family: var(--serif); font-size: 1.28rem; font-weight: 600; color: var(--green-deep); line-height: 1.1; }
@@ -607,7 +607,7 @@
   <!-- Credentials marquee -->
   <div class="marquee" id="creds" aria-label="Qualifications and awards">
     <div class="marquee-track">
-      <div class="marquee-group"><span class="cred"><span class="lg"><img src="../images/logos/varna-free-university-mark.png" alt="Varna Free University" width="224" height="225"></span><span><b>PhD in Psychology</b><small>Varna Free University</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-ring"/></svg><span><b>Gold Ring award</b><small>Varna Free University · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-prize"/></svg><span><b>First Prize</b><small>Best Master's Thesis · 2006</small></span></span><span class="cred"><span class="lg"><img src="../images/logos/bps-mark.png" alt="The British Psychological Society" width="153" height="200"></span><span><b>British Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-cbt"/></svg><span><b>Diploma in CBT</b><small>Cognitive behavioural therapy</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-send"/></svg><span><b>Diploma in SEND</b><small>Special educational needs</small></span></span><span class="cred"><span class="lg round"><img src="../images/logos/bulgarian-psychological-society.png" alt="Bulgarian Psychological Society" width="208" height="208"></span><span><b>Bulgarian Psychological Society</b><small>Member</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-shield"/></svg><span><b>Safeguarding Children</b><small>Level 3</small></span></span><span class="cred"><span class="lg round"><img src="../images/logos/bg-ben.png" alt="BG BEN" width="400" height="400"></span><span><b>BG BEN columnist</b><small>"School of Psychology"</small></span></span></div>
+      <div class="marquee-group"><span class="cred"><span class="lg"><img src="../images/logos/varna-free-university-mark.png" alt="Varna Free University" width="224" height="225"></span><span><b>PhD in Psychology</b><small>Varna Free University</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-ring"/></svg><span><b>Gold Ring award</b><small>Varna Free University · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-prize"/></svg><span><b>First Prize</b><small>Best Master's Thesis · 2006</small></span></span><span class="cred"><span class="lg"><img src="../images/logos/bps-mark.png" alt="The British Psychological Society" width="153" height="200"></span><span><b>British Psychological Society</b><small>Member</small></span></span><span class="cred"><span class="lg"><img src="../images/logos/burgas-free-university.png" alt="Burgas Free University" width="240" height="250"></span><span><b>Diploma in CBT</b><small>Burgas Free University</small></span></span><span class="cred"><span class="lg"><img src="../images/logos/burgas-free-university.png" alt="Burgas Free University" width="240" height="250"></span><span><b>Diploma in SEND</b><small>Burgas Free University</small></span></span><span class="cred"><span class="lg round"><img src="../images/logos/bulgarian-psychological-society.png" alt="Bulgarian Psychological Society" width="208" height="208"></span><span><b>Bulgarian Psychological Society</b><small>Member</small></span></span><span class="cred"><span class="lg round"><img src="../images/logos/bg-ben.png" alt="BG BEN" width="400" height="400"></span><span><b>BG BEN columnist</b><small>"School of Psychology"</small></span></span></div>
       <div class="marquee-group" aria-hidden="true"></div>
     </div>
   </div>
@@ -831,8 +831,9 @@
   const pill = navList.querySelector('.pill');
   const navLinks = [...navList.querySelectorAll('a')];
   const movePill = a => {
-    pill.style.width = a.offsetWidth + 'px';
-    pill.style.transform = `translateX(${a.offsetLeft}px)`;
+    const r = a.getBoundingClientRect(), u = navList.getBoundingClientRect();
+    pill.style.width = r.width + 'px';
+    pill.style.transform = `translateX(${r.left - u.left - navList.clientLeft}px)`;
     pill.style.opacity = 1;
     navLinks.forEach(l => l.classList.toggle('hl', l === a));
   };

@@ -185,6 +185,89 @@
   const faqList = items => `<div class="faq">${items.map(([q, a]) => `<details data-reveal><summary>${q}<span class="plus"></span></summary><div class="answer"><p>${a}</p></div></details>`).join('')}</div>`;
   const issueBy = s => ISSUES.find(i => i.slug === s);
 
+
+  /* Extra content for the "Who I help" pages */
+  const WHO_MORE = {
+    'adults': {
+      intro: 'Life can feel heavy for many reasons: pressure at work, a loss, a relationship ending, a move abroad, or simply a feeling that something isn’t right. You don’t need a diagnosis or a "big enough" reason to start talking.',
+      approach: ['Understanding what keeps difficult feelings going', 'Practical CBT tools for anxious or self-critical thoughts', 'Small, realistic steps back to the things that matter', 'Strategies you can keep using after therapy ends'],
+      faq: [['Do I need a diagnosis to start?', 'No. Many people come simply because they feel stuck or overwhelmed.'], ['Can I have sessions in Bulgarian?', 'Yes. Every session is available in Bulgarian or in English.'], ['Will I get homework?', 'Often there are small exercises between sessions, agreed together and always at a pace that suits you.']] },
+    'couples-families': {
+      intro: 'Relationships change over time. A new baby, a move, work pressure or children growing up can all shift the balance. Sessions give each person a safe space to be heard, and help you find your way back to each other.',
+      approach: ['Understanding the patterns behind repeated arguments', 'Learning to talk about feelings without blame', 'Rebuilding closeness and trust', 'Agreeing practical changes at home'],
+      faq: [['What if my partner doesn’t want to come?', 'You can start on your own. A change in one person often changes the whole relationship.'], ['Do you take sides?', 'No. My role is to help each of you be heard and understood.'], ['Can children join family sessions?', 'Yes, when it helps. We decide together who comes to which session.']] },
+    'children-teens': {
+      intro: 'Children often show what they feel through behaviour rather than words. Teenagers may withdraw, argue or seem not to care. My doctoral research and many years of work with young people help me understand what is going on beneath the surface.',
+      approach: ['Sessions adapted to your child’s age and interests', 'Creative methods, play and conversation', 'Regular feedback and guidance for parents', 'Working with the school when it helps'],
+      faq: [['How do I explain therapy to my child?', 'Keep it simple: it’s a place to talk about feelings with someone whose job is to help. I’m happy to suggest words that fit their age.'], ['Do parents stay in the session?', 'With younger children, parents often join part of the session. Teenagers usually have time on their own.'], ['What ages do you work with?', 'Children and teenagers of all ages, from early childhood up to 18.']] },
+    'special-educational-needs': {
+      intro: 'For eight years I worked with children with intellectual disabilities, and I later supported children with special educational needs at a Bulgarian school in London. I know how much difference the right understanding and support can make, for the child and for the whole family.',
+      approach: ['Psychological assessment adapted to your child', 'A clear written report with recommendations', 'Practical strategies for home and school', 'Support for parents and siblings'],
+      faq: [['Do you provide a formal diagnosis?', ASSESS_NOTE], ['Can the report be used at school?', 'Yes. Reports are written so that parents and teachers can use them.'], ['Do you work with children with intellectual disabilities?', 'Yes. This has been a central part of my work for many years.']] },
+    'group-sessions': {
+      intro: 'Hearing that others feel the same way can be a relief in itself. Groups offer support, new perspectives and practical skills, and they are often more affordable than individual sessions.',
+      approach: ['Small groups, so everyone has space to speak', 'Clear group agreements about confidentiality and respect', 'Practical exercises you can use in daily life', 'Groups in Bulgarian and in English'],
+      faq: [['Do I have to speak in the group?', 'No. You can share as much or as little as you like.'], ['Is a group confidential?', 'Yes. Every member agrees to keep what is shared within the group.'], ['Can I join online?', 'Yes. Groups can run online, so you can join from anywhere.']] },
+    'organisations': {
+      intro: 'Healthy teams look after each other. Training helps staff recognise stress early, communicate better and support each other, whether in an office, a clinic or a school.',
+      approach: ['Interactive, practical sessions rather than lectures', 'Content tailored to your sector and team', 'Delivered in Bulgarian or in English', 'Online or on site'],
+      faq: [['How long is a training session?', 'It depends on your needs, from a single workshop to a series of sessions.'], ['Do you work with schools?', 'Yes. I have trained teachers and staff on relationships with children and on working with children with special needs.'], ['How do we arrange training?', 'Get in touch by phone, WhatsApp, Viber or email and we’ll talk about what you need.']] },
+  };
+
+  /* Extra content for the issue pages */
+  const ISSUE_MORE = {
+    'anxiety-panic': { more: 'Anxiety often grows when we avoid what we fear. Avoiding brings short-term relief, but it teaches the brain that the danger was real.',
+      tips: ['Slow your breathing: breathe out for longer than you breathe in', 'Notice anxious thoughts and ask: what is the evidence?', 'Gently face small situations you’ve been avoiding', 'Limit caffeine and keep a regular sleep routine'],
+      when: 'If anxiety stops you doing everyday things, or panic attacks keep coming back, it’s a good time to get support.' },
+    'depression': { more: 'Depression often comes with a harsh inner voice and a pull to withdraw from people, which can deepen the low mood even further.',
+      tips: ['Plan one small, pleasant activity each day', 'Stay in contact with at least one person you trust', 'Keep a regular rhythm of sleep and meals', 'Be as kind to yourself as you would be to a friend'],
+      when: 'If low mood lasts more than two weeks or affects your daily life, please reach out.' },
+    'stress': { more: 'Long-term stress keeps the body on high alert. Over time it can lead to exhaustion, irritability and health problems.',
+      tips: ['Write down what is in your control and what isn’t', 'Take short breaks during the day', 'Protect time for rest and the things you enjoy', 'Practise saying no to extra demands'],
+      when: 'If you feel constantly drained, or can’t switch off even on holiday, it’s worth talking to someone.' },
+    'relationships': { more: 'Behind most arguments are unmet needs and strong emotions. When we understand them, conflict becomes much easier to resolve.',
+      tips: ['Choose a calm moment for difficult conversations', 'Talk about your feelings rather than blaming', 'Listen to understand, not to reply', 'Make regular time for each other'],
+      when: 'If you keep having the same arguments, or feel more like flatmates than partners, support can help.' },
+    'parenting-teens': { more: 'Teenagers need independence and connection at the same time, which can feel like a contradiction for parents.',
+      tips: ['Listen more than you advise', 'Choose your battles and agree a few clear rules', 'Spend low-pressure time together, like a walk or a meal', 'Look after your own stress too'],
+      when: 'If conflict is constant, or your teenager seems withdrawn, low or anxious for a long time, get support early.' },
+    'child-behaviour': { more: 'Children learn to manage their emotions with the help of the adults around them. Calm, consistent responses help them feel safe.',
+      tips: ['Stay calm and name the feeling: "You’re very angry right now"', 'Praise the behaviour you want to see more of', 'Keep routines predictable', 'Agree the same rules between all the adults who care for your child'],
+      when: 'If behaviour is affecting school, friendships or family life, or you feel you’ve tried everything, it’s time to get help.' },
+    'autism': { more: 'Every autistic child is different. Understanding your child’s strengths and needs is the first step to supporting them well.',
+      tips: ['Use clear, simple language and visual supports', 'Prepare your child for changes in routine', 'Notice and reduce sensory triggers', 'Build on your child’s interests'],
+      when: 'If you notice differences in communication, play or social interaction, an assessment can help you understand your child’s needs.' },
+    'adhd': { more: 'ADHD is not about laziness or bad parenting. With understanding and the right strategies, children can learn to manage their attention and energy.',
+      tips: ['Break tasks into small steps', 'Use timers, checklists and visual reminders', 'Build in movement breaks', 'Praise effort, not only results'],
+      when: 'If difficulties with attention or restlessness are affecting learning, friendships or family life, an assessment can help.' },
+    'learning-difficulties': { more: 'Learning difficulties have nothing to do with intelligence. Many children with dyslexia or dyspraxia are bright and creative, but need a different way in.',
+      tips: ['Read together for short, regular periods', 'Use multi-sensory learning: seeing, hearing and doing', 'Focus on strengths as well as difficulties', 'Talk to your child’s teacher early'],
+      when: 'If your child is falling behind despite their effort, or losing confidence about school, an assessment can explain why and what helps.' },
+    'bullying': { more: 'Children who are bullied often stay silent out of shame or fear of making things worse. Digital violence can follow them home, day and night.',
+      tips: ['Talk regularly and calmly about their day, online and offline', 'Keep evidence of online bullying, such as screenshots', 'Agree family rules for phones and social media', 'Tell your child it is never their fault'],
+      when: 'If your child seems afraid, withdrawn or reluctant to go to school, don’t wait to get support.' },
+    'living-abroad': { more: 'Building a life in a new country takes energy: a new language, new systems, and distance from family and friends. It’s normal to feel unsettled, even years later.',
+      tips: ['Keep regular contact with people back home', 'Build small routines and connections where you live now', 'Allow yourself to miss home without guilt', 'Look for a Bulgarian community or group near you'],
+      when: 'If loneliness or homesickness are affecting your mood, sleep or relationships, talking in your own language can help.' },
+  };
+
+  /* Shared blocks for the detail pages */
+  const nextSteps = `
+    <ol class="steps-list" data-reveal>
+      <li><b>Get in touch</b><span>Call or message me on WhatsApp or Viber, in Bulgarian or English.</span></li>
+      <li><b>A first conversation</b><span>We talk about what’s going on and what you’d like to change.</span></li>
+      <li><b>A plan that fits you</b><span>We agree goals together, online or in person.</span></li>
+      <li><b>Regular reviews</b><span>We check progress along the way and adjust as needed.</span></li>
+    </ol>`;
+  const practicalBox = `
+    <div class="box" data-reveal><h3>Practical details</h3><ul class="facts">
+      <li>${ic('i-video')}Online, or in person in the UK</li>
+      <li>${ic('i-globe')}In Bulgarian or English</li>
+      <li>${ic('i-lock')}Confidential</li>
+      <li>${ic('i-clock')}Session length to be confirmed</li>
+      <li>${ic('i-card')}<a href="#/fees">See fees</a></li>
+    </ul></div>`;
+
   /* =====================================================================
      Pages
      ===================================================================== */
@@ -226,12 +309,12 @@
         <ul class="ticks" data-reveal>
           <li>Member, British Psychological Society</li>
           <li>Member, Bulgarian Psychological Society</li>
-          <li>Diploma in Cognitive Behavioural Therapy (CBT)</li>
-          <li>Diploma in Special Educational Needs &amp; Disability (SEND)</li>
+          <li>Diploma in Cognitive Behavioural Therapy (CBT), Burgas Free University</li>
+          <li>Diploma in Special Educational Needs &amp; Disability (SEND), Burgas Free University</li>
           <li>Certificate in CBT and Counselling</li>
           <li>CBT training, Bulgarian Association of Cognitive-Behavioural Psychotherapy</li>
           <li>Therapeutic Crisis Intervention training</li>
-          <li>Safeguarding Children Level 3 · Safeguarding Vulnerable Adults · NSPCC Child Protection</li>
+          <li>Safeguarding Vulnerable Adults · NSPCC Child Protection</li>
         </ul>
 
         <h2 data-reveal>Awards</h2>
@@ -240,7 +323,7 @@
           <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master’s Thesis</h3><p>"Best diploma thesis" competition.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
         </div>
       </div>
-      <aside class="aside">
+      <aside class="aside static">
         <div class="box" data-reveal><h3>Quick facts</h3><ul class="facts">
           <li>${ic('i-cap')}PhD in Pedagogical &amp; Developmental Psychology</li>
           <li>${ic('i-bulb')}CBT Psychotherapist</li>
@@ -254,7 +337,6 @@
           <img src="../images/logos/bps.png" alt="The British Psychological Society" width="400" height="200" loading="lazy">
           <div class="affil-row"><img src="../images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"><span>Bulgarian Psychological Society</span></div>
         </div></div>
-        <div data-reveal>${contactBox}</div>
       </aside>
     </div></section>
     ${ctaBand()}`;
@@ -267,19 +349,25 @@
     ${ctaBand()}`;
 
   WHO.forEach(w => {
+    const m = WHO_MORE[w.slug];
     PAGES['/who-i-help/' + w.slug] = () => `
       ${hero({ crumbs: [['Who I help', '#/who-i-help'], [w.title]], eyebrow: 'Who I help', title: w.title, lead: w.lead, icon: w.icon })}
       <section class="page-body"><div class="wrap split">
         <div class="prose">
+          <p class="intro" data-reveal>${m.intro}</p>
           <h2 data-reveal>Who it’s for</h2>
           <ul class="ticks" data-reveal>${w.for.map(f => `<li>${f}</li>`).join('')}</ul>
           <h2 data-reveal>How I can help</h2>
           <p data-reveal>${w.how}</p>
-          <div class="note" data-reveal>${ic('i-globe')}<span>Available in <b>Bulgarian and English</b>, <b>online or in person</b>.</span></div>
+          <div class="approach" data-reveal>${m.approach.map((a, i) => `<div><span>0${i + 1}</span>${a}</div>`).join('')}</div>
+          <h2 data-reveal>What happens next</h2>
+          ${nextSteps}
+          <h2 data-reveal>Questions</h2>
+          ${faqList(m.faq)}
         </div>
         <aside class="aside">
           <div class="box" data-reveal><h3>Related topics</h3><div class="links-list">${w.issues.map(s => `<a href="#/issues/${s}">${issueBy(s).title}${ic('i-arrow')}</a>`).join('')}</div></div>
-          <div data-reveal>${contactBox}</div>
+          ${practicalBox}
         </aside>
       </div></section>
       ${ctaBand()}`;
@@ -293,23 +381,30 @@
     ${ctaBand()}`;
 
   ISSUES.forEach(x => {
+    const m = ISSUE_MORE[x.slug];
     PAGES['/issues/' + x.slug] = () => `
       ${hero({ crumbs: [['What I help with', '#/issues'], [x.title]], eyebrow: 'What I help with', title: x.title, lead: x.short, icon: x.icon })}
       <section class="page-body"><div class="wrap split">
         <div class="prose">
           <h2 data-reveal>What it is</h2>
           <p data-reveal>${x.about}</p>
+          <p data-reveal>${m.more}</p>
           <h2 data-reveal>Common signs</h2>
           <ul class="ticks" data-reveal>${x.signs.map(s => `<li>${s}</li>`).join('')}</ul>
+          <div class="note" data-reveal>${ic('i-sun')}<span><b>When to get help:</b> ${m.when}</span></div>
           <h2 data-reveal>How I can help</h2>
           <p data-reveal>${x.help}</p>
+          <h2 data-reveal>Things you can try today</h2>
+          <div class="tips" data-reveal>${m.tips.map(t => `<div>${ic('i-leaf')}<span>${t}</span></div>`).join('')}</div>
           ${x.col ? `<a class="read-more" href="${COL[x.col][1]}" target="_blank" rel="noopener" data-reveal><span class="ri">${ic('i-news')}</span><span><small>Read my column</small><b>${COL[x.col][0]}</b></span></a>` : ''}
+          <h2 data-reveal>What happens next</h2>
+          ${nextSteps}
           <h2 data-reveal>Questions</h2>
           ${faqList(x.faq)}
         </div>
         <aside class="aside">
-          <div data-reveal>${contactBox}</div>
-          <div class="box" data-reveal><h3>Other topics</h3><div class="links-list">${ISSUES.filter(o => o.slug !== x.slug).slice(0, 5).map(o => `<a href="#/issues/${o.slug}">${o.title}${ic('i-arrow')}</a>`).join('')}<a href="#/issues">See all${ic('i-arrow')}</a></div></div>
+          <div class="box" data-reveal><h3>Other topics</h3><div class="links-list">${ISSUES.filter(o => o.slug !== x.slug).slice(0, 6).map(o => `<a href="#/issues/${o.slug}">${o.title}${ic('i-arrow')}</a>`).join('')}<a href="#/issues">See all${ic('i-arrow')}</a></div></div>
+          ${practicalBox}
         </aside>
       </div></section>
       ${ctaBand()}`;
@@ -366,7 +461,7 @@
 
   PAGES['/faq'] = () => `
     ${hero({ crumbs: [['FAQ']], eyebrow: 'FAQ', title: 'Questions &amp; <em>answers</em>', lead: 'If your question isn’t here, just get in touch.', icon: 'i-chat' })}
-    <section class="page-body"><div class="wrap split"><div>${faqList(FAQ)}</div><aside class="aside"><div data-reveal>${contactBox}</div></aside></div></section>
+    <section class="page-body"><div class="wrap"><div class="faq-wide">${faqList(FAQ)}</div></div></section>
     ${ctaBand()}`;
 
   PAGES['/press'] = () => `
@@ -375,8 +470,8 @@
       <a class="issue" href="#/articles" data-reveal>${logo('bg-ben.png', 'BG BEN', 400, 400)}<span><h3>BG BEN</h3><p>"School of Psychology", my regular column, 2023 – now.</p></span></a>
       <div class="issue" data-reveal style="--d:.07s">${logo('zdraveto.png', 'Zdraveto (blitz.bg)', 326, 100).replace('logo-tile', 'logo-tile wide')}<span><h3>"Doctor" newspaper</h3><p>Published by Zdraveto (blitz.bg). Interview: "Suicide is often a cry to be noticed", issue 15, 2015.</p></span></div>
       <div class="issue" data-reveal style="--d:.14s">${logo('bg-radio.png', 'BG Radio', 203, 203)}<span><h3>BG Radio</h3><p>Interview: "Covid-19 and panic attacks", 2019.</p></span></div>
-      <div class="issue" data-reveal><span class="ico">${ic('i-cap')}</span><span><h3>Burgas Free University</h3><p>Lectures in Experimental and Pedagogical Psychology, art therapy in crisis intervention, and family stress in adolescence.</p></span></div>
-      <div class="issue" data-reveal style="--d:.07s"><span class="ico">${ic('i-award')}</span><span><h3>Bulgarian Academy of Sciences</h3><p>Six scientific and applied contributions from my doctoral research.</p></span></div>
+      <div class="issue" data-reveal>${logo('burgas-free-university.png', 'Burgas Free University', 240, 250)}<span><h3>Burgas Free University</h3><p>Lectures in Experimental and Pedagogical Psychology, art therapy in crisis intervention, and family stress in adolescence.</p></span></div>
+      <div class="issue" data-reveal style="--d:.07s">${logo('bulgarian-academy-of-sciences.png', 'Bulgarian Academy of Sciences', 440, 240).replace('logo-tile', 'logo-tile wide')}<span><h3>Bulgarian Academy of Sciences</h3><p>Six scientific and applied contributions from my doctoral research.</p></span></div>
     </div></div></section>
     ${ctaBand()}`;
 
@@ -446,6 +541,42 @@
         <div class="body"><h3>${title}</h3><div class="meta"><time datetime="${date}">${fmt(date)}</time>${ic('i-arrow')}</div></div>
       </a>`).join('');
   }
+
+  /* =====================================================================
+     Dropdown menus: "Who I help" and "What I help with"
+     ===================================================================== */
+  const ddItems = {
+    '#/who-i-help': { all: 'All: who I help', cols: 1, items: WHO.map(w => [`#/who-i-help/${w.slug}`, w.title, w.icon]) },
+    '#/issues': { all: 'All: what I help with', cols: 2, items: ISSUES.map(x => [`#/issues/${x.slug}`, x.title, x.icon]) },
+  };
+  Object.entries(ddItems).forEach(([href, d]) => {
+    // Desktop
+    const top = document.querySelector(`.nav-links a[href="${href}"]`);
+    const li = top.parentElement;
+    li.classList.add('has-dd');
+    top.insertAdjacentHTML('beforeend', `<svg class="icon chev"><use href="#i-down"/></svg>`);
+    top.setAttribute('aria-haspopup', 'true');
+    li.insertAdjacentHTML('beforeend', `<div class="dd" role="menu"><div class="dd-panel cols-${d.cols}">
+      ${d.items.map(([h, t, i]) => `<a class="dd-link" role="menuitem" href="${h}"><span class="dd-ico">${ic(i)}</span>${t}</a>`).join('')}
+      <a class="dd-all" href="${href}">${d.all}${ic('i-arrow')}</a></div></div>`);
+    // Phone menu
+    const mtop = document.querySelector(`#menu ol a[href="${href}"]`);
+    const mli = mtop.parentElement;
+    mli.classList.add('m-has-sub');
+    mtop.insertAdjacentHTML('afterend', `<button class="m-toggle" aria-expanded="false" aria-label="Show ${mtop.textContent} pages"><span></span></button>`);
+    mli.insertAdjacentHTML('beforeend', `<ul class="m-sub">${d.items.map(([h, t]) => `<li><a href="${h}" data-close>${t}</a></li>`).join('')}<li><a href="${href}" data-close>${d.all}</a></li></ul>`);
+    const tog = mli.querySelector('.m-toggle');
+    tog.addEventListener('click', () => {
+      const open = mli.classList.toggle('open');
+      tog.setAttribute('aria-expanded', open);
+    });
+    mli.querySelectorAll('.m-sub a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+  });
+  // Close desktop dropdowns after choosing a page
+  document.querySelectorAll('.dd a').forEach(a => a.addEventListener('click', () => {
+    const li = a.closest('.has-dd'); li.classList.add('dd-hide');
+    setTimeout(() => li.classList.remove('dd-hide'), 400);
+  }));
 
   /* =====================================================================
      Router
