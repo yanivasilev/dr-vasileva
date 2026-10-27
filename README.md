@@ -13,6 +13,7 @@ Both sites have the same content in different languages, and the EN / BG switch 
 |---|---|
 | `dist/` | **The finished websites:** `dist/en` and `dist/bg`. This is what the server shows to visitors. Built automatically; don't edit by hand. |
 | `src/` | **The website's source.** Edit text and design here (see below). |
+| `content/` | **The articles (blog):** `topics.json` and one folder per post in `content/posts/`. See *Articles* below. |
 | `src/bg/` | The Bulgarian content and translations. |
 | `public/` | Images, icons, fonts (`public/fonts/`) and `site.webmanifest`, copied as they are into both sites. The fonts are served from the site itself, so visitors' details never go to Google. |
 | `build/` | The scripts that turn `src/` + `public/` into `dist/` and `preview/`. |
@@ -58,6 +59,42 @@ NODE_PATH=$(npm root -g) python3 build/build.py
 ```
 
 `build/txt2svg.py` turned the "DR VASILEVA" lettering into the logo shape in `src/logo-symbol.txt`. You only need it if the logo text changes.
+
+## Articles (blog)
+
+The Articles pages are made by `build/blog.py` from `content/`. The same code will later be used by the editor at `admin.drvasileva.co.uk`.
+
+| File | What it holds |
+|---|---|
+| `content/topics.json` | The topics, each with an English and a Bulgarian name, a cover colour (`sage`, `lilac`, `gold`, `forest`, `plum`, `sand`) and an icon |
+| `content/posts/<id>/post.json` | What both languages share: `topic`, `date` (`2026-09-19`, `2026-09` or `2026`), `status` (`draft` or `published`), the `bgben` link (optional) and the `cover` photo (optional) |
+| `content/posts/<id>/en.md`, `bg.md` | The text in each language. Every post needs both. |
+
+A language file looks like this:
+
+```
+---
+title: Expired gratitude
+slug: expired-gratitude
+summary: One or two sentences for the cards and for Google.
+cover_alt: (only with a cover photo) what the photo shows
+---
+The text. A blank line starts a new paragraph.
+
+## A heading
+**bold**, *italic*, [a link](https://example.com), lists with "- ", numbered lists with "1. ", quotes with "> ".
+```
+
+The text can't contain HTML: anything else is shown as plain text, which keeps the pages safe.
+
+**Each post gets:**
+- its own page in both languages, such as `/articles/<slug>` and `/statii/<slug>`;
+- a card on the Articles page and in the home page's row;
+- an entry in `sitemap-articles.xml`.
+
+**Topics** appear in the filters only once they have a post.
+
+To add a post by hand, copy a post folder, edit it, and rebuild.
 
 ## Running it on the server
 

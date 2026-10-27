@@ -31,15 +31,15 @@
       issues: ['stress'] },
   ];
 
-  const COL = {
-    panic: ['Самопомощ при панически атаки/тревожност (част първа)', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-purva'],
-    holiday: ['Празничен стрес и невидимата самота по време на празниците', 'https://bgben.co.uk/praznichen-stres-i-nevidimata-samota-po-vreme-na-praznitsite-'],
-    marriage: ['Няколко успешни стъпки за съхранение на любовта в брака', 'https://bgben.co.uk/nyakolko-uspeshni-stupki-za-suhranenie-na-lyubovta-v-braka'],
-    teens: ['Как родителите могат да помогнат на децата си в юношеството', 'https://bgben.co.uk/files/pdf_1739663167_482.pdf'],
-    violence: ['Практически насоки за предотвратяване на насилието при децата', 'https://bgben.co.uk/prakticheski-nasoki-za-predotvratyavane-na-nasilieto-pri-detsata'],
-    digital: ['Тишината на дигиталното насилие', 'https://bgben.co.uk/v-uchilishte-po-psihologiya-tishinata-na-digitalnoto-nasilie'],
-    fears: ['Как страховете и емоциите ни разболяват', 'https://bgben.co.uk/files/pdf_1739663445_490.pdf'],
-    peace: ['Защо е важно да се помирим със себе си', 'https://bgben.co.uk/zashto-e-vazhno-da-se-pomirim-sus-sebe-si'],
+  const COL = {        // column title, and the id of its page in content/posts/
+    panic: ['Самопомощ при панически атаки/тревожност (част първа)', 'self-help-for-panic-attacks-and-anxiety-part-one'],
+    holiday: ['Празничен стрес и невидимата самота по време на празниците', 'holiday-stress-and-the-invisible-loneliness-of-the-holidays'],
+    marriage: ['Няколко успешни стъпки за съхранение на любовта в брака', 'several-successful-steps-to-preserve-love-in-marriage'],
+    teens: ['Как родителите могат да помогнат на децата си в юношеството', 'how-parents-can-help-their-children-in-adolescence'],
+    violence: ['Практически насоки за предотвратяване на насилието при децата', 'practical-guidelines-for-preventing-violence-in-children'],
+    digital: ['Тишината на дигиталното насилие', 'the-silence-of-digital-violence'],
+    fears: ['Как страховете и емоциите ни разболяват', 'how-fears-and-emotions-make-us-sick'],
+    peace: ['Защо е важно да се помирим със себе си', 'why-it-is-important-to-make-peace-with-ourselves'],
   };
 
   const ASSESS_NOTE = 'Провеждам психологически оценки и изготвям писмени доклади. Официалната диагноза понякога изисква и други специалисти, например педиатър или психиатър. Ще Ви обясня ясно следващите стъпки.';

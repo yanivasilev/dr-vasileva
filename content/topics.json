@@ -1,0 +1,46 @@
+{
+  "topics": [
+    {
+      "id": "anxiety",
+      "en": "Anxiety & stress",
+      "bg": "Тревожност и стрес",
+      "colour": "sage",
+      "icon": "i-sun"
+    },
+    {
+      "id": "relationships",
+      "en": "Relationships",
+      "bg": "Взаимоотношения",
+      "colour": "gold",
+      "icon": "i-heart"
+    },
+    {
+      "id": "children-parents",
+      "en": "Children & parents",
+      "bg": "Деца и родители",
+      "colour": "lilac",
+      "icon": "i-smile"
+    },
+    {
+      "id": "self-growth",
+      "en": "Self-growth",
+      "bg": "Личностно развитие",
+      "colour": "forest",
+      "icon": "i-leaf"
+    },
+    {
+      "id": "special-needs",
+      "en": "Special needs",
+      "bg": "Специални потребности",
+      "colour": "plum",
+      "icon": "i-puzzle"
+    },
+    {
+      "id": "living-abroad",
+      "en": "Living abroad",
+      "bg": "Живот в чужбина",
+      "colour": "sand",
+      "icon": "i-globe"
+    }
+  ]
+}

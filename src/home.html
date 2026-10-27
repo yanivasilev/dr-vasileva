@@ -298,10 +298,12 @@
   .article .top .bg::after { content: ""; position: absolute; inset: 0; background-image: var(--grain); opacity: .25; mix-blend-mode: overlay; }
   .article .top svg.motif { position: absolute; right: -26px; bottom: -26px; width: 150px; height: 150px; color: rgba(255,255,255,.22); stroke-width: 1; }
   .article .top .label { position: absolute; left: 20px; bottom: 16px; font-size: .72rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.95); background: rgba(0,0,0,.16); padding: 5px 10px; border-radius: 999px; backdrop-filter: blur(4px); }
-  .t-anxiety .bg { background: linear-gradient(135deg, #7E9C80, #3E5A41); }
-  .t-parents .bg { background: linear-gradient(135deg, #C9B6D6, #7C6797); }
-  .t-relationships .bg { background: linear-gradient(135deg, #DEC189, #A9823D); }
-  .t-growth .bg { background: linear-gradient(135deg, #5F7F62, #24392A); }
+  .c-sage .bg { background: linear-gradient(135deg, #7E9C80, #3E5A41); }
+  .c-lilac .bg { background: linear-gradient(135deg, #C9B6D6, #7C6797); }
+  .c-gold .bg { background: linear-gradient(135deg, #DEC189, #A9823D); }
+  .c-forest .bg { background: linear-gradient(135deg, #5F7F62, #24392A); }
+  .c-plum .bg { background: linear-gradient(135deg, #A58BBE, #4E3D66); }
+  .c-sand .bg { background: linear-gradient(135deg, #D8C6A4, #8F7650); }
   .article .body { padding: 22px 22px 24px; display: flex; flex-direction: column; flex: 1; }
   .article h3 { font-size: 1.35rem; margin: 0 0 16px; flex: 1; }
   .article .meta { display: flex; justify-content: space-between; align-items: center; font-size: .82rem; font-weight: 600; color: var(--muted); }
@@ -710,13 +712,7 @@
           <span class="eyebrow">School of Psychology</span>
           <h2>From my <em>BG BEN</em> column</h2>
         </div>
-        <div class="tabs" role="group" aria-label="Filter by topic" data-reveal style="--d:.1s">
-          <button class="tab" aria-pressed="true" data-filter="all">All</button>
-          <button class="tab" aria-pressed="false" data-filter="anxiety">Anxiety &amp; stress</button>
-          <button class="tab" aria-pressed="false" data-filter="parents">Parents &amp; children</button>
-          <button class="tab" aria-pressed="false" data-filter="relationships">Relationships</button>
-          <button class="tab" aria-pressed="false" data-filter="growth">Self-growth</button>
-        </div>
+        <div class="tabs" id="home-tabs" role="group" aria-label="Filter by topic" data-reveal style="--d:.1s"></div>
       </div>
       <div class="track" id="track" data-reveal="right"></div>
       <div class="track-ui">
@@ -888,46 +884,27 @@
   }), { threshold: .15, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('[data-reveal], .quote, .about-photo').forEach(el => io.observe(el));
 
-  // Columns (newest first)
-  const columns = [
-    ['2026-09-19', 'Expired gratitude', 'growth', 'https://www.bgben.co.uk/blagodarnostta-s-iztekul-srok'],
-    ['2026-07-08', 'The alphabet of the human soul', 'growth', 'https://www.bgben.co.uk/azbukata-na-choveshkata-dusha'],
-    ['2026-06-10', 'The silence of digital violence', 'parents', 'https://bgben.co.uk/v-uchilishte-po-psihologiya-tishinata-na-digitalnoto-nasilie'],
-    ['2026-04-04', 'Why it is important to make peace with ourselves', 'growth', 'https://bgben.co.uk/zashto-e-vazhno-da-se-pomirim-sus-sebe-si'],
-    ['2026-03-13', 'Practical guidelines for preventing violence in children', 'parents', 'https://bgben.co.uk/prakticheski-nasoki-za-predotvratyavane-na-nasilieto-pri-detsata'],
-    ['2026-01-13', 'The quiet revolution of the soul', 'growth', 'https://bgben.co.uk/tihata-revolyutsiya-na-dushata'],
-    ['2025-12', 'Holiday stress and the invisible loneliness of the holidays', 'anxiety', 'https://bgben.co.uk/praznichen-stres-i-nevidimata-samota-po-vreme-na-praznitsite-'],
-    ['2025-09-25', 'The child within us and the path to ourselves', 'growth', 'https://www.bgben.co.uk/deteto-v-nas-i-putyat-kum-sebe-si-'],
-    ['2025-04-21', 'A conversation with gratitude', 'growth', 'https://bgben.co.uk/v-uchilishte-po-psihologiya-dnes-razgovor-s-blagodarnostta'],
-    ['2025-03', 'Self-help for panic attacks and anxiety (part two)', 'anxiety', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-vtora'],
-    ['2025-02-10', 'Self-help for panic attacks and anxiety (part one)', 'anxiety', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-purva'],
-    ['2025', 'Several successful steps to preserve love in marriage', 'relationships', 'https://bgben.co.uk/nyakolko-uspeshni-stupki-za-suhranenie-na-lyubovta-v-braka'],
-    ['2024-09-13', 'How to be ourselves and learn the skill of understanding', 'growth', 'https://bgben.co.uk/files/pdf_1739664087_506.pdf'],
-    ['2024-01-12', 'Invitation to happiness', 'growth', 'https://bgben.co.uk/files/pdf_1739663720_498.pdf'],
-    ['2023-08-11', 'Understanding emotional intelligence, and where we are', 'growth', 'https://bgben.co.uk/files/pdf_1739663529_492.pdf'],
-    ['2023-06-30', 'How fears and emotions make us sick', 'anxiety', 'https://bgben.co.uk/files/pdf_1739663445_490.pdf'],
-    ['2023-04-14', 'Forgiveness is the greatest teacher', 'relationships', 'https://bgben.co.uk/files/pdf_1739663300_486.pdf'],
-    ['2023-01-27', 'How parents can help their children in adolescence', 'parents', 'https://bgben.co.uk/files/pdf_1739663167_482.pdf'],
-  ];
-  const tagInfo = {
-    anxiety: ['Anxiety & stress', 'i-sun'],
-    parents: ['Parents & children', 'i-smile'],
-    relationships: ['Relationships', 'i-heart'],
-    growth: ['Self-growth', 'i-leaf'],
+  // Latest articles: cards made by build/blog.py. window.POSTS comes with the page; the live site then
+  // loads /posts.json, so posts published in the editor appear without rebuilding the site.
+  const track = document.getElementById('track'), homeTabs = document.getElementById('home-tabs');
+  const showPosts = data => {
+    if (!data || !data.posts) return;
+    homeTabs.innerHTML = [`<button class="tab" aria-pressed="true" data-filter="all">${data.all}</button>`,
+      ...data.topics.map(t => `<button class="tab" aria-pressed="false" data-filter="${t.id}"></button>`)].join('');
+    data.topics.forEach((t, i) => homeTabs.children[i + 1].textContent = t.name);
+    track.innerHTML = data.posts.slice(0, 12).map(p => p.card).join('');
+    track.querySelectorAll('[data-reveal]').forEach(el => el.removeAttribute('data-reveal'));
+    track.scrollTo({ left: 0 });
+    requestAnimationFrame(updateProgress);
   };
-  // The source gives some dates only as a month or a year
-  const fmt = d => {
-    const [y, m, day] = d.split('-');
-    if (!m) return y;
-    const opts = day ? { day: 'numeric', month: 'long', year: 'numeric' } : { month: 'long', year: 'numeric' };
-    return new Date(+y, +m - 1, +(day || 1)).toLocaleDateString('en-GB', opts);
-  };
-  const track = document.getElementById('track');
-  track.innerHTML = columns.map(([date, title, tag, url]) => `
-    <a class="article t-${tag}" data-tag="${tag}" href="${url}">
-      <div class="top"><span class="bg"></span><svg class="icon motif"><use href="#${tagInfo[tag][1]}"/></svg><span class="label">${tagInfo[tag][0]}</span></div>
-      <div class="body"><h3>${title}</h3><div class="meta"><time datetime="${date}">${fmt(date)}</time><svg class="icon"><use href="#i-arrow"/></svg></div></div>
-    </a>`).join('');
+  homeTabs.addEventListener('click', e => {
+    const tab = e.target.closest('.tab');
+    if (!tab) return;
+    homeTabs.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t === tab));
+    track.querySelectorAll('.article').forEach(a => a.hidden = tab.dataset.filter !== 'all' && a.dataset.tag !== tab.dataset.filter);
+    track.scrollTo({ left: 0 });
+    updateProgress();
+  });
 
   const progress = document.getElementById('progress');
   const updateProgress = () => {
@@ -938,15 +915,10 @@
   };
   track.addEventListener('scroll', updateProgress, { passive: true });
   addEventListener('resize', updateProgress);
+  showPosts(window.POSTS);
+  if (location.protocol !== 'file:' && window.SLUGS) fetch('/posts.json').then(r => r.ok ? r.json() : null).then(showPosts).catch(() => {});
   updateProgress();
 
-  document.querySelectorAll('.tab').forEach(tab => tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t === tab));
-    const f = tab.dataset.filter;
-    track.querySelectorAll('.article').forEach(a => a.hidden = f !== 'all' && a.dataset.tag !== f);
-    track.scrollTo({ left: 0 });
-    updateProgress();
-  }));
   document.querySelectorAll('.arrow').forEach(btn => btn.addEventListener('click', () => {
     track.scrollBy({ left: btn.dataset.dir * track.clientWidth * .8, behavior: 'smooth' });
   }));

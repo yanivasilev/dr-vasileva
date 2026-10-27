@@ -764,3 +764,52 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 - [ ] DNS for both domains (and www) → VPS
 - [ ] mailcow mailbox for the website (e.g. `website@drvasileva.co.uk`) + its password in `/etc/drvasileva/contact.env`
 - [x] Real Turnstile keys: the site key is built into the site; the secret key goes only in `/etc/drvasileva/contact.env` on the server (never in the repo)
+
+---
+
+## 14. Articles / blog ✅ step 1 (pages + the 18 columns)
+
+**What's built:**
+- **Articles page** (`/articles` · `/statii`):
+  - the newest post large at the top;
+  - topic filters;
+  - cards with a coloured cover per topic;
+  - "Show more" after 12 cards;
+  - a link to the new **Scientific publications** page (`/publications` · `/publikacii`), which replaced the old list on the Articles page.
+- **Every post has its own page in both languages:**
+  - topic, date, cover, the text and the BG BEN box;
+  - share buttons (Facebook, WhatsApp, Viber, copy link);
+  - the author box, 3 related posts and the "Ready to talk?" band.
+  - Each page also has its own address, share data and Google article data, and the EN / BG switch goes to the same post.
+- **Elsewhere on the site:**
+  - the home page's row shows the latest 12 posts;
+  - the "Read my column" links on the topic pages now open the column's page on her site.
+- **Where it lives:**
+  - posts are in `content/` (see the main README);
+  - the pages are made by `build/blog.py`, which needs only Python, so the editor can use it on the server.
+
+**Topics:**
+- in use: Anxiety & stress, Relationships, Children & parents, Self-growth (most columns are self-growth);
+- also set up, shown once they have a post: Special needs, Living abroad.
+
+### For her to check
+- [ ] **The 18 introductions are placeholders.** BG BEN's site couldn't be opened from here, so each introduction was written from the column's title only, without reading the column. Please replace them with her own two or three paragraphs: `content/posts/<id>/en.md` and `bg.md`, or later in the editor.
+- [ ] **The six PDF columns:** you're sending the full texts, which will then replace the introduction and the PDF link.
+  - How to be ourselves…
+  - Invitation to happiness
+  - Understanding emotional intelligence…
+  - How fears and emotions make us sick
+  - Forgiveness is the greatest teacher
+  - How parents can help their children in adolescence
+- [ ] **Cover photos:** add them later; a post without one shows its topic's coloured cover.
+
+### Next: the editor (steps 2–4)
+`admin.drvasileva.co.uk`:
+- login with password plus a code from her phone;
+- a posts list, and writing in BG | EN tabs with a toolbar;
+- Preview, Publish and Unpublish;
+- cover photo upload, with the location data removed;
+- topics, saved versions, the bin and autosave.
+
+It saves posts in the same format and rebuilds only the blog pages.
+

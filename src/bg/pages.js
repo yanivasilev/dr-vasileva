@@ -121,7 +121,7 @@
           <p data-reveal>${x.help}</p>
           <h2 data-reveal>Какво можете да опитате още днес</h2>
           <div class="tips" data-reveal>${m.tips.map(t => `<div>${ic('i-leaf')}<span>${t}</span></div>`).join('')}</div>
-          ${x.col ? `<a class="read-more" href="${COL[x.col][1]}" target="_blank" rel="noopener" data-reveal><span class="ri">${ic('i-news')}</span><span><small>Прочетете рубриката ми</small><b>${COL[x.col][0]}</b></span></a>` : ''}
+          ${x.col ? `<a class="read-more" href="#/articles/${COL[x.col][1]}" data-reveal><span class="ri">${ic('i-news')}</span><span><small>Прочетете рубриката ми</small><b>${COL[x.col][0]}</b></span></a>` : ''}
           <h2 data-reveal>Какво следва</h2>
           ${nextSteps}
           <h2 data-reveal>Въпроси</h2>
@@ -135,26 +135,15 @@
       ${ctaBand()}`;
   });
 
-  PAGES['/articles'] = () => `
-    ${hero({ crumbs: [['Статии']], eyebrow: 'Статии и публикации', title: 'Училище по <em>психология</em>', lead: 'Рубриката ми във вестник БГ БЕН – изданието за българите във Великобритания, както и научните ми публикации.', icon: 'i-feather' })}
-    <section class="page-body"><div class="wrap">
-      <div class="tabs" role="group" aria-label="Филтър по тема" data-reveal>
-        <button class="tab" aria-pressed="true" data-filter="all">Всички</button>
-        <button class="tab" aria-pressed="false" data-filter="anxiety">Тревожност и стрес</button>
-        <button class="tab" aria-pressed="false" data-filter="parents">Родители и деца</button>
-        <button class="tab" aria-pressed="false" data-filter="relationships">Взаимоотношения</button>
-        <button class="tab" aria-pressed="false" data-filter="growth">Личностно развитие</button>
-      </div>
-      <div class="articles-grid">${articleCards()}</div>
-      <div class="note" style="margin-top:40px">${ic('i-feather')}<span>В готовия сайт всяка статия ще има своя страница с пълния текст на български и английски. Засега връзките водят към оригинала в БГ БЕН.</span></div>
-    </div></section>
-    <section class="page-body" style="background:var(--white)"><div class="wrap split">
+  PAGES['/publications'] = () => `
+    ${hero({ crumbs: [['Научни публикации']], eyebrow: 'Научна дейност', title: 'Научни <em>публикации</em>', lead: 'Моите изследвания върху семейната среда, отношенията родител–дете и стреса в юношеството.', icon: 'i-feather' })}
+    <section class="page-body"><div class="wrap split">
       <div class="prose">
-        <h2 data-reveal>Научни публикации</h2>
+        <h2 data-reveal>Избрани публикации</h2>
         <p data-reveal>Избрани публикации за семейната среда, отношенията родител–дете и стреса в юношеството. <b>Дисертация:</b> <i>Семейна среда и преживяване на стрес в юношеска възраст</i> (2013).</p>
         <ol class="pubs" data-reveal>${PUBS.map(p => `<li><span>${p}</span></li>`).join('')}</ol>
       </div>
-      <aside class="aside"><div class="box" data-reveal><h3>Интервюта</h3><div class="links-list">
+      <aside class="aside"><div class="box" data-reveal><h3>Статии</h3><div class="links-list"><a href="#/articles">Моите статии и рубриката в БГ БЕН${ic('i-arrow')}</a></div></div><div class="box" data-reveal><h3>Интервюта</h3><div class="links-list">
         <a href="#/press">„Самоубийците са хора, които искат да бъдат забелязани“ · <i>Доктор</i> (Здравето), 2015${ic('i-arrow')}</a>
         <a href="#/press">„Covid-19 и паническите атаки“ · БГ Радио, 2019${ic('i-arrow')}</a>
       </div></div></aside>

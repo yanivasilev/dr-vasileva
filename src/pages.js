@@ -39,15 +39,15 @@
       issues: ['stress'] },
   ];
 
-  const COL = {
-    panic: ['Self-help for panic attacks and anxiety (part one)', 'https://bgben.co.uk/samopomosht-pri-panicheski-atakitrevozhnost-chast-purva'],
-    holiday: ['Holiday stress and the invisible loneliness of the holidays', 'https://bgben.co.uk/praznichen-stres-i-nevidimata-samota-po-vreme-na-praznitsite-'],
-    marriage: ['Several successful steps to preserve love in marriage', 'https://bgben.co.uk/nyakolko-uspeshni-stupki-za-suhranenie-na-lyubovta-v-braka'],
-    teens: ['How parents can help their children in adolescence', 'https://bgben.co.uk/files/pdf_1739663167_482.pdf'],
-    violence: ['Practical guidelines for preventing violence in children', 'https://bgben.co.uk/prakticheski-nasoki-za-predotvratyavane-na-nasilieto-pri-detsata'],
-    digital: ['The silence of digital violence', 'https://bgben.co.uk/v-uchilishte-po-psihologiya-tishinata-na-digitalnoto-nasilie'],
-    fears: ['How fears and emotions make us sick', 'https://bgben.co.uk/files/pdf_1739663445_490.pdf'],
-    peace: ['Why it is important to make peace with ourselves', 'https://bgben.co.uk/zashto-e-vazhno-da-se-pomirim-sus-sebe-si'],
+  const COL = {        // column title, and the id of its page in content/posts/
+    panic: ['Self-help for panic attacks and anxiety (part one)', 'self-help-for-panic-attacks-and-anxiety-part-one'],
+    holiday: ['Holiday stress and the invisible loneliness of the holidays', 'holiday-stress-and-the-invisible-loneliness-of-the-holidays'],
+    marriage: ['Several successful steps to preserve love in marriage', 'several-successful-steps-to-preserve-love-in-marriage'],
+    teens: ['How parents can help their children in adolescence', 'how-parents-can-help-their-children-in-adolescence'],
+    violence: ['Practical guidelines for preventing violence in children', 'practical-guidelines-for-preventing-violence-in-children'],
+    digital: ['The silence of digital violence', 'the-silence-of-digital-violence'],
+    fears: ['How fears and emotions make us sick', 'how-fears-and-emotions-make-us-sick'],
+    peace: ['Why it is important to make peace with ourselves', 'why-it-is-important-to-make-peace-with-ourselves'],
   };
 
   const ASSESS_NOTE = 'I provide psychological assessments and written reports. A formal diagnosis can also involve other specialists, such as a paediatrician or psychiatrist. I will explain the next steps clearly.';
@@ -396,7 +396,7 @@
           <p data-reveal>${x.help}</p>
           <h2 data-reveal>Things you can try today</h2>
           <div class="tips" data-reveal>${m.tips.map(t => `<div>${ic('i-leaf')}<span>${t}</span></div>`).join('')}</div>
-          ${x.col ? `<a class="read-more" href="${COL[x.col][1]}" target="_blank" rel="noopener" data-reveal><span class="ri">${ic('i-news')}</span><span><small>Read my column</small><b>${COL[x.col][0]}</b></span></a>` : ''}
+          ${x.col ? `<a class="read-more" href="#/articles/${COL[x.col][1]}" data-reveal><span class="ri">${ic('i-news')}</span><span><small>Read my column</small><b>${COL[x.col][0]}</b></span></a>` : ''}
           <h2 data-reveal>What happens next</h2>
           ${nextSteps}
           <h2 data-reveal>Questions</h2>
@@ -410,26 +410,15 @@
       ${ctaBand()}`;
   });
 
-  PAGES['/articles'] = () => `
-    ${hero({ crumbs: [['Articles']], eyebrow: 'Articles &amp; publications', title: 'School of <em>Psychology</em>', lead: 'My column in BG BEN, the newspaper for Bulgarians in the UK, together with my scientific publications.', icon: 'i-feather' })}
-    <section class="page-body"><div class="wrap">
-      <div class="tabs" role="group" aria-label="Filter by topic" data-reveal>
-        <button class="tab" aria-pressed="true" data-filter="all">All</button>
-        <button class="tab" aria-pressed="false" data-filter="anxiety">Anxiety &amp; stress</button>
-        <button class="tab" aria-pressed="false" data-filter="parents">Parents &amp; children</button>
-        <button class="tab" aria-pressed="false" data-filter="relationships">Relationships</button>
-        <button class="tab" aria-pressed="false" data-filter="growth">Self-growth</button>
-      </div>
-      <div class="articles-grid">${articleCards()}</div>
-      <div class="note" style="margin-top:40px">${ic('i-feather')}<span>On the finished site each column will have its own page with the full text in Bulgarian and English. For now the links open the original on BG BEN.</span></div>
-    </div></section>
-    <section class="page-body" style="background:var(--white)"><div class="wrap split">
+  PAGES['/publications'] = () => `
+    ${hero({ crumbs: [['Scientific publications']], eyebrow: 'Research', title: 'Scientific <em>publications</em>', lead: 'My research on the family environment, parent–child relationships and stress in adolescence.', icon: 'i-feather' })}
+    <section class="page-body"><div class="wrap split">
       <div class="prose">
-        <h2 data-reveal>Scientific publications</h2>
+        <h2 data-reveal>Selected publications</h2>
         <p data-reveal>Selected publications on the family environment, parent–child relationships and stress in adolescence. <b>PhD thesis:</b> <i>Family environment and experiencing stress in adolescence</i> (2013).</p>
         <ol class="pubs" data-reveal>${PUBS.map(p => `<li><span>${p}</span></li>`).join('')}</ol>
       </div>
-      <aside class="aside"><div class="box" data-reveal><h3>Interviews</h3><div class="links-list">
+      <aside class="aside"><div class="box" data-reveal><h3>Articles</h3><div class="links-list"><a href="#/articles">My articles and BG BEN columns${ic('i-arrow')}</a></div></div><div class="box" data-reveal><h3>Interviews</h3><div class="links-list">
         <a href="#/press">"Suicide is often a cry to be noticed" · <i>Doctor</i> (Zdraveto), 2015${ic('i-arrow')}</a>
         <a href="#/press">"Covid-19 and panic attacks" · BG Radio, 2019${ic('i-arrow')}</a>
       </div></div></aside>
@@ -597,14 +586,6 @@
       </div>
     </section>`;
 
-  function articleCards() {
-    return columns.map(([date, title, tag, url]) => `
-      <a class="article t-${tag}" data-tag="${tag}" href="${url}" target="_blank" rel="noopener" data-reveal>
-        <div class="top"><span class="bg"></span><svg class="icon motif"><use href="#${tagInfo[tag][1]}"/></svg><span class="label">${tagInfo[tag][0]}</span></div>
-        <div class="body"><h3>${title}</h3><div class="meta"><time datetime="${date}">${fmt(date)}</time>${ic('i-arrow')}</div></div>
-      </a>`).join('');
-  }
-
   /* =====================================================================
      Dropdown menus: "Who I help" and "What I help with"
      ===================================================================== */
@@ -641,6 +622,9 @@
     setTimeout(() => li.classList.remove('dd-hide'), 400);
   }));
 
+  // In the one-file previews the blog's pages come with the file (made by build/blog.py)
+  Object.entries(window.BLOG_PAGES || {}).forEach(([key, html]) => PAGES[key] = () => html);
+
   /* =====================================================================
      Router
      ===================================================================== */
@@ -666,14 +650,15 @@
     if (!HASH_MODE) a.setAttribute('href', toUrl(key));
   });
   const metaLinks = [...document.querySelectorAll('link[rel="canonical"], link[rel="alternate"][hreflang], meta[property="og:url"]')];
-  metaLinks.forEach(m => m.dataset.base ||= (m.getAttribute('href') || m.getAttribute('content')).replace(/\/$/, ''));
+  const metaAttr = m => m.tagName === 'META' ? 'content' : 'href';
+  metaLinks.forEach(m => m.dataset.base ||= new URL(m.getAttribute(metaAttr(m))).origin);
   const isBG = document.documentElement.lang === 'bg';
   const syncMeta = key => {
     if (HASH_MODE) return;
     metaLinks.forEach(m => {
       const lang = m.getAttribute('hreflang');
       const map = !lang ? SLUGS : (lang === 'bg') === isBG ? SLUGS : OTHER_SLUGS;
-      m.setAttribute(m.tagName === 'META' ? 'content' : 'href', m.dataset.base + toUrl(key, map));
+      m.setAttribute(metaAttr(m), m.dataset.base + toUrl(key, map));
     });
   };
   // Language switch: go to the same page in the other language. On a test domain the other language
@@ -684,10 +669,35 @@
   const syncLang = key => document.querySelectorAll('.lang a[data-base]').forEach(a =>
     a.href = HASH_MODE ? a.dataset.base + location.hash : otherSite(a.dataset.base) + toUrl(key, OTHER_SLUGS));
 
+  // Articles: on the live site the blog's pages are separate files made by build/blog.py. Links to them
+  // open with a normal page load, and such a page keeps the content it came with (window.STATIC_PAGE).
+  const BLOG = '/articles';
+  const isBlog = key => !HASH_MODE && (key === BLOG || key.startsWith(BLOG + '/') || key.startsWith(toUrl(BLOG) + '/'));
+  const STATIC = window.STATIC_PAGE;
+  const staticHTML = STATIC ? pagesEl.innerHTML : '';
+  const staticMeta = metaLinks.map(m => m.getAttribute(metaAttr(m)));
+  const onStaticPage = () => STATIC && decodeURI(location.pathname).replace(/\/$/, '') === STATIC.url;
+  const showStatic = () => {
+    homeEl.classList.remove('active');
+    pagesEl.innerHTML = staticHTML;
+    const el = pagesEl.firstElementChild;
+    rewriteLinks(el);
+    wirePage(el);
+    document.title = STATIC.title;
+    metaLinks.forEach((m, i) => m.setAttribute(metaAttr(m), staticMeta[i]));
+    navLinks.forEach(a => a.toggleAttribute('aria-current', a.dataset.key === BLOG));
+    document.querySelectorAll('.lang a[data-base]').forEach(a => a.href = otherSite(a.dataset.base) + new URL(STATIC.other).pathname);
+    scrollTo({ top: 0, behavior: 'instant' });
+    observeReveals();
+    onScroll();
+  };
+
   const render = () => {
     if (HASH_MODE && location.hash && !location.hash.startsWith('#/')) return;   // ordinary in-page anchor
     let path = currentKey();
     setMenu(false);
+    if (!HASH_MODE && onStaticPage()) return showStatic();
+    if (isBlog(path) && !window.NOT_FOUND) return location.reload();     // back to a blog page from another page
     pagesEl.innerHTML = '';
     // Unknown address: the server's 404 page sets NOT_FOUND; unknown routes also land here
     if (window.NOT_FOUND && HASH_MODE && !location.hash) path = '/404';
@@ -761,11 +771,26 @@
   function wirePage(el) {
     wireForm(el);
     el.querySelectorAll('.js-count').forEach(c => c.dataset.to = YEARS);
+    // Article lists: topic filter, and a "Show more" button after the first cards
     const tabs = el.querySelectorAll('.tab');
+    const grid = el.querySelector('[data-per-page]'), more = el.querySelector('.more-btn');
+    const perPage = grid ? +grid.dataset.perPage : Infinity;
+    let shown = perPage;
+    const filter = () => {
+      const f = el.querySelector('.tab[aria-pressed="true"]')?.dataset.filter || 'all';
+      let n = 0;
+      (grid || el).querySelectorAll('.article').forEach(a => { const match = f === 'all' || a.dataset.tag === f; a.hidden = !match || ++n > shown; });
+      if (more) more.hidden = n <= shown;
+    };
     tabs.forEach(tab => tab.addEventListener('click', () => {
       tabs.forEach(t => t.setAttribute('aria-pressed', t === tab));
-      el.querySelectorAll('.article').forEach(a => a.hidden = tab.dataset.filter !== 'all' && a.dataset.tag !== tab.dataset.filter);
+      shown = perPage;
+      filter();
     }));
+    more?.addEventListener('click', () => { shown += perPage; filter(); });
+    if (grid) filter();
+    el.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () =>
+      navigator.clipboard?.writeText(b.dataset.copy).then(() => { b.classList.add('done'); b.setAttribute('aria-label', b.dataset.done); })));
   }
   rewriteLinks(document);
   if (HASH_MODE) {
@@ -775,7 +800,7 @@
     addEventListener('popstate', render);
     document.addEventListener('click', e => {
       const a = e.target.closest('a[data-key]');
-      if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target) return;
+      if (!a || isBlog(a.dataset.key) || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target) return;
       e.preventDefault();
       if (a.getAttribute('href') !== location.pathname) history.pushState(null, '', a.getAttribute('href'));
       render();

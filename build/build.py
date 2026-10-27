@@ -2,11 +2,14 @@
 #   preview/site.html, preview/site-bg.html   one-file previews to open from your computer (#/ links)
 #   dist/en, dist/bg                          the live sites for drvasileva.co.uk and drvasileva.bg
 # Run from anywhere:  NODE_PATH=$(npm root -g) python3 build/build.py
-import os, re
+import json, os, re, shutil, subprocess, sys, tempfile
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = f'{REPO}/build'        # build scripts
 SRC = f'{REPO}/src'        # website source
+sys.path.insert(0, B)
+import blog
+from routes import BG_SLUGS, BLOG_KEY, DOMAINS, EN_SLUGS
 s = open(f'{SRC}/home.html').read()
 extra = open(f'{SRC}/extra.css').read()
 pages = open(f'{SRC}/pages.js').read()
@@ -60,6 +63,7 @@ rep('  <symbol id="b-whatsapp"', logo_sym + '''
   <symbol id="i-send" viewBox="0 0 24 24"><path d="M14.54 21.69a.5.5 0 0 0 .94-.03l6.5-19a.5.5 0 0 0-.64-.63l-19 6.5a.5.5 0 0 0-.02.93l7.93 3.18a2 2 0 0 1 1.11 1.11zM21.85 2.15 10.91 13.09"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
   <symbol id="b-whatsapp"''')
 
 # ---- logo
@@ -119,8 +123,6 @@ bg = {}
 exec(open(f'{SRC}/bg/pairs.py').read(), bg)
 rep('<div class="lang" aria-label="Language"><a href="https://drvasileva.bg/" hreflang="bg" lang="bg">BG</a><a href="#" class="on" aria-current="true">EN</a></div>', bg['LANG_EN'], 2)
 
-open(f'{REPO}/preview/site.html', 'w').write(s)
-print('site.html', len(s))
 
 # =====================================================================
 # Bulgarian version
@@ -134,7 +136,7 @@ def swap(start, end, file):
 swap('  const WHO = [', '  /* =====================================================================\n     Building blocks', 'data1.js')
 swap('  const ctaButtons = `', '  const faqList =', 'blocks.js')
 swap('  /* Extra content for the "Who I help" pages */', '  /* =====================================================================\n     Pages\n', 'data2.js')
-swap("  PAGES['/about'] = () => `", '  function articleCards()', 'pages.js')
+swap("  PAGES['/about'] = () => `", '  /* =====================================================================\n     Dropdown menus', 'pages.js')
 for en, tr in bg['HEAD']:
     assert b.count(en) == 1, ('HEAD', en[:70])
     b = b.replace(en, tr)
@@ -144,17 +146,32 @@ missing = [en for en, tr in bg['PAIRS'] if en not in b]
 assert not missing, ('not found', missing)
 for en, tr in bg['PAIRS']:
     b = b.replace(en, tr)
-open(f'{REPO}/preview/site-bg.html', 'w').write(b)
-print('site-bg.html', len(b))
+
+# =====================================================================
+# Articles (blog): pages and cards made by build/blog.py from content/
+# =====================================================================
+topics, posts = blog.load()
+
+
+def with_blog(html, lang, mode):
+    # The home page's articles row (window.POSTS) and, in the previews, the blog's pages (window.BLOG_PAGES)
+    b_ = blog.Blog(lang, topics, posts, mode)
+    data = {'POSTS': b_.feed()}
+    if mode == 'preview':
+        data['BLOG_PAGES'] = {k: inner for k, (inner, _) in b_.pages().items()}
+    js = ''.join(f'window.{k} = {json.dumps(v, ensure_ascii=False)};' for k, v in data.items()).replace('</', '<\\/')
+    marker = '<script>document.documentElement.classList.add'
+    assert html.count(marker) == 1
+    return html.replace(marker, f'<script>{js}</script>\n{marker}')
+
+
+open(f'{REPO}/preview/site.html', 'w').write(with_blog(s, 'en', 'preview'))
+open(f'{REPO}/preview/site-bg.html', 'w').write(with_blog(b, 'bg', 'preview'))
+print('previews: site.html, site-bg.html')
 
 # =====================================================================
 # Deployable sites: dist/en (drvasileva.co.uk) and dist/bg (drvasileva.bg)
 # =====================================================================
-import shutil
-
-DOMAINS = {'en': 'https://drvasileva.co.uk/', 'bg': 'https://drvasileva.bg/'}
-
-
 def for_server(html):
     # Paths become absolute (served from the domain root) and the language switch links to the other domain
     html = html.replace('../public/', '/')
@@ -169,41 +186,42 @@ def not_found(html):
     return html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/">\n<meta name="robots" content="noindex">\n<script>window.NOT_FOUND = true</script>', 1)
 
 
-import json, subprocess, tempfile
-
-# Page addresses on the Bulgarian site (route key -> URL); the English site uses the keys as they are
-BG_SLUGS = {
-    '/': '/', '/about': '/za-men', '/who-i-help': '/s-kogo-rabotya',
-    '/who-i-help/adults': '/s-kogo-rabotya/vazrastni', '/who-i-help/couples-families': '/s-kogo-rabotya/dvoyki-i-semeystva',
-    '/who-i-help/children-teens': '/s-kogo-rabotya/deca-i-tiyneydzhari', '/who-i-help/special-educational-needs': '/s-kogo-rabotya/specialni-obrazovatelni-potrebnosti',
-    '/who-i-help/group-sessions': '/s-kogo-rabotya/grupovi-sesii', '/who-i-help/organisations': '/s-kogo-rabotya/organizacii',
-    '/issues': '/problemi', '/issues/anxiety-panic': '/problemi/trevozhnost-i-panicheski-ataki', '/issues/depression': '/problemi/depresiya',
-    '/issues/stress': '/problemi/stres', '/issues/relationships': '/problemi/problemi-v-dvoykata', '/issues/parenting-teens': '/problemi/roditeli-i-tiyneydzhari',
-    '/issues/child-behaviour': '/problemi/povedenie-pri-detsata', '/issues/autism': '/problemi/autizam', '/issues/adhd': '/problemi/adhd',
-    '/issues/learning-difficulties': '/problemi/obuchitelni-zatrudneniya', '/issues/bullying': '/problemi/tormoz-i-digitalno-nasilie',
-    '/issues/living-abroad': '/problemi/zhivot-v-chuzhbina', '/articles': '/statii', '/fees': '/ceni', '/faq': '/chesto-zadavani-vaprosi',
-    '/press': '/medii', '/contact': '/kontakti', '/crisis': '/spesht-pomosht', '/privacy': '/poveritelnost', '/cookies': '/biskvitki', '/terms': '/obshti-usloviya',
-}
-EN_SLUGS = {k: k for k in BG_SLUGS}
 SLUGS = {'en': (EN_SLUGS, BG_SLUGS), 'bg': (BG_SLUGS, EN_SLUGS)}
+# The blog's posts get addresses too, so links like #/articles/<id> become /articles/<slug> or /statii/<slug>
+POST_SLUGS = {lang: {f"{BLOG_KEY}/{p['id']}": blog.Blog(lang, topics, posts).post_path(p) for p in posts} for lang in ('en', 'bg')}
+
+
+def check_cta(out, lang):
+    # The blog writes its own "Ready to talk?" band; make sure it still matches the one in src/
+    page = open(f"{out}{SLUGS[lang][0]['/fees']}/index.html").read()
+    site = re.search(r'<div class="cta-box[^>]*>(.*?)</div></div></section>', page, re.S).group(1)
+    mine = re.search(r'<div class="cta-box[^>]*>(.*?)</div></div></section>', blog.Blog(lang, topics, posts).cta_band(), re.S).group(1)
+    norm = lambda h: (re.findall(r'href="([^"]*)"', h), re.sub(r'\s+', ' ', re.sub('<[^>]+>', ' ', h)).strip())
+    assert norm(site) == norm(mine), ('blog.py cta_band() no longer matches src/ – update UI in blog.py', norm(site), norm(mine))
+
 
 for lang, html in (('en', s), ('bg', b)):
     out = f'{REPO}/dist/{lang}'
     shutil.rmtree(out, ignore_errors=True)
     shutil.copytree(f'{REPO}/public', out)          # images, icons, site.webmanifest
     own, other = SLUGS[lang]
-    page = for_server(html).replace('<script>document.documentElement.classList.add', '<script>window.SLUGS = ' + json.dumps(own) + '; window.OTHER_SLUGS = ' + json.dumps(other) + ';</script>\n<script>document.documentElement.classList.add', 1)
+    own = {**own, **POST_SLUGS[lang]}
+    other = {**other, **POST_SLUGS['bg' if lang == 'en' else 'en']}
+    page = for_server(with_blog(html, lang, 'live')).replace('<script>document.documentElement.classList.add', '<script>window.SLUGS = ' + json.dumps(own) + '; window.OTHER_SLUGS = ' + json.dumps(other) + ';</script>\n<script>document.documentElement.classList.add', 1)
     assert 'window.SLUGS' in page
     open(f'{out}/index.html', 'w').write(page)
     open(f'{out}/404.html', 'w').write(not_found(page))
-    open(f'{out}/robots.txt', 'w').write(f'User-agent: *\nAllow: /\n\nSitemap: {DOMAINS[lang]}sitemap.xml\n')
+    open(f'{out}/robots.txt', 'w').write(f'User-agent: *\nAllow: /\n\nSitemap: {DOMAINS[lang]}sitemap.xml\nSitemap: {DOMAINS[lang]}sitemap-articles.xml\n')
+    app_pages = [k for k in SLUGS[lang][0] if k != BLOG_KEY]      # the blog writes its own pages and sitemap
     urls = ''.join(f'  <url><loc>{DOMAINS[lang].rstrip("/")}{own[k]}</loc>'
                    f'<xhtml:link rel="alternate" hreflang="en-GB" href="{DOMAINS["en"].rstrip("/")}{EN_SLUGS[k]}"/>'
-                   f'<xhtml:link rel="alternate" hreflang="bg" href="{DOMAINS["bg"].rstrip("/")}{BG_SLUGS[k]}"/></url>\n' for k in own)
+                   f'<xhtml:link rel="alternate" hreflang="bg" href="{DOMAINS["bg"].rstrip("/")}{BG_SLUGS[k]}"/></url>\n' for k in app_pages)
     open(f'{out}/sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + urls + '</urlset>\n')
     # Save every page as its own HTML file (needs Node + Playwright on the machine that builds)
-    with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False) as routes:
-        json.dump([[k, own[k]] for k in own], routes)
-    subprocess.run(['node', f'{B}/prerender.js', out, routes.name], check=True)
-    os.unlink(routes.name)
-    print(f'dist/{lang}: index.html, 404.html, images/, robots.txt, sitemap.xml')
+    with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False) as routes_file:
+        json.dump([[k, own[k]] for k in app_pages], routes_file)
+    subprocess.run(['node', f'{B}/prerender.js', out, routes_file.name], check=True)
+    os.unlink(routes_file.name)
+    check_cta(out, lang)
+    blog_pages = blog.write_site(lang, f'{out}/index.html', out)
+    print(f'dist/{lang}: index.html, 404.html, {len(blog_pages)} article pages, posts.json, robots.txt, sitemaps')

@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://drvasileva.bg/sitemap.xml
+Sitemap: https://drvasileva.bg/sitemap-articles.xml
