@@ -9,7 +9,7 @@ const path = require('path');
 const [dir, routesFile] = process.argv.slice(2);
 const routes = JSON.parse(fs.readFileSync(routesFile, 'utf8'));   // [[key, url], ...]
 const index = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
-const types = { '.html': 'text/html; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json' };
+const types = { '.html': 'text/html; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.webmanifest': 'application/manifest+json', '.css': 'text/css', '.woff2': 'font/woff2' };
 
 // Small static server: real files, otherwise the app's index.html
 const server = http.createServer((req, res) => {
@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
   const origin = `http://127.0.0.1:${server.address().port}`;
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });   // counters show their final value
-  await page.route(/challenges\.cloudflare\.com|fonts\.(googleapis|gstatic)\.com/, r => r.abort());
+  await page.route(/challenges\.cloudflare\.com/, r => r.abort());
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   for (const [key, url] of routes) {

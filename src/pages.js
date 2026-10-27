@@ -569,7 +569,7 @@
     <h2>How long</h2><p>Records are kept securely only for as long as needed and as professional guidance requires.</p>
     <h2>Your rights</h2><p>You can ask to see, correct or delete your information, and you can complain to the ICO (UK) or the Commission for Personal Data Protection (Bulgaria).</p>`);
   legal('/cookies', 'Cookies', `
-    <h2>In short</h2><p>This website does not use advertising or tracking cookies. If visitor statistics are added, they will use a privacy-friendly service that does not need cookies.</p>
+    <h2>In short</h2><p>This website does not use advertising or tracking cookies. If visitor statistics are added, they will use a privacy-friendly service that does not need cookies.</p><p>Fonts and images are served from this website itself, so visiting it does not send your details to other companies such as Google.</p>
     <h2>Links to other services</h2><p>WhatsApp, Viber and Facebook have their own privacy policies, which apply when you use their apps.</p>`);
   legal('/terms', 'Terms', `
     <h2>Appointments</h2><p>Appointments are arranged by phone, WhatsApp, Viber, email or Facebook.</p>

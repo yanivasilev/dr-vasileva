@@ -14,7 +14,7 @@ Both sites have the same content in different languages, and the EN / BG switch 
 | `dist/` | **The finished websites:** `dist/en` and `dist/bg`. This is what the server shows to visitors. Built automatically; don't edit by hand. |
 | `src/` | **The website's source.** Edit text and design here (see below). |
 | `src/bg/` | The Bulgarian content and translations. |
-| `public/` | Images, icons and `site.webmanifest`, copied as they are into both sites. |
+| `public/` | Images, icons, fonts (`public/fonts/`) and `site.webmanifest`, copied as they are into both sites. The fonts are served from the site itself, so visitors' details never go to Google. |
 | `build/` | The scripts that turn `src/` + `public/` into `dist/` and `preview/`. |
 | `preview/` | One-file previews (`site.html`, `site-bg.html`) you can open from your computer. Built automatically. |
 | `brand/` | Logo files for use outside the website, and the sources of the share images and app icons. |

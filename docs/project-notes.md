@@ -757,6 +757,8 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 - Updating = `git pull`. No build is needed on the server.
 - Full step-by-step guide: **`deploy/README.md`**.
 
+- **Fonts are self-hosted** (`public/fonts/`, Latin + Cyrillic, SIL Open Font License). Loading them from Google would send every visitor's IP address to Google, which a German court ruled breaks EU GDPR. The Cookies page says so in both languages. The only outside service the site contacts is Cloudflare Turnstile on the contact form.
+
 ### Still needed before launch
 
 - [ ] DNS for both domains (and www) → VPS
