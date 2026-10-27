@@ -153,7 +153,7 @@
   /* =====================================================================
      Building blocks
      ===================================================================== */
-  const logo = (file, alt, w, h) => `<span class="ico logo-tile"><img src="../images/logos/${file}" alt="${alt}" width="${w}" height="${h}" loading="lazy"></span>`;
+  const logo = (file, alt, w, h) => `<span class="ico logo-tile"><img src="../public/images/logos/${file}" alt="${alt}" width="${w}" height="${h}" loading="lazy"></span>`;
   const ic = (id, cls = 'icon') => `<svg class="${cls}"><use href="#${id}"/></svg>`;
   const ctaButtons = `
     <a class="btn btn-whatsapp" href="${WA}">${ic('b-whatsapp', 'bi')}WhatsApp</a>
@@ -277,7 +277,7 @@
     ${hero({ crumbs: [['About me']], eyebrow: 'About me', title: 'Hello, I’m <em>Mirena</em>', lead: 'Dr Mirena Vasileva, PhD · Psychologist &amp; CBT Psychotherapist', icon: 'i-leaf' })}
     <section class="page-body"><div class="wrap split">
       <div class="prose">
-        <div class="about-photo" data-reveal="left" style="max-width:520px;margin-bottom:56px"><span class="frame"></span><div class="img"><img src="../images/dr-vasileva.jpg" alt="Dr Mirena Vasileva" width="1242" height="1242" loading="lazy"></div><div class="years"><strong><span class="js-count" data-to="${YEARS}">0</span><sup>+</sup></strong><span>years of experience</span></div></div>
+        <div class="about-photo" data-reveal="left" style="max-width:520px;margin-bottom:56px"><span class="frame"></span><div class="img"><img src="../public/images/dr-vasileva.jpg" alt="Dr Mirena Vasileva" width="1242" height="1242" loading="lazy"></div><div class="years"><strong><span class="js-count" data-to="${YEARS}">0</span><sup>+</sup></strong><span>years of experience</span></div></div>
         <p data-reveal>For ${YEARS} years, since 2005, I have been doing the work I love most: helping people understand themselves, heal and find their way forward. I’m a psychologist and cognitive behavioural therapist (CBT) with a PhD in Pedagogical and Developmental Psychology. I work with adults, couples, families, children and teenagers.</p>
         <p data-reveal>My path began in Bulgaria. For eight years I worked as a psychologist at a home for children with intellectual disabilities near Nessebar, where I learned that every child, whatever their needs, deserves to be truly seen. Alongside that, I built my private practice, worked as a psychotherapist at Viva Clinic in Sunny Beach, and taught Experimental and Pedagogical Psychology at Burgas Free University as a Chief Assistant Professor.</p>
         <p data-reveal>In 2016 I moved to London. Since then I have worked with clients at the Doctors 4 You and Medi-Park clinics, and supported children with special educational needs at the Bulgarian school "Rodna Rech". Many of the people I see know what it’s like to build a life between two countries. So do I.</p>
@@ -319,8 +319,8 @@
 
         <h2 data-reveal>Awards</h2>
         <div class="recog-grid" style="margin-top:20px">
-          <div class="award" data-reveal><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">${ic('i-ring')}</span></span><h3>Gold Ring of Varna Free University</h3><p>For graduating with honours.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
-          <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master’s Thesis</h3><p>"Best diploma thesis" competition.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
+          <div class="award" data-reveal><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">${ic('i-ring')}</span></span><h3>Gold Ring of Varna Free University</h3><p>For graduating with honours.</p><span class="by"><img src="../public/images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
+          <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master’s Thesis</h3><p>"Best diploma thesis" competition.</p><span class="by"><img src="../public/images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
         </div>
       </div>
       <aside class="aside">
@@ -333,9 +333,9 @@
           <li>${ic('i-feather')}"School of Psychology" columnist, BG BEN</li>
         </ul></div>
         <div class="box" data-reveal><h3>Studied at &amp; member of</h3><div class="affil">
-          <figure><span><img src="../images/logos/varna-free-university-mark.png" alt="" width="224" height="225" loading="lazy"></span><figcaption>Varna Free University</figcaption></figure>
-          <figure><span><img src="../images/logos/bps-mark.png" alt="" width="153" height="200" loading="lazy"></span><figcaption>British Psychological Society</figcaption></figure>
-          <figure><span><img src="../images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"></span><figcaption>Bulgarian Psychological Society</figcaption></figure>
+          <figure><span><img src="../public/images/logos/varna-free-university-mark.png" alt="" width="224" height="225" loading="lazy"></span><figcaption>Varna Free University</figcaption></figure>
+          <figure><span><img src="../public/images/logos/bps-mark.png" alt="" width="153" height="200" loading="lazy"></span><figcaption>British Psychological Society</figcaption></figure>
+          <figure><span><img src="../public/images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"></span><figcaption>Bulgarian Psychological Society</figcaption></figure>
         </div></div>
       </aside>
     </div></section>

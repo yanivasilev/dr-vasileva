@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
   await new Promise(r => server.listen(0, '127.0.0.1', r));
   const origin = `http://127.0.0.1:${server.address().port}`;
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });   // counters show their final value
   await page.route(/challenges\.cloudflare\.com|fonts\.(googleapis|gstatic)\.com/, r => r.abort());
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));

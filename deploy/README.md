@@ -36,9 +36,9 @@ You don't need Node, a build step or a database.
 | `deploy/nginx/mailcow-proxy.conf` | Only needed if mailcow is on the same VPS (step 2). |
 | `deploy/systemd/drvasileva-contact.service` | Keeps the contact service running. |
 | `deploy/contact.env.example` | Settings for the contact service: mailcow login and Turnstile key. |
-| `mockup/` | The design sources and build script. They are **not** served to visitors. |
+| everything else | The website's source, build scripts and previews. They are **not** served to visitors. See the main `README.md`. |
 
-> `mockup/site.html` and `mockup/site-bg.html` are only previews you can open from your computer.
+> `preview/site.html` and `preview/site-bg.html` are only previews you can open from your computer.
 > They use addresses like `site.html#/about` because a single file can't have real pages.
 > The live sites in `dist/` use real addresses like `/about` and `/za-men`.
 
@@ -191,7 +191,7 @@ You can try everything on your own domain first:
 
 The EN / BG switch moves between these two addresses, and search engines are told not to index them.
 
-> **Don't point nginx at the repo folder or at `mockup/`.** Those are the preview files, and their BG link goes to `site-bg.html`. The `root` must be `dist/en` or `dist/bg`.
+> **Don't point nginx at the repo folder or at `preview/`.** Those are the preview files, and their BG link goes to `site-bg.html`. The `root` must be `dist/en` or `dist/bg`.
 
 1. Add a DNS **A** record for `drvasileva-bg.vasilevdigital.com` pointing to the VPS.
 2. **Remove** the nginx config you made for `drvasileva.vasilevdigital.com` so far, then reload nginx.
@@ -230,19 +230,4 @@ That's all: the pages are plain files, so changes show up straight away. Only th
 
 ## Rebuilding `dist/` (only when the design or text changes)
 
-Edit the files in `mockup/` and `mockup/build/`, then rebuild. You need Python 3, Node and Playwright with Chromium. It's easiest to do this on a computer, not the VPS, then commit `dist/`.
-
-```
-npm install -g playwright && npx playwright install chromium
-NODE_PATH=$(npm root -g) python3 mockup/build/assemble.py
-```
-
-The build:
-
-- creates the previews `mockup/site.html` and `mockup/site-bg.html`;
-- creates `dist/en` and `dist/bg`, and saves every page as its own file;
-- stops with an error if any Bulgarian translation no longer matches the English text.
-
-## Alternative: Cloudflare Pages
-
-`functions/api/contact.js` is the same contact form for Cloudflare Pages, sending through Resend instead of mailcow. You need it only if the site moves off the VPS; see PROJECT-NOTES.md §11.
+The server never builds anything. Changes to the text or design are made in `src/`, rebuilt with `build/build.py` and committed together with `dist/`. The main `README.md` explains how.

@@ -2,7 +2,7 @@
     ${hero({ crumbs: [['За мен']], eyebrow: 'За мен', title: 'Здравейте, аз съм <em>Мирена</em>', lead: 'д-р Мирена Василева · психолог и когнитивно-поведенчески психотерапевт', icon: 'i-leaf' })}
     <section class="page-body"><div class="wrap split">
       <div class="prose">
-        <div class="about-photo" data-reveal="left" style="max-width:520px;margin-bottom:56px"><span class="frame"></span><div class="img"><img src="../images/dr-vasileva.jpg" alt="д-р Мирена Василева" width="1242" height="1242" loading="lazy"></div><div class="years"><strong><span class="js-count" data-to="${YEARS}">0</span><sup>+</sup></strong><span>години опит</span></div></div>
+        <div class="about-photo" data-reveal="left" style="max-width:520px;margin-bottom:56px"><span class="frame"></span><div class="img"><img src="../public/images/dr-vasileva.jpg" alt="д-р Мирена Василева" width="1242" height="1242" loading="lazy"></div><div class="years"><strong><span class="js-count" data-to="${YEARS}">0</span><sup>+</sup></strong><span>години опит</span></div></div>
         <p data-reveal>Вече ${YEARS} години – от 2005 г. – правя това, което обичам най-много: помагам на хората да разберат себе си, да се излекуват и да намерят своя път напред. Аз съм психолог и когнитивно-поведенчески психотерапевт (КПТ) с докторска степен по педагогическа и възрастова психология. Работя с възрастни, двойки, семейства, деца и тийнейджъри.</p>
         <p data-reveal>Пътят ми започна в България. Осем години работих като психолог в дом за деца с интелектуални затруднения в община Несебър, където научих, че всяко дете, независимо от потребностите си, заслужава да бъде истински видяно. Успоредно с това развивах частната си практика, работих като психотерапевт във Viva Clinic в Слънчев бряг и преподавах експериментална и педагогическа психология в Бургаския свободен университет като главен асистент.</p>
         <p data-reveal>През 2016 г. се преместих в Лондон. Оттогава работя с клиенти в клиниките Doctors 4 You и Medi-Park, а в българското училище „Родна реч“ подкрепях деца със специални образователни потребности. Много от хората, с които работя, знаят какво е да градиш живот между две държави. Знам го и аз.</p>
@@ -44,8 +44,8 @@
 
         <h2 data-reveal>Награди</h2>
         <div class="recog-grid" style="margin-top:20px">
-          <div class="award" data-reveal><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">${ic('i-ring')}</span></span><h3>Златен пръстен на ВСУ „Черноризец Храбър“</h3><p>За отличен успех при завършване.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">ВСУ „Черноризец Храбър“</span></div>
-          <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1-ва</span></span><h3>Първа награда за най-добра дипломна работа</h3><p>Конкурс „Най-добра дипломна работа“.</p><span class="by"><img src="../images/logos/varna-free-university.png" alt="" width="500" height="225">ВСУ „Черноризец Храбър“</span></div>
+          <div class="award" data-reveal><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">${ic('i-ring')}</span></span><h3>Златен пръстен на ВСУ „Черноризец Храбър“</h3><p>За отличен успех при завършване.</p><span class="by"><img src="../public/images/logos/varna-free-university.png" alt="" width="500" height="225">ВСУ „Черноризец Храбър“</span></div>
+          <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1-ва</span></span><h3>Първа награда за най-добра дипломна работа</h3><p>Конкурс „Най-добра дипломна работа“.</p><span class="by"><img src="../public/images/logos/varna-free-university.png" alt="" width="500" height="225">ВСУ „Черноризец Храбър“</span></div>
         </div>
       </div>
       <aside class="aside">
@@ -58,9 +58,9 @@
           <li>${ic('i-feather')}Автор на рубриката „Училище по психология“, БГ БЕН</li>
         </ul></div>
         <div class="box" data-reveal><h3>Образование и членства</h3><div class="affil">
-          <figure><span><img src="../images/logos/varna-free-university-mark.png" alt="" width="224" height="225" loading="lazy"></span><figcaption>ВСУ „Черноризец Храбър“</figcaption></figure>
-          <figure><span><img src="../images/logos/bps-mark.png" alt="" width="153" height="200" loading="lazy"></span><figcaption>Британско психологическо дружество</figcaption></figure>
-          <figure><span><img src="../images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"></span><figcaption>Дружество на психолозите в България</figcaption></figure>
+          <figure><span><img src="../public/images/logos/varna-free-university-mark.png" alt="" width="224" height="225" loading="lazy"></span><figcaption>ВСУ „Черноризец Храбър“</figcaption></figure>
+          <figure><span><img src="../public/images/logos/bps-mark.png" alt="" width="153" height="200" loading="lazy"></span><figcaption>Британско психологическо дружество</figcaption></figure>
+          <figure><span><img src="../public/images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"></span><figcaption>Дружество на психолозите в България</figcaption></figure>
         </div></div>
       </aside>
     </div></section>

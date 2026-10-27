@@ -28,9 +28,9 @@ drvasileva.co.uk  ─┘                       .co.uk  = English
 1. **Buy the domains**
    - `drvasileva.co.uk` from any registrar (Cloudflare, Namecheap, GoDaddy…).
    - `drvasileva.bg` from Register.bg or a Bulgarian registrar.
-2. **Pick a host.** Cloudflare Pages, Netlify or Vercel are free for a site like this, and HTTPS (the padlock) is included.
-3. **Connect both domains** to the same project on the host (the host shows you the DNS records to copy into the registrar).
-4. **Build the site** with two languages (Astro).
+2. **Host:** your own OVH VPS with nginx. Both domains point to it, and free Let's Encrypt certificates provide HTTPS (the padlock). See section 13 and `deploy/README.md`.
+3. **Point both domains** (and their `www`) at the VPS with DNS A records.
+4. **The site** is built with two languages by `build/build.py` into `dist/en` and `dist/bg`.
 5. **Tell Google** (see below).
 
 ### Same on both sites ✅
@@ -91,7 +91,7 @@ Source: her CV, plus her list of BG BEN columns.
 
 ### Photo
 
-`images/dr-vasileva.jpg` (1242 × 1242, square). It's a warm, friendly selfie, which suits About and Home. For the big Home banner, a crop that keeps the focus on her face (with less of the wall behind) will look cleaner. A professional portrait can replace it later.
+`public/images/dr-vasileva.jpg` (1242 × 1242, square). It's a warm, friendly selfie, which suits About and Home. For the big Home banner, a crop that keeps the focus on her face (with less of the wall behind) will look cleaner. A professional portrait can replace it later.
 
 ### Experience
 
@@ -556,12 +556,12 @@ Both support **Cyrillic**, so Bulgarian looks just as good as English.
 
 | File | Use |
 |---|---|
-| `images/logo.svg` | Dark green logo for light backgrounds |
-| `images/logo-light.svg` | Cream logo for dark backgrounds |
+| `brand/logo.svg` | Dark green logo for light backgrounds (for use outside the website, e.g. print) |
+| `brand/logo-light.svg` | Cream logo for dark backgrounds |
 
 The same logo is used on both .bg and .co.uk (it's her name, so it doesn't need translating).
 
-### Partner logos (`images/logos/`)
+### Partner logos (`public/images/logos/`)
 
 Supplied by you. Used in the credentials strip, "Featured in", the award cards, the Press page and the About page.
 
@@ -570,7 +570,7 @@ Supplied by you. Used in the credentials strip, "Featured in", the award cards, 
 | `bg-ben.png` | BG BEN (her column) |
 | `bg-radio.png` | BG Radio (2019 interview) |
 | `zdraveto.png` | Здравето / blitz.bg, publisher of the "Doctor" newspaper (2015 interview) |
-| `bps.png`, `bps-mark.png` | The British Psychological Society (full logo / emblem only) |
+| `bps-mark.png` | The British Psychological Society emblem |
 | `varna-free-university.png`, `varna-free-university-mark.png` | Varna Free University "Chernorizets Hrabar" (full logo / emblem only) |
 | `bulgarian-psychological-society.png` | Bulgarian Psychological Society |
 | `burgas-free-university.png` | Burgas Free University (CBT & SEND diplomas, lectures) |
@@ -582,12 +582,12 @@ Supplied by you. Used in the credentials strip, "Featured in", the award cards, 
 
 | File | Size | Where it shows |
 |---|---|---|
-| `images/favicon.svg` | vector | Browser tab (modern browsers): a simple five-petal **flower** (cream petals, gold centre) on dark green. The same flower is used for all the icons below |
-| `images/favicon.ico` | 16/32/48 px | Browser tab (older browsers, Windows) |
-| `images/apple-touch-icon.png` | 180 × 180 | iPhone/iPad "Add to Home Screen" |
-| `images/icon-192.png`, `icon-512.png` | 192, 512 | Android home screen (`site.webmanifest`) |
-| `images/og-en.png` | 1200 × 630 | Link preview on **Facebook, WhatsApp, Viber, X/Twitter, LinkedIn** for drvasileva.co.uk |
-| `images/og-bg.png` | 1200 × 630 | The same, in Bulgarian, for drvasileva.bg |
+| `public/images/favicon.svg` | vector | Browser tab (modern browsers): a simple five-petal **flower** (cream petals, gold centre) on dark green. The same flower is used for all the icons below |
+| `public/images/favicon.ico` | 16/32/48 px | Browser tab (older browsers, Windows) |
+| `public/images/apple-touch-icon.png` | 180 × 180 | iPhone/iPad "Add to Home Screen" |
+| `public/images/icon-192.png`, `icon-512.png` | 192, 512 | Android home screen (`site.webmanifest`) |
+| `public/images/og-en.png` | 1200 × 630 | Link preview on **Facebook, WhatsApp, Viber, X/Twitter, LinkedIn** for drvasileva.co.uk |
+| `public/images/og-bg.png` | 1200 × 630 | The same, in Bulgarian, for drvasileva.bg |
 
 The share image shows the logo, the headline, her title, "Online & in person · Bulgarian & English", the domain and her photo in the arch.
 
@@ -722,36 +722,20 @@ Form  →  /api/contact (on the VPS: server/contact_server.py, behind nginx)
       →  sends the email through mailcow (SMTP)  →  contact@drvasileva.co.uk  or  contact@drvasileva.bg
 ```
 
-> **We're using the VPS + mailcow version.** Setup steps are in **`deploy/README.md`**. The Cloudflare Pages + Resend version below (`functions/api/contact.js`) is kept only as an alternative.
+> Setup steps are in **`deploy/README.md`**.
 
 Replying to the email goes straight to the visitor (the email's reply-to is set to their address).
 
-### Alternative setup: Cloudflare Pages + Resend (not used)
-
-1. **Host on Cloudflare Pages** (free). The `functions/` folder is picked up automatically.
-2. **Turnstile:** Cloudflare dashboard → Turnstile → *Add widget* → add **drvasileva.co.uk** and **drvasileva.bg** → copy the **site key** into the site and the **secret key** into the environment variables.
-3. **Resend** (free up to 3,000 emails a month): create an account → add the domain **drvasileva.co.uk** → add the DNS records it shows → create an API key.
-4. **Environment variables** in Cloudflare Pages → Settings:
-
-| Name | Value |
-|---|---|
-| `TURNSTILE_SECRET_KEY` | from step 2 |
-| `RESEND_API_KEY` | from step 3 |
-| `CONTACT_TO` | `contact@drvasileva.co.uk` |
-| `CONTACT_FROM` | `Website <website@drvasileva.co.uk>` |
-
-5. Send a test message from both domains.
-
-> The privacy policy mentions the form, her own mail server and Turnstile (if Resend is ever used, update that sentence).
+> The privacy policy mentions the form, her own mail server and Turnstile.
 
 ---
 
 ## 12. Bulgarian version ✅ (first full draft)
 
-- **Preview files:** `mockup/site.html` (English) and `mockup/site-bg.html` (Bulgarian). The BG / EN switch moves between them and keeps you on the same page.
+- **Preview files:** `preview/site.html` (English) and `preview/site-bg.html` (Bulgarian). The BG / EN switch moves between them and keeps you on the same page.
 - **Live site:** `dist/en` (drvasileva.co.uk) and `dist/bg` (drvasileva.bg) are built with real addresses. The Bulgarian site uses the Bulgarian slugs from section 5 (e.g. `/za-men`). Every page is saved as its own file, so it loads directly and search engines can read it. The switch goes to the same page on the other domain. Each site has its own 404 page, robots.txt and sitemap.xml (with hreflang links between the two languages).
 - **Why the preview has `#/` in links:** a single preview file can't have real pages, so it uses `site.html#/about`. The live site doesn't.
-- **How it's built:** the English site is built first; `mockup/build/bg/` then swaps in the Bulgarian content (`data1.js`, `data2.js`, `blocks.js`, `pages.js`) and translates the remaining interface text with exact pairs (`pairs.py`). The build stops if an English phrase isn't found, so changes to the English text can't silently leave English on the Bulgarian site.
+- **How it's built:** the English site is built first; `src/bg/` then swaps in the Bulgarian content (`data1.js`, `data2.js`, `blocks.js`, `pages.js`) and translates the remaining interface text with exact pairs (`pairs.py`). The build stops if an English phrase isn't found, so changes to the English text can't silently leave English on the Bulgarian site.
 - **Bulgarian specifics:** email `contact@drvasileva.bg`, share image `og-bg.png`, BG listed first in the switch, Bulgarian crisis numbers listed first, prices shown as € / £, dates in Bulgarian.
 
 ### For her to check (✅ approved)
