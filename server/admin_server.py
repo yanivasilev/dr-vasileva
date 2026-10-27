@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""The website editor at admin.drvasileva.co.uk. This part: secure sign-in.
+"""The website editor at admin.drvasileva.co.uk: secure sign-in, then writing and publishing the articles.
 
-Runs behind nginx on 127.0.0.1:8788. Python standard library only.
+Runs behind nginx on 127.0.0.1:8788. Python standard library, plus Pillow for cover photos.
+The posts are kept by server/content_store.py, the screens are in server/editor_pages.py.
 
 Security:
   - One account, created only with a command on the server (no sign-up page, no "forgot password" email).
@@ -23,7 +24,9 @@ Settings (environment, see deploy/admin.env.example):
   ADMIN_ORIGIN       https://admin.drvasileva.co.uk (form posts from anywhere else are refused)
   ADMIN_DATA_DIR     where the account is kept, default /var/lib/drvasileva-admin
   ADMIN_ALERT_TO     where sign-in emails go
-  CONTENT_DIR        the blog's content folder, default <repository>/content
+  ADMIN_CONTENT_DIR  where the posts are kept, default /var/lib/drvasileva-admin/content
+  BLOG_OUT_DIR       where the published blog pages go (served by nginx), default /var/www/drvasileva-blog
+  SITE_DIST_DIR      the built site, whose page shell the blog uses, default <repository>/dist
   SMTP_* and MAIL_FROM as for the contact form (server/mailer.py)
   LISTEN_HOST, LISTEN_PORT   default 127.0.0.1:8788
   COOKIE_SECURE=0, SESSION_IDLE, SESSION_MAX, LOCK_SECONDS: for local testing only
@@ -32,7 +35,6 @@ import base64
 import getpass
 import hashlib
 import hmac
-import html
 import json
 import os
 import re
@@ -44,6 +46,8 @@ import sys
 import threading
 import time
 import urllib.parse
+from email.parser import BytesParser
+from email.policy import HTTP
 from http.cookies import SimpleCookie
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -51,22 +55,27 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, 'build'))
-import mailer  # noqa: E402  (server/mailer.py)
-import blog    # noqa: E402  (build/blog.py)
+import mailer         # noqa: E402  (server/mailer.py)
+import blog           # noqa: E402  (build/blog.py)
+import content_store as store   # noqa: E402
+import editor_pages as ui       # noqa: E402
+from editor_pages import login_page, page   # noqa: E402
 
 ENV = os.environ
 DATA_DIR = ENV.get('ADMIN_DATA_DIR', '/var/lib/drvasileva-admin')
 ACCOUNT = os.path.join(DATA_DIR, 'account.json')
 ORIGIN = ENV.get('ADMIN_ORIGIN', 'https://admin.drvasileva.co.uk').rstrip('/')
-CONTENT_DIR = ENV.get('CONTENT_DIR', os.path.join(REPO, 'content'))
 FONTS = os.path.join(REPO, 'public', 'fonts')
+IMAGES = os.path.join(store.DIST, 'en', 'images')       # the site's own images, for previews
+EDITOR_JS = os.path.join(HERE, 'editor.js')
 SECURE = ENV.get('COOKIE_SECURE', '1') != '0'
 COOKIE = '__Host-drv_session' if SECURE else 'drv_session'
 IDLE = int(ENV.get('SESSION_IDLE', 3600))
 MAX_AGE = int(ENV.get('SESSION_MAX', 12 * 3600))
 LOCK_AFTER, LOCK_SECONDS = 5, int(ENV.get('LOCK_SECONDS', 15 * 60))
 IP_FAILS, IP_WINDOW = 10, 15 * 60
-MAX_FORM = 8 * 1024
+MAX_FORM = 64 * 1024
+MAX_UPLOAD = 12 * 1024 * 1024            # a post's text plus a cover photo
 SCRYPT = dict(n=2 ** 15, r=8, p=1)
 APP = 'Dr Vasileva editor'
 
@@ -218,118 +227,10 @@ def when(t):
 
 
 # ---------------------------------------------------------------------------
-# Pages
-# ---------------------------------------------------------------------------
-esc = html.escape
-CSS = """
-:root { --green: #4F6F52; --green-dark: #344E38; --green-deep: #2C4430; --cream: #FAF7F2; --sand: #EDE6DA; --lilac: #B9A3C9; --lilac-deep: #8E79A6; --muted: #5E625D; --red: #A4423A; --white: #fff; }
-* { box-sizing: border-box; }
-body { margin: 0; font-family: Manrope, system-ui, sans-serif; color: #232823; background: var(--cream); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-h1, h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; line-height: 1.1; color: var(--green-deep); margin: 0 0 .4em; }
-a { color: var(--green-dark); }
-.word { font-weight: 600; letter-spacing: .32em; font-size: .9rem; color: inherit; text-decoration: none; }
-.login { min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at 20% 10%, #4F6F52, #2C4430 60%); }
-.card { width: 100%; max-width: 420px; background: var(--white); border-radius: 22px; padding: 36px 32px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.5); }
-.card .word { display: block; color: var(--green-deep); margin-bottom: 26px; }
-.card h1 { font-size: 2.2rem; }
-.card p.sub { color: var(--muted); margin: 0 0 22px; font-size: .95rem; }
-label { display: block; font-weight: 600; font-size: .88rem; margin: 16px 0 6px; color: var(--green-deep); }
-label small { font-weight: 500; color: var(--muted); }
-input[type=password], input[type=text] { width: 100%; font: inherit; font-size: 1rem; padding: 13px 15px; border: 1px solid #D9D2C5; border-radius: 12px; background: var(--cream); color: inherit; }
-input:focus { outline: 2px solid var(--lilac); outline-offset: 1px; border-color: var(--lilac-deep); }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: inherit; font-weight: 700; font-size: .95rem; padding: 13px 22px; border-radius: 999px; border: 0; cursor: pointer; background: var(--green-dark); color: var(--white); text-decoration: none; }
-.btn.wide { width: 100%; margin-top: 24px; }
-.btn.light { background: rgba(250,247,242,.12); color: var(--cream); border: 1px solid rgba(250,247,242,.25); padding: 9px 18px; }
-.error { background: #F8E9E7; color: var(--red); border-radius: 12px; padding: 12px 14px; font-size: .92rem; font-weight: 600; margin: 0 0 6px; }
-.note { margin: 22px 0 0; font-size: .82rem; color: var(--muted); text-align: center; }
-header.top { background: var(--green-deep); color: var(--cream); }
-header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 16px; padding-bottom: 16px; }
-header.top .word span { opacity: .6; letter-spacing: .1em; font-weight: 500; margin-left: 10px; }
-header.top form { margin: 0; }
-.wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
-main.wrap { padding-top: 40px; padding-bottom: 60px; }
-.info { display: flex; flex-wrap: wrap; gap: 10px 26px; font-size: .88rem; color: var(--muted); margin-bottom: 30px; }
-.info b { color: var(--green-deep); }
-table { width: 100%; border-collapse: collapse; background: var(--white); border-radius: 16px; overflow: hidden; box-shadow: 0 16px 40px -32px rgba(44,68,48,.6); }
-th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--sand); font-size: .92rem; vertical-align: top; }
-th { font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); background: #F6F2EA; }
-td small { display: block; color: var(--muted); }
-.tag { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .76rem; font-weight: 700; }
-.tag.published { background: #E4ECE3; color: var(--green-dark); }
-.tag.draft { background: #EEE7F3; color: #5E4A78; }
-.soon { margin-top: 26px; padding: 16px 18px; border-radius: 14px; background: var(--sand); font-size: .92rem; }
-@media (max-width: 640px) { th:nth-child(3), td:nth-child(3) { display: none; } .card { padding: 28px 22px; } }
-"""
-
-
-def page(title, body, cls=''):
-    return f'''<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex, nofollow">
-<title>{esc(title)} – {APP}</title>
-<link rel="stylesheet" href="/fonts/fonts.css">
-<link rel="stylesheet" href="/admin.css">
-</head>
-<body class="{cls}">
-{body}
-</body>
-</html>'''
-
-
-def login_page(error='', notice=''):
-    err = f'<p class="error" role="alert">{esc(error)}</p>' if error else ''
-    if notice:
-        form = f'<p class="sub">{esc(notice)}</p>'
-    else:
-        form = '''<form method="post" action="/login" autocomplete="on">
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
-      <label for="code">Code <small>from your authenticator app, or a backup code</small></label>
-      <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="14" required>
-      <button class="btn wide" type="submit">Sign in</button>
-    </form>'''
-    return page('Sign in', f'''<main class="login"><div class="card">
-    <span class="word">DR VASILEVA</span>
-    <h1>Website editor</h1>
-    <p class="sub">Sign in to write and publish articles.</p>
-    {err}
-    {form}
-    <p class="note">Every sign-in is emailed to the owner.</p>
-  </div></main>''', 'login-page')
-
-
-def dashboard(s, acc):
-    try:
-        _, posts = blog.load(CONTENT_DIR, include_drafts=True)
-        rows = ''.join(
-            f'<tr><td><b>{esc(p["text"]["bg"]["title"])}</b><small>{esc(p["text"]["en"]["title"])}</small></td>'
-            f'<td><span class="tag {p["status"]}">{"Published" if p["status"] == "published" else "Draft"}</span></td>'
-            f'<td>{esc(blog.format_date(p["date"], "en"))}</td></tr>' for p in posts)
-        table = f'<table><thead><tr><th>Title (BG / EN)</th><th>Status</th><th>Date</th></tr></thead><tbody>{rows}</tbody></table>'
-    except Exception as e:      # noqa: BLE001  (a broken post must not lock her out of the editor)
-        table = f'<p class="error">The posts could not be read: {esc(str(e))}</p>'
-    prev = acc.get('previous_login')
-    prev_text = f'{when(prev["time"])} from {esc(prev["ip"])}' if prev else 'this is the first sign-in'
-    return page('Posts', f'''<header class="top"><div class="wrap">
-    <a class="word" href="/">DR VASILEVA<span>Editor</span></a>
-    <form method="post" action="/logout"><input type="hidden" name="csrf" value="{esc(s['csrf'])}"><button class="btn light" type="submit">Sign out</button></form>
-  </div></header>
-  <main class="wrap">
-    <h1>Posts</h1>
-    <div class="info"><span>Previous sign-in: <b>{prev_text}</b></span><span>Signed out automatically after 1 hour without activity.</span></div>
-    {table}
-    <p class="soon">Writing, editing and publishing posts will be added here in the next update.</p>
-  </main>''')
-
-
-# ---------------------------------------------------------------------------
 # HTTP
 # ---------------------------------------------------------------------------
 HEADERS = {
-    'Content-Security-Policy': "default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self' data:; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",
+    'Content-Security-Policy': "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; form-action 'self'; frame-ancestors 'none'; base-uri 'none'",
     'X-Frame-Options': 'DENY',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'same-origin',     # with no-referrer, browsers label their own form posts "Origin: null"
@@ -339,6 +240,10 @@ HEADERS = {
     'Cross-Origin-Resource-Policy': 'same-origin',
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
 }
+# A preview is shown as a sandbox: it can't run scripts, can't reach her session and can't post forms
+PREVIEW_CSP = "sandbox; default-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
+OK = {'saved': 'Saved.', 'published': 'Published. The post is now on both sites.', 'unpublished': 'Unpublished. The post is no longer on the site.',
+      'created': 'Saved as a draft.', 'restored': 'Restored.', 'deleted': 'The post was moved to the bin.', 'topics': 'Topics saved.'}
 GENERIC = 'That didn’t work. Check your password and the code, then try again.'
 LOCKED = 'Too many attempts. Sign-in is paused for 15 minutes.'
 
@@ -348,15 +253,18 @@ class Handler(BaseHTTPRequestHandler):
         return 'editor'
 
     # --- helpers
-    def send(self, status, body=b'', ctype='text/html; charset=utf-8', headers=None, cache=False):
+    def send(self, status, body=b'', ctype='text/html; charset=utf-8', headers=None, cache=False, csp=None):
         if isinstance(body, str):
             body = body.encode()
         self.send_response(status)
         for k, v in HEADERS.items():
-            if not (cache and k == 'Cache-Control'):
-                self.send_header(k, v)
-        if cache:
+            if cache and k in ('Cache-Control', 'Cross-Origin-Resource-Policy'):
+                continue
+            self.send_header(k, csp if csp and k == 'Content-Security-Policy' else v)
+        if cache:                  # public files (fonts, images, styles): previews may load them too
             self.send_header('Cache-Control', 'public, max-age=86400')
+            self.send_header('Cross-Origin-Resource-Policy', 'cross-origin')
+            self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-Type', ctype)
         self.send_header('Content-Length', str(len(body)))
         for k, v in (headers or []):
@@ -391,34 +299,102 @@ class Handler(BaseHTTPRequestHandler):
         return self.headers.get('Sec-Fetch-Site') == 'same-origin'
 
     def form(self):
-        length = int(self.headers.get('Content-Length') or 0)
-        if not 0 <= length <= MAX_FORM or not self.headers.get('Content-Type', '').startswith('application/x-www-form-urlencoded'):
+        """Form fields (urlencoded, or multipart with at most one file 'photo'). None if too large or not a form."""
+        ctype = self.headers.get('Content-Type', '')
+        try:
+            length = int(self.headers.get('Content-Length') or 0)
+        except ValueError:
             return None
-        return {k: v[0] for k, v in urllib.parse.parse_qs(self.rfile.read(length).decode('utf-8', 'replace')).items()}
+        if ctype.startswith('application/x-www-form-urlencoded') and 0 <= length <= MAX_FORM:
+            return {k: v[0] for k, v in urllib.parse.parse_qs(self.rfile.read(length).decode('utf-8', 'replace')).items()}
+        if ctype.startswith('multipart/form-data') and 0 < length <= MAX_UPLOAD:
+            msg = BytesParser(policy=HTTP).parsebytes(b'Content-Type: ' + ctype.encode() + b'\r\n\r\n' + self.rfile.read(length))
+            fields = {}
+            for part in msg.iter_parts():
+                name = part.get_param('name', header='content-disposition')
+                data = part.get_payload(decode=True) or b''
+                if name == 'photo':
+                    fields['photo'] = data if part.get_filename() and data else None
+                elif name:
+                    fields[name] = data.decode('utf-8', 'replace')
+            return fields
+        return None
 
     # --- routes
-    def do_GET(self):
-        path = self.path.split('?')[0]
+    def static(self, path):
+        """Public files: styles, the editor's script, fonts and the site's images (for previews)."""
         if path == '/admin.css':
-            return self.send(200, CSS, 'text/css; charset=utf-8', cache=True)
+            return self.send(200, ui.CSS, 'text/css; charset=utf-8', cache=True)
+        if path == '/editor.js':
+            return self.send(200, open(EDITOR_JS, 'rb').read(), 'text/javascript; charset=utf-8', cache=True)
         m = re.fullmatch(r'/fonts/([a-z0-9-]+\.(woff2|css))', path)
         if m:
             f = os.path.join(FONTS, m.group(1))
-            if os.path.isfile(f):
-                return self.send(200, open(f, 'rb').read(), 'font/woff2' if m.group(2) == 'woff2' else 'text/css; charset=utf-8', cache=True)
-            return self.send(404, 'Not found', 'text/plain')
+            ctype = 'font/woff2' if m.group(2) == 'woff2' else 'text/css; charset=utf-8'
+        else:
+            m = re.fullmatch(r'/images/((?:logos/)?[a-z0-9_-]+\.(png|jpg|svg|ico))', path)
+            if not m:
+                return False
+            f = os.path.join(IMAGES, m.group(1))
+            ctype = {'png': 'image/png', 'jpg': 'image/jpeg', 'svg': 'image/svg+xml', 'ico': 'image/x-icon'}[m.group(2)]
+        if os.path.isfile(f):
+            self.send(200, open(f, 'rb').read(), ctype, cache=True)
+        else:
+            self.send(404, 'Not found', 'text/plain')
+        return True
+
+    def not_found(self):
+        return self.send(404, page('Not found', '<main class="login"><div class="card"><h1>Not found</h1><p class="sub"><a href="/">Back to the editor</a></p></div></main>'))
+
+    def do_GET(self):
+        url = urllib.parse.urlparse(self.path)
+        path, query = url.path, urllib.parse.parse_qs(url.query)
+        if self.static(path) is not False:
+            return
         s = self.session()
         if path == '/login':
             if s:
                 return self.redirect('/')
-            acc = load_account()
-            return self.send(200, login_page(notice='' if acc else 'The editor has not been set up yet. Run the setup command on the server (see deploy/README.md).'))
-        if path == '/':
-            acc = load_account()
-            if not s or not acc:
-                return self.redirect('/login')
-            return self.send(200, dashboard(s, acc))
-        return self.send(404, page('Not found', '<main class="login"><div class="card"><h1>Not found</h1><p class="sub"><a href="/">Back to the editor</a></p></div></main>'))
+            return self.send(200, login_page(notice='' if load_account() else 'The editor has not been set up yet. Run the setup command on the server (see deploy/README.md).'))
+        acc = load_account()
+        if not s or not acc:
+            return self.redirect('/login')
+        ok = OK.get((query.get('ok') or [''])[0], '')
+        try:
+            if path == '/':
+                return self.send(200, ui.posts_list(s['csrf'], store.list_posts(), store.topics(), acc.get('previous_login'), ok))
+            if path == '/posts/new':
+                empty = dict(id='', topic=None, date='', bgben='', status='draft', cover=None,
+                             text={l: dict(title='', summary='', slug='', cover_alt='', body='') for l in blog.LANGS})
+                return self.send(200, ui.edit_form(s['csrf'], empty, store.topics(), is_new=True))
+            m = re.fullmatch(r'/posts/([a-z0-9-]{1,80})', path)
+            if m:
+                post = store.get(m.group(1))
+                post['saved'] = os.path.getmtime(os.path.join(post['folder'], 'post.json'))
+                return self.send(200, ui.edit_form(s['csrf'], post, store.topics(), ok, error=s.pop('flash', '')))
+            m = re.fullmatch(r'/posts/([a-z0-9-]{1,80})/versions', path)
+            if m:
+                post = store.get(m.group(1))
+                return self.send(200, ui.versions_page(s['csrf'], post['id'], post['text']['bg']['title'] or post['text']['en']['title'], store.versions(post['id']), ok))
+            m = re.fullmatch(r'/preview/([a-z0-9-]{1,80})/(bg|en)', path)
+            if m:
+                return self.send(200, store.preview(m.group(1), m.group(2)), csp=PREVIEW_CSP)
+            m = re.fullmatch(r'/media/([a-z0-9-]{1,80})/(cover-[0-9a-f]{8}\.jpg|[a-z0-9-]+\.(?:jpg|png|webp))', path)
+            if m:
+                f = os.path.join(store.folder_of(m.group(1)), m.group(2))
+                if os.path.isfile(f):
+                    return self.send(200, open(f, 'rb').read(), {'png': 'image/png', 'webp': 'image/webp'}.get(f.rsplit('.', 1)[1], 'image/jpeg'))
+                return self.not_found()
+            if path == '/topics':
+                counts = {}
+                for p in store.list_posts():
+                    counts[p['topic']] = counts.get(p['topic'], 0) + 1
+                return self.send(200, ui.topics_page(s['csrf'], store.topics(), counts, ok))
+            if path == '/bin':
+                return self.send(200, ui.bin_page(s['csrf'], store.list_bin(), ok))
+        except store.EditError:
+            return self.not_found()
+        return self.not_found()
 
     do_HEAD = do_GET
 
@@ -438,7 +414,72 @@ class Handler(BaseHTTPRequestHandler):
         if path == '/logout':
             end_session(s)
             return self.redirect('/login', [self.cookie('', 0)])
+        try:
+            return self.change(path, form, s)
+        except store.EditError as e:
+            if getattr(e, 'pid', None):                        # saved, but not publishable yet
+                s['flash'] = str(e)
+                return self.redirect(f'/posts/{e.pid}')
+            return self.change_failed(path, form, s, str(e))
+        except blog.PostError as e:
+            return self.change_failed(path, form, s, f'Something in the posts needs fixing: {e}')
+
+    def change(self, path, form, s):
+        m = re.fullmatch(r'/posts/(new|[a-z0-9-]{1,80})', path)
+        if m:
+            action = form.get('action') if form.get('action') in ('save', 'publish', 'unpublish') else 'save'
+            is_new = m.group(1) == 'new'
+            pid = store.save(None if is_new else m.group(1), form, action, form.get('photo'), form.get('remove_photo') == 'yes')
+            code = {'publish': 'published', 'unpublish': 'unpublished'}.get(action, 'created' if is_new else 'saved')
+            return self.redirect(f'/posts/{pid}?ok={code}')
+        m = re.fullmatch(r'/posts/([a-z0-9-]{1,80})/delete', path)
+        if m:
+            if form.get('confirm') != 'yes':
+                raise store.EditError('Tick the box to confirm.')
+            store.delete(m.group(1))
+            return self.redirect('/?ok=deleted')
+        m = re.fullmatch(r'/posts/([a-z0-9-]{1,80})/versions/(\d{8}-\d{6}-\d{6})/restore', path)
+        if m:
+            store.restore_version(m.group(1), m.group(2))
+            return self.redirect(f'/posts/{m.group(1)}?ok=restored')
+        m = re.fullmatch(r'/bin/([a-z0-9-]{1,80}--\d{8}-\d{6}-\d{6})/restore', path)
+        if m:
+            pid = store.restore_bin(m.group(1))
+            return self.redirect(f'/posts/{pid}?ok=restored')
+        if path == '/topics':
+            rows = {t['id']: {k: form.get(f'{t["id"]}_{k}') for k in ('en', 'bg', 'colour', 'icon')} for t in store.topics()}
+            new = {k: form.get(f'new_{k}') for k in ('en', 'bg', 'colour', 'icon')}
+            store.save_topics(rows, new, form.get('remove'))
+            return self.redirect('/topics?ok=topics')
         return self.send(404, 'Not found', 'text/plain')
+
+    def change_failed(self, path, form, s, error):
+        """Show the problem on the same screen; a post form keeps everything she typed."""
+        m = re.fullmatch(r'/posts/(new|[a-z0-9-]{1,80})', path)
+        if m:
+            is_new = m.group(1) == 'new'
+            try:
+                current = None if is_new else store.get(m.group(1))
+            except store.EditError:
+                return self.not_found()
+            typed = dict(id='' if is_new else m.group(1), topic=form.get('topic'), date=form.get('date', ''), bgben=form.get('bgben', ''),
+                         status=current['status'] if current else 'draft', cover=current['cover'] if current else None,
+                         text={l: {k: form.get(f'{l}_{k}', '') for k in ('title', 'summary', 'slug', 'cover_alt', 'body')} for l in blog.LANGS})
+            return self.send(400, ui.edit_form(s['csrf'], typed, store.topics(), error=error, is_new=is_new))
+        if path.startswith('/posts/') and path.endswith('/delete'):
+            return self.redirect(path[:-len('/delete')])
+        if '/versions/' in path:
+            pid = path.split('/')[2]
+            post = store.get(pid)
+            return self.send(400, ui.versions_page(s['csrf'], pid, post['text']['bg']['title'], store.versions(pid), error=error))
+        if path.startswith('/bin/'):
+            return self.send(400, ui.bin_page(s['csrf'], store.list_bin(), error=error))
+        if path == '/topics':
+            counts = {}
+            for p in store.list_posts():
+                counts[p['topic']] = counts.get(p['topic'], 0) + 1
+            return self.send(400, ui.topics_page(s['csrf'], store.topics(), counts, error=error))
+        return self.send(400, 'Bad request', 'text/plain')
 
     def login(self, form):
         acc, ip, now = load_account(), self.ip(), time.time()
@@ -562,6 +603,7 @@ if __name__ == '__main__':
     if len(sys.argv) > 1:
         command(sys.argv[1])
     else:
+        store.init()                     # first start: copy the posts; every start: rebuild the blog pages
         addr = (ENV.get('LISTEN_HOST', '127.0.0.1'), int(ENV.get('LISTEN_PORT', '8788')))
         print('editor listening on %s:%d' % addr, file=sys.stderr)
         ThreadingHTTPServer(addr, Handler).serve_forever()

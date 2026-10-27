@@ -36,7 +36,9 @@ You don't need Node, a build step or a database.
 | `deploy/nginx/mailcow-proxy.conf` | Only needed if mailcow is on the same VPS (step 2). |
 | `deploy/systemd/drvasileva-contact.service` | Keeps the contact service running. |
 | `deploy/contact.env.example` | Settings for the contact service: mailcow login and Turnstile key. |
-| `server/admin_server.py` | The website editor at `admin.drvasileva.co.uk`. So far it has the secure sign-in and the posts list (see step 8). |
+| `server/admin_server.py` (+ `content_store.py`, `editor_pages.py`, `editor.js`) | The website editor at `admin.drvasileva.co.uk`: secure sign-in, then writing and publishing articles (steps 8 and 9). |
+| `deploy/nginx/drvasileva-blog-en.conf`, `drvasileva-blog-bg.conf` | Serve the Articles pages that the editor publishes (step 9). |
+| `deploy/systemd/drvasileva-backup.service`, `.timer` | A nightly backup of the posts (step 9). |
 | `deploy/nginx/drvasileva-admin.conf`, `drvasileva-admin-common.conf` | nginx for the editor. |
 | `deploy/systemd/drvasileva-admin.service` | Keeps the editor running, as its own restricted user. |
 | `deploy/admin.env.example` | Settings for the editor: its address, where sign-in emails go, and mailcow. |
@@ -229,16 +231,12 @@ cd /var/www/dr-vasileva && git pull
 
 That's all: the pages are plain files, so changes show up straight away. Only these changes need more:
 
-- If anything in `server/` changed, restart the services: `systemctl restart drvasileva-contact drvasileva-admin`.
+- If anything in `server/` changed, or the design changed, restart the services: `systemctl restart drvasileva-contact drvasileva-admin`. When the editor starts, it rebuilds the Articles pages with the current design.
 - If the files in `deploy/nginx/` changed, copy them again and reload nginx.
 
 ## 8. The website editor (admin.drvasileva.co.uk)
 
-The editor is where she will write and publish articles. **So far it has:**
-- the secure sign-in;
-- a list of the posts.
-
-Writing and publishing come in the next update. Nothing it does is visible on the public sites yet.
+The editor is where she writes and publishes articles. Step 8 sets up the editor and its sign-in. Step 9 connects it to the live sites, so that what she publishes appears there.
 
 **How sign-in is protected:**
 - **Two-step sign-in:** a password plus a 6-digit code from an authenticator app on her phone. A stolen password alone is not enough.
@@ -319,6 +317,66 @@ Writing and publishing come in the next update. Nothing it does is visible on th
 > - The per-address limit becomes shared between visitors, so it can block her too.
 >
 > Keep the editor's DNS record "DNS only" (grey cloud), or set up nginx's real-IP module for Cloudflare.
+
+## 9. Publishing from the editor
+
+**What she can do in the editor:**
+- **Write a post:** in Bulgarian | English tabs, with a toolbar for headings, bold, italic, lists, quotes and links.
+- **Set the details:** the topic, the date, the BG BEN link for a column, and a cover photo.
+- **Preview** it exactly as it will look on the site.
+- **Publish and unpublish:** **Publish** puts it on both sites at once, and **Unpublish** takes it off. A post can only be published when both languages are filled in. Changes to a published post go live when she saves.
+- **Undo mistakes:**
+  - every save keeps a version she can restore (the last 30);
+  - deleted posts stay in the bin for 30 days;
+  - typing is also kept in her browser every 30 seconds, in case the browser closes before she saves.
+- **Manage topics:** add and rename topics in both languages, and choose their colour and icon.
+
+**Where things are kept:**
+- **Her posts:** they live on the server in `/var/lib/drvasileva-admin/content`, not in the git folder, so `git pull` never touches them. On its first start the editor copies the 18 columns there from the repository.
+- **The published pages:** the editor writes them to `/var/www/drvasileva-blog`, and nginx serves the Articles addresses from there.
+
+**Photos:** each photo is redrawn on the server. This removes the location the phone saves in it and anything hidden in the file, turns it the right way up and resizes it. Anything that isn't a JPG, PNG or WebP photo is refused.
+
+**Safety:** the preview opens as a sandbox, so it can't run scripts or touch her signed-in session.
+
+### Set it up (after step 8)
+
+1. **The photo library and the blog folder:**
+   ```
+   apt install python3-pil
+   install -d -o drvasileva-admin -g drvasileva-admin -m 755 /var/www/drvasileva-blog
+   ```
+2. **The updated editor service**, which may now write to that folder and accepts photos up to 10 MB:
+   ```
+   cp /var/www/dr-vasileva/deploy/systemd/drvasileva-admin.service /etc/systemd/system/
+   cp /var/www/dr-vasileva/deploy/nginx/drvasileva-admin-common.conf /etc/nginx/snippets/
+   systemctl daemon-reload && systemctl restart drvasileva-admin
+   ls /var/www/drvasileva-blog/en/articles      # the editor has written the Articles pages
+   ```
+3. **Serve the Articles pages from the editor:**
+   1. Copy the snippets:
+      ```
+      cp /var/www/dr-vasileva/deploy/nginx/drvasileva-blog-en.conf /var/www/dr-vasileva/deploy/nginx/drvasileva-blog-bg.conf /etc/nginx/snippets/
+      ```
+   2. In `/etc/nginx/conf.d/drvasileva.conf`, remove the `#` in front of the two `include …drvasileva-blog-…` lines. On the test site, do the same in `drvasileva-test.conf`.
+   3. Reload nginx:
+      ```
+      nginx -t && systemctl reload nginx
+      ```
+
+   Until this step, the Articles pages come from the git copy, which has the 18 columns but nothing published in the editor.
+4. **Nightly backup** of the posts, kept for 30 days in `/var/backups/drvasileva`:
+   ```
+   cp /var/www/dr-vasileva/deploy/systemd/drvasileva-backup.* /etc/systemd/system/
+   systemctl daemon-reload && systemctl enable --now drvasileva-backup.timer
+   ```
+   Now and then, copy `/var/backups/drvasileva` off the server too, for example to your computer.
+
+**Test it:**
+1. Write a short post in both languages.
+2. Press **Publish**.
+3. Open https://drvasileva.co.uk/articles and https://drvasileva.bg/statii.
+4. Unpublish it again.
 
 ## Rebuilding `dist/` (only when the design or text changes)
 

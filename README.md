@@ -19,7 +19,7 @@ Both sites have the same content in different languages, and the EN / BG switch 
 | `build/` | The scripts that turn `src/` + `public/` into `dist/` and `preview/`. |
 | `preview/` | One-file previews (`site.html`, `site-bg.html`) you can open from your computer. Built automatically. |
 | `brand/` | Logo files for use outside the website, and the sources of the share images and app icons. |
-| `server/` | The contact-form service that runs on the VPS and sends messages through mailcow. |
+| `server/` | The services that run on the VPS: the contact form (sends through mailcow) and the website editor at `admin.drvasileva.co.uk`. |
 | `deploy/` | nginx and systemd settings, plus **`deploy/README.md`**, the step-by-step server guide. |
 | `docs/` | `project-notes.md`: everything decided about the site, the content, and what's still to do. |
 
@@ -62,7 +62,9 @@ NODE_PATH=$(npm root -g) python3 build/build.py
 
 ## Articles (blog)
 
-The Articles pages are made by `build/blog.py` from `content/`. The same code will later be used by the editor at `admin.drvasileva.co.uk`.
+The Articles pages are made by `build/blog.py` from `content/`. The editor at `admin.drvasileva.co.uk` uses the same code on the server.
+
+> **Once the editor is running, her posts live on the server, not here.** `content/` in the repository is only the starting copy the editor makes on its first start; publishing in the editor never changes the repository. See `deploy/README.md` step 9.
 
 | File | What it holds |
 |---|---|

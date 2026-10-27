@@ -838,8 +838,48 @@ Built by `server/admin_server.py`; the setup steps are in `deploy/README.md` ste
 - 45 attack tests: wrong details, the lock, reused codes, backup codes, forged posts, cookies, timeouts and file access;
 - a real browser signing in through nginx over HTTPS.
 
-**Next, step 3:**
-- writing a post in BG | EN tabs, Preview, Publish and Unpublish;
-- the cover photo upload;
-- topics, saved versions, the bin and autosave.
+## 16. Editor step 3: writing and publishing ✅
+
+Setup: `deploy/README.md` step 9.
+
+**The screens:**
+- **Posts list:** title, topic, status, date, and which language is missing.
+- **Writing a post:**
+  - Български | English tabs, with ✓ on a finished language;
+  - a toolbar for headings, bold, italic, lists, quotes and links;
+  - topic, date, BG BEN link and cover photo.
+- **The buttons:**
+  - Preview (BG and EN), Save draft and Publish;
+  - Save changes and Unpublish for a published post;
+  - Versions and Delete.
+- **Topics:** add, rename, colour and icon, both languages. A topic with posts can't be deleted.
+- **Bin:** 30 days; a restored post comes back as a draft.
+
+**Safety nets:**
+- **Versions:** the last 30 saves.
+- **Autosave:** in the browser every 30 seconds, with a "restore unsaved changes" banner.
+- **Live posts stay complete:** a published post can't be saved incomplete; the live page stays as it was, and her typing is kept in the form.
+- **Addresses never change by accident:** emptying the web address field keeps the post's current address.
+
+**Security:**
+- **Scripts:** only the editor's own script is allowed.
+- **Text in posts:** everything is escaped (tested with a script in a title).
+- **Photos:**
+  - redrawn on the server: the location data is removed and the photo is resized to at most 2000 px;
+  - SVG, GIF, fake files, files over 10 MB and decompression bombs are refused.
+- **Preview:** a sandbox with no scripts, which can't read her cookies (checked in a browser).
+- **Requests and files:**
+  - every change needs her session, the CSRF token and the editor's own origin;
+  - path tricks are refused.
+
+**Where things are kept:**
+- posts on the server in `/var/lib/drvasileva-admin/content`, seeded once from `content/`;
+- published pages in `/var/www/drvasileva-blog`, served by nginx;
+- a nightly backup in `/var/backups/drvasileva`.
+
+**Tested:** 52 end-to-end tests, the 45 sign-in attack tests again, and a real browser:
+- tabs, toolbar, photo upload, publish, autosave restore and preview;
+- nginx serving the published articles.
+
+**Later, if wanted:** a Bulgarian version of the editor's own screens (they're in English now).
 

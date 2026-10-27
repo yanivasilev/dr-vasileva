@@ -1,0 +1,10 @@
+# Copy to /etc/systemd/system/ with drvasileva-backup.service, then: systemctl enable --now drvasileva-backup.timer
+[Unit]
+Description=Back up the Dr Vasileva posts every night
+
+[Timer]
+OnCalendar=*-*-* 03:17
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -141,8 +141,16 @@ def read_text_file(path):
     return head, m.group(2).strip()
 
 
-def load(content_dir=os.path.join(REPO, 'content'), include_drafts=False):
-    """Topics and published posts (newest first), checked so that every page can be built."""
+def write_text_file(path, head, body):
+    """The opposite of read_text_file. Header values are kept on one line, so they can't break the file."""
+    lines = [f'{k}: {" ".join(str(v).split())}' for k, v in head.items() if v]
+    tmp = path + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        f.write('---\n' + '\n'.join(lines) + '\n---\n' + body.replace('\r\n', '\n').strip() + '\n')
+    os.replace(tmp, path)
+
+
+def load_topics(content_dir):
     topics = json.load(open(os.path.join(content_dir, 'topics.json'), encoding='utf-8'))['topics']
     by_id = {}
     for t in topics:
@@ -153,48 +161,70 @@ def load(content_dir=os.path.join(REPO, 'content'), include_drafts=False):
         if t.get('colour') not in COLOURS or t.get('icon') not in ICONS:
             raise PostError(f'topic {t["id"]}: unknown colour or icon')
         by_id[t['id']] = t
+    return topics
 
+
+def read_post(folder, topics, strict=True):
+    """One post folder. strict=True checks everything a published page needs; strict=False (the editor's
+    drafts) fills in what's missing, so an unfinished post can still be listed, edited and previewed."""
+    pid = os.path.basename(folder)
+    by_id = {t['id']: t for t in topics}
+    if not re.fullmatch(r'[a-z0-9-]+', pid):
+        raise PostError(f'post folder {pid!r}: use lowercase letters, numbers and "-" only')
+    meta = json.load(open(os.path.join(folder, 'post.json'), encoding='utf-8'))
+    problems = []
+    if meta.get('status') not in ('draft', 'published'):
+        problems.append('status must be "draft" or "published"')
+    if meta.get('topic') not in by_id:
+        problems.append('choose a topic')
+    if not re.fullmatch(r'\d{4}(-\d{2}(-\d{2})?)?', meta.get('date') or ''):
+        problems.append('the date must look like 2026-09-19 (or 2026-09, or 2026)')
+    if meta.get('bgben') and not re.fullmatch(r'https://(www\.)?bgben\.co\.uk/\S+', meta['bgben']):
+        problems.append('the BG BEN link must be an https://bgben.co.uk/… address')
+    cover = meta.get('cover')
+    if cover and (not re.fullmatch(r'[a-z0-9-]+\.(jpg|png|webp)', cover) or not os.path.isfile(os.path.join(folder, cover))):
+        problems.append(f'cover photo {cover!r} not found')
+        cover = None
+    post = dict(id=pid, topic=meta.get('topic') if meta.get('topic') in by_id else topics[0]['id'],
+                date=meta.get('date') or '', status=meta.get('status', 'draft'), bgben=meta.get('bgben') or None,
+                cover=cover, folder=folder, text={})
+    for lang in LANGS:
+        path = os.path.join(folder, f'{lang}.md')
+        head, body = read_text_file(path) if os.path.isfile(path) else ({}, '')
+        name = 'English' if lang == 'en' else 'Bulgarian'
+        for field in ('title', 'summary', 'slug'):
+            if not head.get(field):
+                problems.append(f'{name}: the {field} is missing')
+        if head.get('slug') and not re.fullmatch(r'[a-z0-9-]+', head['slug']):
+            problems.append(f'{name}: the web address may only use lowercase Latin letters, numbers and "-"')
+        if not body and not post['bgben']:
+            problems.append(f'{name}: the text is empty')
+        post['text'][lang] = dict(title=head.get('title', ''), summary=head.get('summary', ''), slug=head.get('slug', ''),
+                                  cover_alt=head.get('cover_alt', ''), body=body)
+    if strict and problems:
+        raise PostError(f'{pid}: ' + '; '.join(problems))
+    post['problems'] = problems
+    return post
+
+
+def load(content_dir=os.path.join(REPO, 'content'), include_drafts=False):
+    """Topics and published posts (newest first), checked so that every page can be built."""
+    topics = load_topics(content_dir)
     posts, seen = [], {lang: {} for lang in LANGS}
     root = os.path.join(content_dir, 'posts')
     for pid in sorted(os.listdir(root)):
         folder = os.path.join(root, pid)
         if not os.path.isdir(folder):
             continue
-        if not re.fullmatch(r'[a-z0-9-]+', pid):
-            raise PostError(f'post folder {pid!r}: use lowercase letters, numbers and "-" only')
-        meta = json.load(open(os.path.join(folder, 'post.json'), encoding='utf-8'))
-        if meta.get('status') not in ('draft', 'published'):
-            raise PostError(f'{pid}: status must be "draft" or "published"')
-        if meta['status'] == 'draft' and not include_drafts:
+        status = json.load(open(os.path.join(folder, 'post.json'), encoding='utf-8')).get('status')
+        if status == 'draft' and not include_drafts:
             continue
-        if meta.get('topic') not in by_id:
-            raise PostError(f'{pid}: unknown topic {meta.get("topic")!r}')
-        if not re.fullmatch(r'\d{4}(-\d{2}(-\d{2})?)?', meta.get('date', '')):
-            raise PostError(f'{pid}: date must look like 2026-09-19 (or 2026-09, or 2026)')
-        if meta.get('bgben') and not re.fullmatch(r'https://(www\.)?bgben\.co\.uk/\S+', meta['bgben']):
-            raise PostError(f'{pid}: the BG BEN link must be an https://bgben.co.uk/… address')
-        cover = meta.get('cover')
-        if cover and (not re.fullmatch(r'[a-z0-9-]+\.(jpg|png|webp)', cover) or not os.path.isfile(os.path.join(folder, cover))):
-            raise PostError(f'{pid}: cover photo {cover!r} not found')
-        post = dict(id=pid, topic=meta['topic'], date=meta['date'], status=meta['status'], bgben=meta.get('bgben'),
-                    cover=cover, folder=folder, text={})
+        post = read_post(folder, topics)
         for lang in LANGS:
-            path = os.path.join(folder, f'{lang}.md')
-            if not os.path.isfile(path):
-                raise PostError(f'{pid}: the {lang.upper()} version is missing (every post needs both languages)')
-            head, body = read_text_file(path)
-            for field in ('title', 'summary', 'slug'):
-                if not head.get(field):
-                    raise PostError(f'{pid} ({lang.upper()}): "{field}" is missing')
-            if not re.fullmatch(r'[a-z0-9-]+', head['slug']):
-                raise PostError(f'{pid} ({lang.upper()}): the slug may only use lowercase Latin letters, numbers and "-"')
-            if head['slug'] in seen[lang]:
-                raise PostError(f'{pid} ({lang.upper()}): slug {head["slug"]!r} is already used by {seen[lang][head["slug"]]}')
-            seen[lang][head['slug']] = pid
-            if not body and not post['bgben']:
-                raise PostError(f'{pid} ({lang.upper()}): the text is empty')
-            post['text'][lang] = dict(title=head['title'], summary=head['summary'], slug=head['slug'],
-                                      cover_alt=head.get('cover_alt', ''), body=body)
+            slug = post['text'][lang]['slug']
+            if slug in seen[lang]:
+                raise PostError(f'{pid} ({lang.upper()}): web address {slug!r} is already used by {seen[lang][slug]}')
+            seen[lang][slug] = pid
         posts.append(post)
     posts.sort(key=lambda p: (p['date'], p['id']), reverse=True)
     return topics, posts
@@ -435,8 +465,22 @@ def static_page(shell, key, inner, info, lang):
     return page
 
 
-def write_site(lang, shell_path, out_dir, content_dir=os.path.join(REPO, 'content')):
-    """Write the blog pages, cover photos, posts.json and sitemap-articles.xml of one language into out_dir."""
+def write_site(lang, shell_path, out_dir, content_dir=os.path.join(REPO, 'content'), swap=False):
+    """Write the blog pages, cover photos, posts.json and sitemap-articles.xml of one language into out_dir.
+    swap=True (the editor's own folder, which holds only the blog): build next to it, then switch over
+    in one step, so visitors never see a half-written blog."""
+    if swap:
+        tmp = out_dir.rstrip('/') + '.new'
+        shutil.rmtree(tmp, ignore_errors=True)
+        os.makedirs(tmp)
+        pages = write_site(lang, shell_path, tmp, content_dir)
+        old = out_dir.rstrip('/') + '.old'
+        shutil.rmtree(old, ignore_errors=True)
+        if os.path.isdir(out_dir):
+            os.rename(out_dir, old)
+        os.rename(tmp, out_dir)
+        shutil.rmtree(old, ignore_errors=True)
+        return pages
     topics, posts = load(content_dir)
     blog = Blog(lang, topics, posts)
     shell = open(shell_path, encoding='utf-8').read()

@@ -1,0 +1,9 @@
+# Nightly copy of the editor's posts and account (run by drvasileva-backup.timer).
+# Copies are kept in /var/backups/drvasileva for 30 days. Copy them off the server too, now and then.
+[Unit]
+Description=Back up the Dr Vasileva posts
+
+[Service]
+Type=oneshot
+UMask=0077
+ExecStart=/bin/sh -c 'mkdir -p /var/backups/drvasileva && tar -czf /var/backups/drvasileva/editor-$(date +%%F).tar.gz -C /var/lib drvasileva-admin && find /var/backups/drvasileva -name "editor-*.tar.gz" -mtime +30 -delete'
