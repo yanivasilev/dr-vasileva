@@ -582,7 +582,7 @@ Supplied by you. Used in the credentials strip, "Featured in", the award cards, 
 
 | File | Size | Where it shows |
 |---|---|---|
-| `images/favicon.svg` | vector | Browser tab (modern browsers): **DV** in cream on dark green |
+| `images/favicon.svg` | vector | Browser tab (modern browsers): a simple five-petal **flower** (cream petals, gold centre) on dark green. The same flower is used for all the icons below |
 | `images/favicon.ico` | 16/32/48 px | Browser tab (older browsers, Windows) |
 | `images/apple-touch-icon.png` | 180 × 180 | iPhone/iPad "Add to Home Screen" |
 | `images/icon-192.png`, `icon-512.png` | 192, 512 | Android home screen (`site.webmanifest`) |
