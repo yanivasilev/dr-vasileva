@@ -1,0 +1,42 @@
+# Runs the website editor (server/admin_server.py). Copy to /etc/systemd/system/, then:
+#   systemctl daemon-reload && systemctl enable --now drvasileva-admin
+# It runs as its own user, drvasileva-admin, which can only write to /var/lib/drvasileva-admin.
+[Unit]
+Description=Dr Vasileva website editor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=drvasileva-admin
+Group=drvasileva-admin
+EnvironmentFile=/etc/drvasileva/admin.env
+ExecStart=/usr/bin/python3 /var/www/dr-vasileva/server/admin_server.py
+StateDirectory=drvasileva-admin
+StateDirectoryMode=0700
+UMask=0077
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

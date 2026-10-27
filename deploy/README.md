@@ -30,12 +30,16 @@ You don't need Node, a build step or a database.
 | `server/contact_server.py` | The contact-form service: it checks Turnstile, validates the form and sends the email via SMTP. |
 | `deploy/nginx/drvasileva.conf` | The nginx sites: www→bare redirects, http→https, both domains. |
 | `deploy/nginx/drvasileva-common.conf` | Settings shared by both domains: 404 page, `/api/contact`, caching, security headers. |
-| `deploy/nginx/drvasileva-limits.conf` | The contact-form limit (shared by the live and test sites). |
+| `deploy/nginx/drvasileva-limits.conf` | The limits for the contact form and for editor sign-in (shared by the live and test sites). |
 | `deploy/nginx/drvasileva-test.conf` | A test copy on your own domain (see *Test site* below). |
 | `deploy/nginx/drvasileva-first-certs.conf` | A temporary config, used only to get the first certificates. |
 | `deploy/nginx/mailcow-proxy.conf` | Only needed if mailcow is on the same VPS (step 2). |
 | `deploy/systemd/drvasileva-contact.service` | Keeps the contact service running. |
 | `deploy/contact.env.example` | Settings for the contact service: mailcow login and Turnstile key. |
+| `server/admin_server.py` | The website editor at `admin.drvasileva.co.uk`. So far it has the secure sign-in and the posts list (see step 8). |
+| `deploy/nginx/drvasileva-admin.conf`, `drvasileva-admin-common.conf` | nginx for the editor. |
+| `deploy/systemd/drvasileva-admin.service` | Keeps the editor running, as its own restricted user. |
+| `deploy/admin.env.example` | Settings for the editor: its address, where sign-in emails go, and mailcow. |
 | everything else | The website's source, build scripts and previews. They are **not** served to visitors. See the main `README.md`. |
 
 > `preview/site.html` and `preview/site-bg.html` are only previews you can open from your computer.
@@ -225,8 +229,96 @@ cd /var/www/dr-vasileva && git pull
 
 That's all: the pages are plain files, so changes show up straight away. Only these changes need more:
 
-- If `server/contact_server.py` changed, restart the service: `systemctl restart drvasileva-contact`.
+- If anything in `server/` changed, restart the services: `systemctl restart drvasileva-contact drvasileva-admin`.
 - If the files in `deploy/nginx/` changed, copy them again and reload nginx.
+
+## 8. The website editor (admin.drvasileva.co.uk)
+
+The editor is where she will write and publish articles. **So far it has:**
+- the secure sign-in;
+- a list of the posts.
+
+Writing and publishing come in the next update. Nothing it does is visible on the public sites yet.
+
+**How sign-in is protected:**
+- **Two-step sign-in:** a password plus a 6-digit code from an authenticator app on her phone. A stolen password alone is not enough.
+- **Backup codes:** 10 one-time codes for when the phone isn't at hand.
+- **Lockout:**
+  - 5 wrong tries pause sign-in for 15 minutes;
+  - one address may fail only 10 times in 15 minutes;
+  - nginx also limits how often sign-in can be tried.
+- **Emails:** every sign-in and every lock is emailed. The editor also shows the previous sign-in, so a stranger's visit stands out.
+- **No sign-up page and no "forgot password" email.** The account is created and changed only with a command on the server.
+- **Sessions:**
+  - she is signed out after 1 hour without activity, and always after 12 hours;
+  - the session cookie can't be read by scripts, is only sent over HTTPS, and is never sent from other sites;
+  - form posts from any other site are refused.
+- **The editor page itself:** it runs no scripts, can't be put inside another site's frame, isn't stored by the browser, and isn't shown by search engines.
+- **The editor service:** it runs as its own user, which can write only to `/var/lib/drvasileva-admin`.
+
+### Set it up
+
+1. **DNS:** add an A record for `admin.drvasileva.co.uk`. For testing, use `drvasileva-admin.vasilevdigital.com` instead.
+2. **Certificate:**
+   - Live site: add the name `admin.drvasileva.co.uk`. The temporary config in `drvasileva-first-certs.conf` already includes it:
+     ```
+     certbot certonly --webroot -w /var/www/letsencrypt -d admin.drvasileva.co.uk --deploy-hook "systemctl reload nginx"
+     ```
+   - Test site: add the name to the existing certificate:
+     ```
+     certbot certonly --webroot -w /var/www/letsencrypt --cert-name drvasileva.vasilevdigital.com --expand \
+         -d drvasileva.vasilevdigital.com -d drvasileva-bg.vasilevdigital.com -d drvasileva-admin.vasilevdigital.com
+     ```
+3. **nginx:**
+   ```
+   cp /var/www/dr-vasileva/deploy/nginx/drvasileva-limits.conf /etc/nginx/conf.d/
+   cp /var/www/dr-vasileva/deploy/nginx/drvasileva-admin-common.conf /etc/nginx/snippets/
+   cp /var/www/dr-vasileva/deploy/nginx/drvasileva-admin.conf /etc/nginx/conf.d/     # live address
+   cp /var/www/dr-vasileva/deploy/nginx/drvasileva-test.conf /etc/nginx/conf.d/      # test addresses (now includes the editor)
+   nginx -t && systemctl reload nginx
+   ```
+4. **The editor's user and settings:**
+   ```
+   useradd --system --no-create-home --shell /usr/sbin/nologin drvasileva-admin
+   install -d -o drvasileva-admin -g drvasileva-admin -m 700 /var/lib/drvasileva-admin
+   cp /var/www/dr-vasileva/deploy/admin.env.example /etc/drvasileva/admin.env
+   nano /etc/drvasileva/admin.env
+   chmod 600 /etc/drvasileva/admin.env
+   ```
+   In the settings:
+   - Set `ADMIN_ORIGIN` to the address you use: `https://admin.drvasileva.co.uk`, or `https://drvasileva-admin.vasilevdigital.com` while testing.
+   - Set `ADMIN_ALERT_TO` to the inbox for sign-in emails.
+   - Use the same mailcow details as the contact form.
+5. **Create her account,** with her phone next to you:
+   ```
+   apt install qrencode        # optional: shows a QR code to scan instead of typing the key
+   sudo -u drvasileva-admin python3 /var/www/dr-vasileva/server/admin_server.py setup
+   ```
+   1. Type the password twice: at least 12 characters, and a few words together work well.
+   2. Add the editor to an authenticator app on her phone, such as Google Authenticator, Microsoft Authenticator, 2FAS or Aegis. Scan the QR code, or type the setup key.
+   3. Type the code the app shows.
+   4. Write down or print the 10 backup codes, and keep them somewhere safe and away from the computer.
+6. **Start it:**
+   ```
+   cp /var/www/dr-vasileva/deploy/systemd/drvasileva-admin.service /etc/systemd/system/
+   systemctl daemon-reload && systemctl enable --now drvasileva-admin
+   ```
+   Then open the editor's address and sign in. The sign-in email should arrive within a minute.
+
+**Later changes** (each signs everyone out after `systemctl restart drvasileva-admin`):
+
+| What | Command (`sudo -u drvasileva-admin python3 /var/www/dr-vasileva/server/admin_server.py …`) |
+|---|---|
+| New password | `password` |
+| Lost or new phone | `reset-2fa` |
+| New backup codes (the old ones stop working) | `backup-codes` |
+| Check the account | `status` |
+
+> **If you use Cloudflare's proxy (orange cloud) for the editor:** nginx then sees Cloudflare's addresses, not the visitor's.
+> - The 5-tries lockout still protects the account.
+> - The per-address limit becomes shared between visitors, so it can block her too.
+>
+> Keep the editor's DNS record "DNS only" (grey cloud), or set up nginx's real-IP module for Cloudflare.
 
 ## Rebuilding `dist/` (only when the design or text changes)
 

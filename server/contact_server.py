@@ -15,21 +15,20 @@ Settings come from environment variables (see deploy/contact.env.example):
   MAIL_TO_EN, MAIL_TO_BG     inbox for each domain (MAIL_TO_BG falls back to MAIL_TO_EN)
   LISTEN_HOST, LISTEN_PORT   default 127.0.0.1:8787
 """
-import email.utils
 import json
 import os
 import re
-import smtplib
-import ssl
 import sys
 import threading
 import time
 import urllib.parse
 import urllib.request
-from email.message import EmailMessage
 from email.parser import BytesParser
 from email.policy import HTTP
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mailer  # noqa: E402  (server/mailer.py)
 
 ENV = os.environ
 TURNSTILE_URL = ENV.get('TURNSTILE_VERIFY_URL', 'https://challenges.cloudflare.com/turnstile/v0/siteverify')
@@ -76,14 +75,7 @@ def turnstile_ok(token, ip):
 
 
 def send_mail(site, to, data):
-    msg = EmailMessage()
-    msg['Subject'] = f"Website message from {data['name']}"
-    msg['From'] = ENV['MAIL_FROM']
-    msg['To'] = to
-    msg['Reply-To'] = data['email']
-    msg['Date'] = email.utils.formatdate(localtime=True)
-    msg['Message-ID'] = email.utils.make_msgid(domain=site)
-    msg.set_content('\n'.join([
+    mailer.send(to, f"Website message from {data['name']}", '\n'.join([
         f'New message from {site}', '',
         f"Name:      {data['name']}",
         f"Email:     {data['email']}",
@@ -92,19 +84,7 @@ def send_mail(site, to, data):
         f"Reply by:  {data['reply'] or '-'}",
         f"Language:  {data['language'] or '-'}",
         '', data['message'],
-    ]))
-    host, port, security = ENV['SMTP_HOST'], int(ENV.get('SMTP_PORT', '465')), ENV.get('SMTP_SECURITY', 'ssl')
-    ctx = ssl.create_default_context()
-    if security == 'ssl':
-        server = smtplib.SMTP_SSL(host, port, context=ctx, timeout=20)
-    else:
-        server = smtplib.SMTP(host, port, timeout=20)
-        if security == 'starttls':
-            server.starttls(context=ctx)
-    with server:
-        if ENV.get('SMTP_USER'):
-            server.login(ENV['SMTP_USER'], ENV['SMTP_PASSWORD'])
-        server.send_message(msg)
+    ]), reply_to=data['email'], msgid_domain=site)
 
 
 class Handler(BaseHTTPRequestHandler):

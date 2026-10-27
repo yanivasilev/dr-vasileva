@@ -813,3 +813,33 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 
 It saves posts in the same format and rebuilds only the blog pages.
 
+## 15. Editor step 2: secure sign-in ✅
+
+Built by `server/admin_server.py`; the setup steps are in `deploy/README.md` step 8.
+
+**Sign-in:**
+- a password plus a code from an authenticator app, or a one-time backup code;
+- one account, created only with a command on the server;
+- no sign-up page and no reset email.
+
+**Limits and alerts:**
+- 5 wrong tries pause sign-in for 15 minutes, with a limit per address and an nginx limit as well;
+- every sign-in and every lock is emailed;
+- the editor shows the previous sign-in.
+
+**Sessions:** a secure cookie; signed out after 1 hour idle, and always after 12 hours.
+
+**Page protection:**
+- form posts from other sites are refused;
+- strict browser rules: no scripts, no framing, no caching, not indexed;
+- the editor runs as a restricted user.
+
+**Tested:**
+- 45 attack tests: wrong details, the lock, reused codes, backup codes, forged posts, cookies, timeouts and file access;
+- a real browser signing in through nginx over HTTPS.
+
+**Next, step 3:**
+- writing a post in BG | EN tabs, Preview, Publish and Unpublish;
+- the cover photo upload;
+- topics, saved versions, the bin and autosave.
+
