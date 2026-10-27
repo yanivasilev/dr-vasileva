@@ -170,12 +170,9 @@ The log records only errors, never names or messages.
 
 **Turnstile:**
 
-- Until real keys are set, the site uses Cloudflare's *test* keys. The form works, but nothing is actually checked.
-- To protect the form for real:
-  1. Create a Turnstile widget at dash.cloudflare.com → Turnstile and add both domains.
-  2. Put the **secret key** in `contact.env`.
-  3. Run `systemctl restart drvasileva-contact`.
-  4. Send the **site key** for the website. The site needs to be rebuilt with it, and Claude can do that.
+- The site already uses the real **site key** of the "Dr Vasileva" widget. Its hostnames are `drvasileva.co.uk`, `drvasileva.bg`, `drvasileva.vasilevdigital.com` and `drvasileva-bg.vasilevdigital.com`.
+- Put the matching **secret key** in `contact.env` as `TURNSTILE_SECRET_KEY`, then run `systemctl restart drvasileva-contact`. Keep it only there, never in the repo.
+- The form only works on the hostnames listed in the widget. On any other address, Turnstile refuses to load and the form can't be sent.
 
 **Protection:**
 

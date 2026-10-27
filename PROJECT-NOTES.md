@@ -60,7 +60,7 @@ The only thing that differs is the **language** (Bulgarian on .bg, English on .c
 - **Viber:** `viber://chat?number=%2B447999334778`
 - **WhatsApp:** `https://wa.me/447999334778`
 - **Email:** `contact@drvasileva.bg` / `contact@drvasileva.co.uk` → `mailto:` link
-- **Facebook:** <https://www.facebook.com/share/1Bh2hqG1Ac/>. This is a share link. Before launch, open it and copy the page's real address (`facebook.com/<her-page>`), which is more reliable.
+- **Facebook:** <https://www.facebook.com/mirena.vasileva.3> ✅
 
 > The Viber link only opens if the visitor has Viber installed. The number is always shown as text next to the buttons as a fallback.
 
@@ -200,7 +200,7 @@ Use this title everywhere: header, About page, page titles, Facebook.
 - [ ] **Full list of scientific papers** (she has more than the CV shows; coming soon)
 - [x] BG BEN: she can republish her columns in full ✅
 - [x] About me: EN + BG (section 9), **approved by her** ✅
-- [x] **Diploma in CBT** and **Diploma in SEND**: issued by **Burgas Free University** (shown with its logo). *Please confirm it's Burgas Free University and not the Bulgarian Academy of Sciences.*
+- [x] **Diploma in CBT** and **Diploma in SEND**: issued by **Burgas Free University** (shown with its logo). ✅ Confirmed.
 - [x] **Safeguarding Children Level 3**: removed from the site.
 - [ ] Check her current BPS letters (MBPsS → GMBPsS since 2022?), DBS date and Bulgarian society name (section 10)
 
@@ -729,7 +729,7 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 ### Alternative setup: Cloudflare Pages + Resend (not used)
 
 1. **Host on Cloudflare Pages** (free). The `functions/` folder is picked up automatically.
-2. **Turnstile:** Cloudflare dashboard → Turnstile → *Add widget* → add **drvasileva.co.uk** and **drvasileva.bg** → copy the **site key** into the site (it replaces the test key `1x00000000000000000000AA`) and the **secret key** into the environment variables.
+2. **Turnstile:** Cloudflare dashboard → Turnstile → *Add widget* → add **drvasileva.co.uk** and **drvasileva.bg** → copy the **site key** into the site and the **secret key** into the environment variables.
 3. **Resend** (free up to 3,000 emails a month): create an account → add the domain **drvasileva.co.uk** → add the DNS records it shows → create an API key.
 4. **Environment variables** in Cloudflare Pages → Settings:
 
@@ -754,12 +754,14 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 - **How it's built:** the English site is built first; `mockup/build/bg/` then swaps in the Bulgarian content (`data1.js`, `data2.js`, `blocks.js`, `pages.js`) and translates the remaining interface text with exact pairs (`pairs.py`). The build stops if an English phrase isn't found, so changes to the English text can't silently leave English on the Bulgarian site.
 - **Bulgarian specifics:** email `contact@drvasileva.bg`, share image `og-bg.png`, BG listed first in the switch, Bulgarian crisis numbers listed first, prices shown as € / £, dates in Bulgarian.
 
-### For her to check
+### For her to check (✅ approved)
 
-- [ ] The whole text reads naturally in her voice (formal **„Вие“** is used throughout).
-- [ ] **Column titles** of the six older (PDF) columns are my back-translations from English: "Как да бъдем себе си…", "Покана за щастие", "Как да разбираме емоционалната интелигентност…", "Как страховете и емоциите ни разболяват", "Прошката е най-великият учител", "Как родителите могат да помогнат на децата си в юношеството". The other 12 come from the BG BEN web addresses and should be exact.
-- [ ] **Scientific publications**: the Bulgarian titles are back-translations of the English ones in her CV, so they need checking against the originals.
-- [ ] The interview title „Самоубийците са хора, които искат да бъдат забелязани“.
+- [x] **Letter shapes:** keep the Bulgarian-style Cyrillic letterforms (the page is marked `lang="bg"`, so the fonts use them).
+
+- [x] The whole text reads naturally in her voice (formal **„Вие“** is used throughout).
+- [x] **Column titles** of the six older (PDF) columns are my back-translations from English: "Как да бъдем себе си…", "Покана за щастие", "Как да разбираме емоционалната интелигентност…", "Как страховете и емоциите ни разболяват", "Прошката е най-великият учител", "Как родителите могат да помогнат на децата си в юношеството". The other 12 come from the BG BEN web addresses and should be exact.
+- [x] **Scientific publications**: the Bulgarian titles are back-translations of the English ones in her CV, so they need checking against the originals.
+- [x] The interview title „Самоубийците са хора, които искат да бъдат забелязани“.
 
 ---
 
@@ -775,4 +777,4 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 
 - [ ] DNS for both domains (and www) → VPS
 - [ ] mailcow mailbox for the website (e.g. `website@drvasileva.co.uk`) + its password in `/etc/drvasileva/contact.env`
-- [ ] Real Turnstile keys (site key → rebuild the site, secret key → `contact.env`)
+- [x] Real Turnstile keys: the site key is built into the site; the secret key goes only in `/etc/drvasileva/contact.env` on the server (never in the repo)

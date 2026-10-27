@@ -4,7 +4,7 @@
      ===================================================================== */
   const PHONE = '+44 7999 334778', TEL = 'tel:+447999334778';
   const WA = 'https://wa.me/447999334778', VIBER = 'viber://chat?number=%2B447999334778';
-  const EMAIL = 'contact@drvasileva.co.uk', FB = 'https://www.facebook.com/share/1Bh2hqG1Ac/';
+  const EMAIL = 'contact@drvasileva.co.uk', FB = 'https://www.facebook.com/mirena.vasileva.3';
 
   const WHO = [
     { slug: 'adults', icon: 'i-user', title: 'Adults',
@@ -713,7 +713,7 @@
     onScroll();
   };
   // Contact form. TURNSTILE_SITE_KEY is Cloudflare's public test key (always passes); replace it with the real site key at launch.
-  const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
+  const TURNSTILE_SITE_KEY = '0x4AAAAAAFn0BHwXhddLG2qs';
   const FORM_ENDPOINT = '/api/contact';
   function wireForm(el) {
     const form = el.querySelector('#contact-form');
