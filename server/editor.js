@@ -2,6 +2,11 @@
 // Everything here is a convenience: without it the forms still work, with plain text boxes and
 // both languages shown one under the other.
 (() => {
+  // The editor's texts in Bulgarian, when it is shown in Bulgarian (sent with the page as data)
+  const WORDS = (() => { try { return JSON.parse(document.getElementById('i18n')?.textContent || '{}'); } catch { return {}; } })();
+  const _ = text => WORDS[text] || text;
+  const LOCALE = document.documentElement.lang === 'bg' ? 'bg-BG' : 'en-GB';
+
   // Sign out asks first, so a click by accident doesn't sign her out
   const signout = document.querySelector('form[data-signout]'), dialog = document.getElementById('signout-dialog');
   if (signout && dialog?.showModal) {
@@ -23,7 +28,7 @@
     document.querySelectorAll('a[data-delete]').forEach(a => a.addEventListener('click', e => {
       e.preventDefault();
       delForm.action = a.getAttribute('href');
-      del.querySelector('[data-what]').textContent = a.dataset.what;
+      del.querySelector('[data-heading]').textContent = a.dataset.heading;
       del.querySelector('[data-note]').textContent = a.dataset.note;
       del.querySelector('[data-expected]').textContent = a.dataset.name;
       typed.dataset.expected = a.dataset.name;
@@ -46,7 +51,7 @@
     const update = () => {
       const named = [...topicForm.querySelectorAll('input[type=text]')].every(f => f.value.trim());
       topicSave.disabled = !named || (!isNew && now() === start);
-      topicSave.title = topicSave.disabled ? (named ? 'Nothing has changed yet' : 'Fill in both names') : '';
+      topicSave.title = topicSave.disabled ? (named ? _('Nothing has changed yet') : _('Fill in both names')) : '';
     };
     topicForm.addEventListener('input', update);
     topicForm.addEventListener('submit', e => { if (topicSave.disabled) e.preventDefault(); });
@@ -70,7 +75,7 @@
     const span = document.createElement('span');
     span.textContent = text;
     const x = document.createElement('button');
-    x.className = 'msg-x'; x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', 'Close this message');
+    x.className = 'msg-x'; x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', _('Close this message'));
     msg.append(span, x);
     box.replaceChildren(msg);
     closable(msg);
@@ -115,7 +120,7 @@
     const update = () => {
       preview.className = `topic-preview c-${colour.value}`;
       preview.querySelector('use').setAttribute('href', `#${icon.value}`);
-      if (name) preview.querySelector('.label').textContent = name.value.trim() || 'New topic';
+      if (name) preview.querySelector('.label').textContent = name.value.trim() || _('New topic');
     };
     [colour, icon, name].forEach(el => el?.addEventListener('input', update));
   });
@@ -229,8 +234,8 @@
     rich.contentEditable = 'true';
     rich.setAttribute('role', 'textbox');
     rich.setAttribute('aria-multiline', 'true');
-    rich.setAttribute('aria-label', document.querySelector(`label[for="${ta.id}"]`)?.textContent || 'Text');
-    rich.dataset.placeholder = 'Start writing here…';
+    rich.setAttribute('aria-label', document.querySelector(`label[for="${ta.id}"]`)?.textContent || _('Text'));
+    rich.dataset.placeholder = _('Start writing here…');
     rich.lang = ta.closest('[lang]')?.lang || '';
     // Numbered lists carry on after a paragraph (1 … 2 … 3); a heading, or "Restart numbering", starts again at 1
     const continuing = () => {
@@ -260,10 +265,13 @@
     };
     load(ta.value);
     ta.hidden = true;
-    ta.after(rich);
+    const box = document.createElement('div');           // the toolbar and the text share one frame, lit up while typing
+    box.className = 'editor-box';
+    bar.before(box);
+    box.append(bar, rich);
     bar.hidden = false;
     const hint = ta.parentElement.querySelector('[data-hint]');
-    if (hint) hint.textContent = 'Select words, then click a button above. Press Enter for a new paragraph.';
+    if (hint) hint.textContent = _('Select words, then click a button above. Press Enter for a new paragraph.');
     const sync = () => {
       renumber();
       const text = fromHTML(rich);
@@ -316,7 +324,7 @@
     };
     const colour = c => {
       const sel = getSelection();
-      if (!inRich() || sel.isCollapsed) return alert('First select the words you want to colour.');
+      if (!inRich() || sel.isCollapsed) return alert(_('First select the words you want to colour.'));
       const range = sel.getRangeAt(0);
       unwrapColours(range);
       if (c) {
@@ -404,10 +412,10 @@
       },
       link: () => {
         const sel = getSelection();
-        if (sel.isCollapsed) return alert('First select the words that should become a link.');
-        const url = prompt('Web address for the link (starting with https://):', 'https://');
+        if (sel.isCollapsed) return alert(_('First select the words that should become a link.'));
+        const url = prompt(_('Web address for the link (starting with https://):'), 'https://');
         if (url === null) return;
-        if (!okLink(url.trim()) || url.trim() === 'https://') return alert('Please enter a full address, starting with https://');
+        if (!okLink(url.trim()) || url.trim() === 'https://') return alert(_('Please enter a full address, starting with https://'));
         document.execCommand('createLink', false, url.trim());
       },
       clear: () => {
@@ -442,7 +450,7 @@
       const continues = ol && (ol.dataset.restart || continuing().get(ol) > 1);
       if (renumBtn) {
         renumBtn.hidden = !continues;
-        renumBtn.lastChild.textContent = ol && ol.dataset.restart ? 'Continue numbering' : 'Restart numbering';
+        renumBtn.lastChild.textContent = ol && ol.dataset.restart ? _('Continue numbering') : _('Restart numbering');
       }
       for (const [cmd, on] of Object.entries({ bold: !/^H[1-4]$/.test(b) && document.queryCommandState('bold'),   // headings are bold anyway
         italic: document.queryCommandState('italic'),
@@ -469,13 +477,27 @@
     const l = t.dataset.tab, el = n => form.elements[`${l}_${n}`].value.trim();
     const done = el('title') && el('summary') && (el('body') || form.elements.bgben.value.trim());
     const state = t.querySelector('[data-done]');
-    state.textContent = done ? 'Complete' : 'Not finished';
+    state.textContent = done ? _('Complete') : _('Not finished');
     state.classList.toggle('ready', !!done);
   });
 
-  // Cover photo: show the chosen photo straight away
+  // Cover photo: the box opens the photo picker and shows the chosen photo straight away; × takes it away again.
+  // With a photo the box sits beside its descriptions; without one it is a wide "add a photo" box.
   const photo = form.elements.photo, thumb = document.querySelector('[data-thumb]');
-  const alt = document.querySelector('[data-alt]');
+  const alt = document.querySelector('[data-alt]'), cover = document.querySelector('[data-cover]');
+  const photoX = document.querySelector('[data-photo-x]'), removeBox = form.elements.remove_photo;
+  const photoHint = document.querySelector('[data-photo-hint]'), removedNote = document.querySelector('[data-removed-note]');
+  const savedPhoto = thumb?.querySelector('img') ? thumb.innerHTML : '';
+  const emptyPhoto = document.querySelector('template[data-empty-photo]');
+  if (removeBox) removeBox.closest('[data-remove-check]').hidden = true;     // the × does this now
+  const showPhoto = has => {
+    cover?.classList.toggle('has-photo', has);
+    if (photoX) photoX.hidden = !has;
+    if (alt) alt.hidden = !has;
+    if (photoHint) photoHint.textContent = has ? photoHint.dataset.with : photoHint.dataset.without;
+    if (removedNote) removedNote.hidden = !removeBox?.checked;
+  };
+  const changed = () => form.dispatchEvent(new Event('change'));
   photo?.addEventListener('change', () => {
     const f = photo.files[0];
     if (!f) return;
@@ -483,9 +505,19 @@
     img.src = URL.createObjectURL(f);
     img.alt = '';
     thumb.replaceChildren(img);
-    if (alt) alt.hidden = false;
+    if (removeBox) removeBox.checked = false;
+    showPhoto(true);
   });
-  form.elements.remove_photo?.addEventListener('change', e => { if (alt) alt.hidden = e.target.checked && !photo.files.length; });
+  photoX?.addEventListener('click', () => {
+    if (photo.files.length) {                     // a photo chosen just now: back to the saved one, if there is one
+      photo.value = '';
+      if (savedPhoto && !removeBox?.checked) { thumb.innerHTML = savedPhoto; showPhoto(true); changed(); return; }
+    } else if (removeBox) removeBox.checked = true;
+    thumb.replaceChildren(emptyPhoto.content.cloneNode(true));
+    showPhoto(false);
+    changed();
+  });
+  if (thumb) showPhoto(!!thumb.querySelector('img'));
 
   // The short description grows with its text (for browsers without field-sizing)
   if (!CSS.supports('field-sizing', 'content')) {
@@ -527,14 +559,14 @@
   const autosave = () => {
     if (!dirty) return;
     store.set({ time: Date.now(), values: values() });
-    if (note) note.textContent = ` · unsaved changes kept in this browser at ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    if (note) note.textContent = _(' · unsaved changes kept in this browser at {time}').replace('{time}', new Date().toLocaleTimeString(LOCALE, { hour: '2-digit', minute: '2-digit' }));
   };
   // Save only once something has really changed (Publish and Unpublish always work)
   const saveBtn = form.querySelector('[data-save]'), removePhoto = form.elements.remove_photo;
   const updateSave = () => {
     if (!saveBtn) return;
     saveBtn.disabled = !(dirty || photo?.files.length || removePhoto?.checked);
-    saveBtn.title = saveBtn.disabled ? 'Nothing has changed yet' : '';
+    saveBtn.title = saveBtn.disabled ? _('Nothing has changed yet') : '';
   };
   form.addEventListener('input', () => { dirty = JSON.stringify(values()) !== initial; ticks(); updateSave(); });
   form.addEventListener('change', updateSave);
@@ -547,7 +579,7 @@
   // Offer to bring back autosaved changes that are newer than the last save
   const kept = store.get(), banner = document.querySelector('[data-restore]');
   if (kept && kept.values && kept.time > (+form.dataset.saved || 0) * 1000 && JSON.stringify(kept.values) !== initial && banner) {
-    banner.querySelector('[data-restore-time]').textContent = new Date(kept.time).toLocaleString();
+    banner.querySelector('[data-restore-time]').textContent = new Date(kept.time).toLocaleString(LOCALE);
     banner.hidden = false;
     banner.querySelector('[data-restore-yes]').addEventListener('click', () => {
       fields.forEach(f => { if (f.name in kept.values) f.value = kept.values[f.name]; });

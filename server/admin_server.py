@@ -59,6 +59,7 @@ import mailer         # noqa: E402  (server/mailer.py)
 import blog           # noqa: E402  (build/blog.py)
 import content_store as store   # noqa: E402
 import editor_pages as ui       # noqa: E402
+import editor_i18n as i18n     # noqa: E402
 from editor_pages import login_page, page   # noqa: E402
 
 ENV = os.environ
@@ -69,6 +70,7 @@ FONTS = os.path.join(REPO, 'public', 'fonts')
 IMAGES = os.path.join(store.DIST, 'en', 'images')       # the site's own images, for previews
 SECURE = ENV.get('COOKIE_SECURE', '1') != '0'
 COOKIE = '__Host-drv_session' if SECURE else 'drv_session'
+LANG_COOKIE = '__Host-drv_lang' if SECURE else 'drv_lang'
 IDLE = int(ENV.get('SESSION_IDLE', 3600))
 MAX_AGE = int(ENV.get('SESSION_MAX', 12 * 3600))
 LOCK_AFTER, LOCK_SECONDS = 5, int(ENV.get('LOCK_SECONDS', 15 * 60))
@@ -291,6 +293,25 @@ class Handler(BaseHTTPRequestHandler):
         flags = '; Secure' if SECURE else ''
         return ('Set-Cookie', f'{COOKIE}={token}; Path=/; HttpOnly; SameSite=Strict; Max-Age={max_age}{flags}')
 
+    def ui_lang(self):
+        """The editor's language: her choice (a cookie), or else her browser's language."""
+        c = SimpleCookie()
+        try:
+            c.load(self.headers.get('Cookie', ''))
+        except Exception:           # noqa: BLE001
+            pass
+        if LANG_COOKIE in c and c[LANG_COOKIE].value in i18n.LANGS:
+            return c[LANG_COOKIE].value
+        return 'bg' if self.headers.get('Accept-Language', '').lower().startswith('bg') else 'en'
+
+    def set_language(self, code, query):
+        """/lang/bg?next=/posts: remember the language and go back. Only a page of the editor itself can be next."""
+        nxt = (query.get('next') or ['/'])[0]
+        if not re.fullmatch(r'/(?![/\\])[A-Za-z0-9/_.?=&%-]*', nxt):
+            nxt = '/'
+        flags = '; Secure' if SECURE else ''
+        return self.redirect(nxt, [('Set-Cookie', f'{LANG_COOKIE}={code}; Path=/; SameSite=Lax; Max-Age=31536000{flags}')])
+
     def same_origin(self):
         # A browser always sends one of these with a form post; pages on other sites can't fake either
         origin = self.headers.get('Origin')
@@ -322,7 +343,10 @@ class Handler(BaseHTTPRequestHandler):
 
     # --- routes
     def static(self, path):
-        """Public files: styles, the editor's script, fonts and the site's images (for previews)."""
+        """Public files: styles, the editor's script, fonts, the site's icon and images (for previews)."""
+        if path in ('/favicon.svg', '/favicon.ico'):
+            ctype = 'image/svg+xml' if path.endswith('svg') else 'image/x-icon'
+            return self.send(200, open(os.path.join(REPO, 'public', 'images', path[1:]), 'rb').read(), ctype, cache=True)
         if path == '/admin.css':
             return self.send(200, ui.CSS, 'text/css; charset=utf-8', cache=True)
         if path == '/editor.js':
@@ -344,13 +368,17 @@ class Handler(BaseHTTPRequestHandler):
         return True
 
     def not_found(self):
-        return self.send(404, page('Not found', '<main class="login"><div class="card"><h1>Not found</h1><p class="sub"><a href="/">Back to the editor</a></p></div></main>'))
+        return self.send(404, ui.not_found_page())
 
     def do_GET(self):
         url = urllib.parse.urlparse(self.path)
         path, query = url.path, urllib.parse.parse_qs(url.query)
+        i18n.set_request(self.ui_lang(), self.path)
         if self.static(path) is not False:
             return
+        m = re.fullmatch(r'/lang/(bg|en)', path)
+        if m:
+            return self.set_language(m.group(1), query)
         s = self.session()
         if path == '/login':
             if s:
@@ -384,7 +412,7 @@ class Handler(BaseHTTPRequestHandler):
             m = re.fullmatch(r'/posts/([a-z0-9-]{1,80})/versions', path)
             if m:
                 post = store.get(m.group(1))
-                return self.send(200, ui.versions_page(s['csrf'], post['id'], post['text']['bg']['title'] or post['text']['en']['title'], store.versions(post['id']), ok))
+                return self.send(200, ui.versions_page(s['csrf'], post['id'], ui.post_title(post), store.versions(post['id']), ok))
             m = re.fullmatch(r'/preview/([a-z0-9-]{1,80})/(bg|en)', path)
             if m:
                 return self.send(200, store.preview(m.group(1), m.group(2)), csp=PREVIEW_CSP)
@@ -421,6 +449,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path = self.path.split('?')[0]
+        i18n.set_request(self.ui_lang(), path)
         if not self.same_origin():
             return self.send(403, 'Forbidden', 'text/plain')
         form = self.form()
@@ -453,9 +482,9 @@ class Handler(BaseHTTPRequestHandler):
             except store.EditError:
                 return None
             note = 'It disappears from the site and stays in the bin for 30 days.' if p['status'] == 'published' else 'It stays in the bin for 30 days.'
-            return p['text']['bg']['title'] or p['text']['en']['title'] or p['id'], 'post', note
+            return ui.post_title(p) or p['id'], 'post', note
         t = next((x for x in store.topics() if x['id'] == item), None)
-        return (t['en'], 'topic', 'It disappears from the editor. This can’t be undone.') if t else None
+        return (ui.topic_name(t), 'topic', 'It disappears from the editor. This can’t be undone.') if t else None
 
     def check_name(self, kind, item, form):
         info = self.delete_info(kind, item)
@@ -528,7 +557,7 @@ class Handler(BaseHTTPRequestHandler):
         if '/versions/' in path:
             pid = path.split('/')[2]
             post = store.get(pid)
-            return self.send(400, ui.versions_page(s['csrf'], pid, post['text']['bg']['title'], store.versions(pid), error=error))
+            return self.send(400, ui.versions_page(s['csrf'], pid, ui.post_title(post), store.versions(pid), error=error))
         if path.startswith('/bin/'):
             return self.send(400, ui.bin_page(s['csrf'], store.list_bin(), error=error))
         m = re.fullmatch(r'/topics/(new|[a-z0-9-]{1,80})', path)

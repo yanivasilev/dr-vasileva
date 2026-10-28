@@ -198,9 +198,9 @@ def read_post(folder, topics, strict=True):
         path = os.path.join(folder, f'{lang}.md')
         head, body = read_text_file(path) if os.path.isfile(path) else ({}, '')
         name = 'English' if lang == 'en' else 'Bulgarian'
-        for field in ('title', 'summary', 'slug'):
+        for field, said in (('title', 'title'), ('summary', 'short description'), ('slug', 'web address')):
             if not head.get(field):
-                problems.append(f'{name}: the {field} is missing')
+                problems.append(f'{name}: the {said} is missing')
         if head.get('slug') and not re.fullmatch(r'[a-z0-9-]+', head['slug']):
             problems.append(f'{name}: the web address may only use lowercase Latin letters, numbers and "-"')
         if not body and not post['bgben']:

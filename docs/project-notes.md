@@ -938,3 +938,16 @@ Setup: `deploy/README.md` step 9.
   - the summary is called **Short description**, grows with the text, and explains where it appears;
   - "Start writing here…" sits at the top left of the text box;
   - the formatting bar and the save bar lose their rounded corners while they are pinned to the edge of the screen.
+
+### Update: the editor in Bulgarian, and a tidier post screen
+- **Bulgarian or English:** a **БГ / EN** switch in the header and on the sign-in page. Her choice is remembered in the browser; before she chooses, the editor follows the browser's language.
+  - every screen, button, hint and message is translated, including the error messages and the texts the page shows while she types;
+  - topic names and titles appear in the chosen language, and the name to type when deleting is in that language too;
+  - the articles themselves are unchanged: each post still has its Български and English parts.
+- **Posts list:** "Previous sign-in" now sits above the heading, and the three filters together are as wide as the list.
+- **Cover photo:**
+  - without a photo, the "No photo yet" box is as wide as the form; with one, the photo shrinks to the left with its descriptions beside it;
+  - a round × in the photo's top right corner removes it (it goes when she saves; a photo just chosen goes back to the saved one).
+- **Preview in Bulgarian / Preview in English / Versions** are one bar as wide as the form, like the language switch.
+- **Typing:** the lilac frame shows around the formatting bar and the text together.
+- **Browser tab icon:** the editor uses the site's flower icon.
