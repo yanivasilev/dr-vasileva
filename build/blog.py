@@ -7,9 +7,10 @@ content/topics.json                 the topics, with English and Bulgarian names
 content/posts/<id>/post.json        what both languages share: topic, date, status, BG BEN link, cover photo
 content/posts/<id>/en.md, bg.md     the text in each language (a few header lines, then the text)
 
-Text formatting (the only formatting allowed; everything else shows as plain text):
-  ## Heading   ### Smaller heading   **bold**   *italic*   [link text](https://…)
-  - list item   1. numbered item   > quote
+Text formatting (the only formatting allowed; everything else shows as plain text).
+The editor shows this as real formatting; it is only stored like this:
+  ## Heading   ### Smaller heading   **bold**   *italic*   ++underline++   [link text](https://…)
+  {lilac|coloured text} (colours: see TEXT_COLOURS)   - list item   1. numbered item   > quote
 """
 import html
 import json
@@ -24,6 +25,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LANGS = ('en', 'bg')
 COLOURS = ('sage', 'lilac', 'gold', 'forest', 'plum', 'sand')    # cover colours a topic can use (see extra.css)
 ICONS = ('i-sun', 'i-heart', 'i-smile', 'i-leaf', 'i-puzzle', 'i-globe', 'i-feather')
+TEXT_COLOURS = ('green', 'lilac', 'gold', 'rose')                    # text colours (see extra.css .tc-*)
 PER_PAGE = 12                                                     # cards shown before "Show more"
 
 UI = {
@@ -78,6 +80,8 @@ def _inline(text):
                lambda m: f'<a href="{m.group(2)}"{"" if m.group(2).startswith("mailto:") else " target=\"_blank\" rel=\"noopener\""}>{m.group(1)}</a>', t)
     t = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', t)
     t = re.sub(r'(?<![*\w])\*(?!\s)(.+?)(?<!\s)\*(?![*\w])', r'<em>\1</em>', t)
+    t = re.sub(r'\+\+(?!\s)(.+?)(?<!\s)\+\+', r'<u>\1</u>', t)
+    t = re.sub(r'\{(' + '|'.join(TEXT_COLOURS) + r')\|([^{}\n]+)\}', r'<span class="tc-\1">\2</span>', t)
     return t
 
 

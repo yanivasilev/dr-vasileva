@@ -883,3 +883,13 @@ Setup: `deploy/README.md` step 9.
 
 **Later, if wanted:** a Bulgarian version of the editor's own screens (they're in English now).
 
+### Update: formatting you can see
+- **The text box shows real formatting:** bold, italic, headings, lists, quotes, links and colours. There are no `**symbols**` to type.
+- **Toolbar buttons:** each has a word next to it: Heading, Subheading, Normal text, Bold, Italic, **Underline** (new), **Colour** (new: green, lilac, gold, rose, all readable on the cream background), Bullet list, Numbered list, Quote, Link, Clear formatting.
+  - The buttons light up for the selected text.
+  - Ctrl+B, Ctrl+I and Ctrl+U work too.
+- **Paste:** pasted text always arrives as plain text, so no hidden formatting or code from Word or websites gets in.
+- **Storage:** posts are still stored in the same safe text format.
+  - Tested: all 18 columns load and save back unchanged.
+  - Without JavaScript the plain text box still works.
+

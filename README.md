@@ -84,8 +84,11 @@ cover_alt: (only with a cover photo) what the photo shows
 The text. A blank line starts a new paragraph.
 
 ## A heading
-**bold**, *italic*, [a link](https://example.com), lists with "- ", numbered lists with "1. ", quotes with "> ".
+**bold**, *italic*, ++underline++, {lilac|coloured words} (green, lilac, gold or rose), [a link](https://example.com),
+lists with "- ", numbered lists with "1. ", quotes with "> ".
 ```
+
+In the editor she never sees these marks: the text box shows real formatting, with buttons for each style.
 
 The text can't contain HTML: anything else is shown as plain text, which keeps the pages safe.
 

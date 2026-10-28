@@ -82,9 +82,33 @@ td.actions a { margin-left: 10px; font-size: .86rem; font-weight: 600; }
 .tab[aria-selected=true] { background: var(--green-dark); color: var(--white); border-color: var(--green-dark); }
 .tab .done { margin-left: 6px; opacity: .8; }
 .lang-panel > h2 { margin-top: 6px; }
-.toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
-.toolbar button { font: inherit; font-weight: 700; font-size: .85rem; min-width: 38px; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: #F6F2EA; color: var(--green-deep); cursor: pointer; }
-.toolbar button:hover { background: var(--sand); }
+.toolbar { position: sticky; top: 66px; z-index: 4; display: flex; flex-wrap: wrap; gap: 8px 14px; padding: 8px; margin: 4px 0 0; background: #F6F2EA; border: 1px solid var(--line); border-bottom: 0; border-radius: 12px 12px 0 0; }
+.toolbar .group { display: flex; flex-wrap: wrap; gap: 4px; }
+.toolbar button { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-weight: 600; font-size: .84rem; padding: 6px 10px 6px 6px; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--green-deep); cursor: pointer; white-space: nowrap; }
+.toolbar button:hover { background: var(--white); border-color: var(--line); }
+.toolbar button[aria-pressed=true] { background: var(--green-dark); color: var(--white); }
+.toolbar .ic { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 6px; background: var(--white); border: 1px solid var(--line); font-size: .9rem; color: var(--green-deep); }
+.toolbar button[aria-pressed=true] .ic { border-color: transparent; }
+.toolbar .ic.serif { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 700; font-size: 1.15rem; }
+.toolbar .ic.small { font-size: .9rem; }
+.toolbar .swatches { display: flex; gap: 2px; } .toolbar .swatches i { width: 7px; height: 14px; border-radius: 3px; }
+.colour-menu { position: relative; }
+.colour-list { position: absolute; top: calc(100% + 4px); left: 0; z-index: 6; display: grid; gap: 2px; padding: 6px; min-width: 160px; background: var(--white); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 16px 40px -18px rgba(44,68,48,.45); }
+.colour-list button { padding: 7px 10px; }
+.dot { width: 14px; height: 14px; border-radius: 50%; display: inline-block; } .dot.none { border: 1px dashed var(--muted); }
+.tc-green-bg { background: #344E38; } .tc-lilac-bg { background: #6E5A8A; } .tc-gold-bg { background: #8A6A2B; } .tc-rose-bg { background: #A4423A; }
+.rich { position: relative; min-height: 380px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 0 0 12px 12px; background: var(--white); font-size: 1.05rem; line-height: 1.75; color: #2E332E; outline: none; overflow-wrap: anywhere; }
+.rich:focus { border-color: var(--lilac-deep); box-shadow: 0 0 0 2px var(--lilac); }
+.rich > :first-child { margin-top: 0; }
+.rich p { margin: 0 0 1em; }
+.rich h2 { font-size: 1.9rem; margin: 1.2em 0 .4em; } .rich h3 { font-size: 1.45rem; margin: 1.1em 0 .35em; }
+.rich ul, .rich ol { margin: 0 0 1em; padding-left: 1.4em; }
+.rich blockquote { margin: 1em 0; padding: 2px 0 2px 20px; border-left: 3px solid var(--lilac); font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.4rem; line-height: 1.4; color: var(--green-deep); }
+.rich blockquote p { margin: 0; }
+.rich a { color: var(--green-dark); font-weight: 600; }
+.rich u { text-underline-offset: .18em; }
+.rich .tc-green { color: #344E38; } .rich .tc-lilac { color: #6E5A8A; } .rich .tc-gold { color: #8A6A2B; } .rich .tc-rose { color: #A4423A; }
+.rich.empty::before { content: attr(data-placeholder); color: #9A9C97; pointer-events: none; position: absolute; }
 details.more { margin-top: 18px; }
 details.more summary { cursor: pointer; font-weight: 600; font-size: .88rem; color: var(--muted); }
 .cover { display: grid; grid-template-columns: 220px 1fr; gap: 20px; align-items: start; }
@@ -212,14 +236,39 @@ def edit_form(csrf, post, topics, ok='', error='', is_new=False):
       <label for="{lang}_summary">Summary <small>one or two sentences, shown on the cards and in Google</small></label>
       <textarea class="short" id="{lang}_summary" name="{lang}_summary" rows="2" maxlength="400">{esc(x['summary'])}</textarea>
       <label for="{lang}_body">Text</label>
-      <div class="toolbar" data-for="{lang}_body" hidden>
-        <button type="button" data-md="h2" title="Heading">H</button><button type="button" data-md="h3" title="Smaller heading">h</button>
-        <button type="button" data-md="bold" title="Bold"><b>B</b></button><button type="button" data-md="italic" title="Italic"><i>I</i></button>
-        <button type="button" data-md="list" title="List">• List</button><button type="button" data-md="olist" title="Numbered list">1. List</button>
-        <button type="button" data-md="quote" title="Quote">“ Quote</button><button type="button" data-md="link" title="Link">Link</button>
+      <div class="toolbar" data-for="{lang}_body" role="toolbar" aria-label="Formatting" hidden>
+        <div class="group">
+          <button type="button" data-cmd="h2" title="A big heading for a new section"><span class="ic serif">H</span>Heading</button>
+          <button type="button" data-cmd="h3" title="A smaller heading"><span class="ic serif small">H</span>Subheading</button>
+          <button type="button" data-cmd="p" title="Back to normal text"><span class="ic">¶</span>Normal text</button>
+        </div>
+        <div class="group">
+          <button type="button" data-cmd="bold" title="Bold (Ctrl+B)"><span class="ic"><b>B</b></span>Bold</button>
+          <button type="button" data-cmd="italic" title="Italic (Ctrl+I)"><span class="ic"><i>I</i></span>Italic</button>
+          <button type="button" data-cmd="underline" title="Underline (Ctrl+U)"><span class="ic"><u>U</u></span>Underline</button>
+          <div class="colour-menu">
+            <button type="button" data-cmd="colours" aria-expanded="false" title="Colour the selected words"><span class="ic"><span class="swatches"><i class="tc-lilac-bg"></i><i class="tc-gold-bg"></i></span></span>Colour ▾</button>
+            <div class="colour-list" hidden>
+              <button type="button" data-colour="green"><span class="dot tc-green-bg"></span>Green</button>
+              <button type="button" data-colour="lilac"><span class="dot tc-lilac-bg"></span>Lilac</button>
+              <button type="button" data-colour="gold"><span class="dot tc-gold-bg"></span>Gold</button>
+              <button type="button" data-colour="rose"><span class="dot tc-rose-bg"></span>Rose</button>
+              <button type="button" data-colour=""><span class="dot none"></span>No colour</button>
+            </div>
+          </div>
+        </div>
+        <div class="group">
+          <button type="button" data-cmd="ul" title="A list with dots"><span class="ic">•</span>Bullet list</button>
+          <button type="button" data-cmd="ol" title="A numbered list"><span class="ic">1.</span>Numbered list</button>
+          <button type="button" data-cmd="quote" title="A quote, shown larger"><span class="ic serif">“</span>Quote</button>
+        </div>
+        <div class="group">
+          <button type="button" data-cmd="link" title="Turn the selected words into a link"><span class="ic">↗</span>Link</button>
+          <button type="button" data-cmd="clear" title="Remove bold, italic, underline, colour and links from the selected words"><span class="ic"><s>T</s></span>Clear formatting</button>
+        </div>
       </div>
       <textarea id="{lang}_body" name="{lang}_body" rows="18" maxlength="100000">{esc(x['body'])}</textarea>
-      <span class="hint">A blank line starts a new paragraph. **bold**, *italic*, ## heading, - list, &gt; quote, [link text](https://…)</span>
+      <span class="hint" data-hint>A blank line starts a new paragraph. **bold**, *italic*, ++underline++, {{lilac|coloured words}}, ## heading, - list, &gt; quote, [link text](https://…)</span>
       <details class="more">
         <summary>Web address and photo description</summary>
         <label for="{lang}_slug">Web address <small>made from the title if left empty; avoid changing it once published</small></label>
