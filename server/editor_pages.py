@@ -268,6 +268,7 @@ def edit_form(csrf, post, topics, ok='', error='', is_new=False):
         <div class="group">
           <button type="button" data-cmd="ul" title="A list with dots"><span class="ic">•</span>Bullet list</button>
           <button type="button" data-cmd="ol" title="A numbered list"><span class="ic">1.</span>Numbered list</button>
+          <button type="button" data-cmd="renum" title="Numbered lists carry on after a paragraph. Use this to start this list again at 1, or to carry on again." hidden><span class="ic">↺</span>Restart numbering</button>
           <button type="button" data-cmd="quote" title="A quote, shown larger"><span class="ic serif">“</span>Quote</button>
         </div>
         <div class="group">

@@ -30,7 +30,10 @@
       const h = lines[0].match(/^(#{2,3}) (.*)$/);
       if (h) { out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`); lines = lines.slice(1); if (!lines.length) continue; }
       if (lines.every(l => /^[-*] /.test(l))) out.push('<ul>' + lines.map(l => `<li>${inline(l.slice(2))}</li>`).join('') + '</ul>');
-      else if (lines.every(l => /^\d+[.)] /.test(l))) out.push('<ol>' + lines.map(l => `<li>${inline(l.replace(/^\d+[.)] /, ''))}</li>`).join('') + '</ol>');
+      else if (lines.every(l => /^\d+[.)] /.test(l))) {
+        const first = parseInt(lines[0], 10);
+        out.push(`<ol${first > 1 && first < 10000 ? ` start="${first}"` : ''}>` + lines.map(l => `<li>${inline(l.replace(/^\d+[.)] /, ''))}</li>`).join('') + '</ol>');
+      }
       else if (lines.every(l => l.startsWith('>'))) out.push('<blockquote><p>' + lines.map(l => inline(l.slice(1).trim())).join('<br>') + '</p></blockquote>');
       else out.push('<p>' + lines.map(inline).join('<br>') + '</p>');
     }
@@ -75,7 +78,8 @@
       else if (t === 'UL' || t === 'OL') {
         flush();
         const items = [...n.querySelectorAll('li')].filter(li => !li.querySelector('li')).map(li => flat(inl(li))).filter(Boolean);
-        if (items.length) out.push(items.map((x, i) => (t === 'UL' ? '- ' : `${i + 1}. `) + x).join('\n'));
+        const start = t === 'OL' && n.start > 0 ? n.start : 1;
+        if (items.length) out.push(items.map((x, i) => (t === 'UL' ? '- ' : `${start + i}. `) + x).join('\n'));
       } else if (t === 'BLOCKQUOTE') {
         flush();
         const inner = [];
@@ -110,7 +114,32 @@
     rich.setAttribute('aria-label', document.querySelector(`label[for="${ta.id}"]`)?.textContent || 'Text');
     rich.dataset.placeholder = 'Start writing here…';
     rich.lang = ta.closest('[lang]')?.lang || '';
-    const load = text => { rich.innerHTML = toHTML(text); rich.classList.toggle('empty', !text.trim()); };
+    // Numbered lists carry on after a paragraph (1 … 2 … 3); a heading, or "Restart numbering", starts again at 1
+    const continuing = () => {
+      const starts = new Map();
+      let next = 1;
+      for (const el of rich.children) {
+        if (/^H[1-4]$/.test(el.tagName)) next = 1;
+        else if (el.tagName === 'OL') {
+          starts.set(el, next);
+          next = (el.dataset.restart ? 1 : next) + el.querySelectorAll('li').length;
+        }
+      }
+      return starts;
+    };
+    const renumber = () => {
+      for (const [el, auto] of continuing()) {
+        const start = el.dataset.restart ? 1 : auto;
+        if (start > 1) el.setAttribute('start', start); else el.removeAttribute('start');
+      }
+    };
+    const load = text => {
+      rich.innerHTML = toHTML(text);
+      rich.classList.toggle('empty', !text.trim());
+      // a list saved as starting at 1 where it would otherwise carry on was restarted on purpose
+      for (const [el, auto] of continuing()) if (auto > 1 && !el.hasAttribute('start')) el.dataset.restart = '1';
+      renumber();
+    };
     load(ta.value);
     ta.hidden = true;
     ta.after(rich);
@@ -118,6 +147,7 @@
     const hint = ta.parentElement.querySelector('[data-hint]');
     if (hint) hint.textContent = 'Select words, then click a button above. Press Enter for a new paragraph.';
     const sync = () => {
+      renumber();
       const text = fromHTML(rich);
       rich.classList.toggle('empty', !text);
       if (ta.value !== text) { ta.value = text; ta.dispatchEvent(new Event('input', { bubbles: true })); }
@@ -151,6 +181,11 @@
     editors.push({ bar, ta, rich, load, sync });
 
     const inRich = () => { const s = getSelection(); return s.rangeCount && rich.contains(s.getRangeAt(0).commonAncestorContainer); };
+    const currentList = () => {
+      let n = getSelection().anchorNode;
+      while (n && n.parentNode !== rich) n = n.parentNode;
+      return n && n.tagName === 'OL' ? n : null;
+    };
     const block = () => {                        // the kind of top-level block the cursor is in
       let n = getSelection().anchorNode;
       while (n && n.parentNode !== rich) n = n.parentNode;
@@ -244,6 +279,11 @@
       quote: () => setBlocks('blockquote'),
       ul: () => setBlocks('ul'),
       ol: () => setBlocks('ol'),
+      renum: () => {
+        const ol = currentList();
+        if (!ol) return;
+        if (ol.dataset.restart) delete ol.dataset.restart; else ol.dataset.restart = '1';
+      },
       link: () => {
         const sel = getSelection();
         if (sel.isCollapsed) return alert('First select the words that should become a link.');
@@ -276,9 +316,16 @@
     });
     document.addEventListener('click', e => { if (!e.target.closest('.colour-menu')) closeMenu(); });
     // Buttons show what the selected text already has
+    const renumBtn = bar.querySelector('[data-cmd=renum]');
     const state = () => {
       if (!inRich()) return;
       const b = block();
+      const ol = currentList();
+      const continues = ol && (ol.dataset.restart || continuing().get(ol) > 1);
+      if (renumBtn) {
+        renumBtn.hidden = !continues;
+        renumBtn.lastChild.textContent = ol && ol.dataset.restart ? 'Continue numbering' : 'Restart numbering';
+      }
       for (const [cmd, on] of Object.entries({ bold: !/^H[1-4]$/.test(b) && document.queryCommandState('bold'),   // headings are bold anyway
         italic: document.queryCommandState('italic'),
         underline: document.queryCommandState('underline'), h2: b === 'H2', h3: b === 'H3', quote: b === 'BLOCKQUOTE',

@@ -892,4 +892,7 @@ Setup: `deploy/README.md` step 9.
 - **Storage:** posts are still stored in the same safe text format.
   - Tested: all 18 columns load and save back unchanged.
   - Without JavaScript the plain text box still works.
+- **Numbered lists carry on after a paragraph** (1, explanation, 2, explanation, 3 …), and the numbers are kept when saving and on the site.
+  - A heading starts again at 1.
+  - **Restart numbering** (shown when the cursor is in a list that carries on) starts a list at 1 on purpose. It's remembered after saving; clicking again carries on.
 

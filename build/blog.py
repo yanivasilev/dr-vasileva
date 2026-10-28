@@ -104,7 +104,9 @@ def render_text(text):
         if all(re.match(r'[-*] ', l) for l in lines):
             out.append('<ul>' + ''.join(f'<li>{_inline(l[2:])}</li>' for l in lines) + '</ul>')
         elif all(re.match(r'\d+[.)] ', l) for l in lines):
-            out.append('<ol>' + ''.join(f'<li>{_inline(l.split(" ", 1)[1])}</li>' for l in lines) + '</ol>')
+            first = int(re.match(r'\d+', lines[0]).group())          # a list after a paragraph can carry on: 2., 3. …
+            start = f' start="{first}"' if 1 < first < 10000 else ''
+            out.append(f'<ol{start}>' + ''.join(f'<li>{_inline(l.split(" ", 1)[1])}</li>' for l in lines) + '</ol>')
         elif all(l.startswith('>') for l in lines):
             out.append('<blockquote><p>' + '<br>'.join(_inline(l[1:].strip()) for l in lines) + '</p></blockquote>')
         else:
