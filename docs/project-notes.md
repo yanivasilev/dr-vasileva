@@ -859,7 +859,7 @@ Setup: `deploy/README.md` step 9.
 - **Versions:** the last 30 saves.
 - **Autosave:** in the browser every 30 seconds, with a "restore unsaved changes" banner.
 - **Live posts stay complete:** a published post can't be saved incomplete; the live page stays as it was, and her typing is kept in the form.
-- **Addresses never change by accident:** emptying the web address field keeps the post's current address.
+- **Addresses never change by accident:** a post's web address is made from its title automatically (e.g. `/statii/tiha-nosht`); once the post has been published, it keeps that address even if the title changes. Two posts with the same title get `-2`, `-3` and so on.
 
 **Security:**
 - **Scripts:** only the editor's own script is allowed.
@@ -921,3 +921,20 @@ Setup: `deploy/README.md` step 9.
   - Publish and Unpublish always work;
   - the server also ignores a save with no changes, so no new version is stored and the site isn't rebuilt.
 
+### Update: filters, messages and an easier post screen
+- **Messages:**
+  - "deleted" messages are red; other confirmations are green;
+  - clicking a greyed-out topic bin shows, in amber, why it can't be deleted and how many posts use it;
+  - every message can be closed with ×.
+- **Posts list:**
+  - the search box and its button are as wide as the list;
+  - filters: Newest / Oldest first, Topic, and Status (Published / Drafts), plus **Clear filters**;
+  - the filters stay in the page address, so going back to the list keeps them.
+- **Preview** shows just the article: no menu, footer, "You may also like" or "Ready to talk" section. Its links and buttons (share, Get in touch) do nothing.
+- **Post screen:**
+  - no web address field: the address comes from the title (see above);
+  - the cover photo box says "No photo yet – click here to add one" and opens the photo picker; the photo descriptions sit beside it and only appear when there is a photo;
+  - the Български / English switch is one rounded bar, as wide as the form, and each half says **Complete** or **Not finished** (a language is complete once it has a title, a short description and text);
+  - the summary is called **Short description**, grows with the text, and explains where it appears;
+  - "Start writing here…" sits at the top left of the text box;
+  - the formatting bar and the save bar lose their rounded corners while they are pinned to the edge of the screen.
