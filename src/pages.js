@@ -771,23 +771,68 @@
   function wirePage(el) {
     wireForm(el);
     el.querySelectorAll('.js-count').forEach(c => c.dataset.to = YEARS);
-    // Article lists: topic filter, and a "Show more" button after the first cards
+    // Article lists: search, topic, year, type and order, and a "Show more" button after the first cards
     const tabs = el.querySelectorAll('.tab');
     const grid = el.querySelector('[data-per-page]'), more = el.querySelector('.more-btn');
+    const tools = el.querySelector('[data-blog-tools]');
+    const pick = sel => tools?.querySelector(sel);
+    const q = pick('[data-q]'), year = pick('[data-year]'), kind = pick('[data-kind]'), sort = pick('[data-sort]'), clear = pick('[data-clear]');
+    const count = el.querySelector('[data-count]'), empty = el.querySelector('[data-empty]');
+    const cards = grid ? [...grid.querySelectorAll('.article')] : [];
     const perPage = grid ? +grid.dataset.perPage : Infinity;
+    // Search ignores capitals and accents, and finds every word typed, in any order. Words match by their
+    // beginning, so other forms of a word are found too ("паника" finds "панически", "attack" finds "attacks").
+    const fold = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const words = new Map(cards.map(a => [a, fold(a.dataset.text || a.textContent).split(/[^\p{L}\p{N}]+/u).filter(Boolean)]));
+    const stem = w => w.length < 4 ? w : w.slice(0, Math.max(4, w.length - 2));
+    const has = (a, w) => words.get(a)?.some(t => t.startsWith(w));
     let shown = perPage;
+    const topicNow = () => el.querySelector('.tab[aria-pressed="true"]')?.dataset.filter || 'all';
     const filter = () => {
-      const f = el.querySelector('.tab[aria-pressed="true"]')?.dataset.filter || 'all';
+      const f = topicNow(), typed = fold(q?.value || '').split(/[^\p{L}\p{N}]+/u).filter(Boolean).map(stem);
+      const y = year?.value || '', k = kind?.value || '', old = sort?.value === 'old';
+      if (grid && sort) {
+        const ordered = [...cards].sort((a, b) => (a.dataset.date < b.dataset.date ? -1 : a.dataset.date > b.dataset.date ? 1 : 0) * (old ? 1 : -1));
+        grid.append(...ordered);
+      }
       let n = 0;
-      (grid || el).querySelectorAll('.article').forEach(a => { const match = f === 'all' || a.dataset.tag === f; a.hidden = !match || ++n > shown; });
+      (grid ? [...grid.querySelectorAll('.article')] : el.querySelectorAll('.article')).forEach(a => {
+        const match = (f === 'all' || a.dataset.tag === f) && (!y || a.dataset.year === y) && (!k || a.dataset.kind === k)
+          && typed.every(w => has(a, w));
+        if (match) n++;
+        a.hidden = !match || n > shown;
+      });
       if (more) more.hidden = n <= shown;
+      if (!tools) return;
+      const busy = typed.length || f !== 'all' || y || k || old;
+      grid.classList.toggle('filtered', !!busy);         // the big first card only on the plain list
+      if (clear) clear.hidden = !q.value;
+      if (count) count.textContent = n === 1 ? tools.dataset.countOne : tools.dataset.countMany.replace('{}', n);
+      if (empty) empty.hidden = n > 0;
+      if (!HASH_MODE) {                                  // the address keeps the choice, so a search can be shared
+        const url = new URL(location.href);
+        for (const [key, v] of [['q', q?.value.trim()], ['topic', f === 'all' ? '' : f], ['year', y], ['type', k], ['sort', old ? 'old' : '']]) v ? url.searchParams.set(key, v) : url.searchParams.delete(key);
+        history.replaceState(history.state, '', url);
+      }
     };
-    tabs.forEach(tab => tab.addEventListener('click', () => {
-      tabs.forEach(t => t.setAttribute('aria-pressed', t === tab));
-      shown = perPage;
-      filter();
-    }));
+    const setTopic = id => tabs.forEach(t => t.setAttribute('aria-pressed', t.dataset.filter === id));
+    tabs.forEach(tab => tab.addEventListener('click', () => { setTopic(tab.dataset.filter); shown = perPage; filter(); }));
     more?.addEventListener('click', () => { shown += perPage; filter(); });
+    if (tools) {
+      const again = () => { shown = perPage; filter(); };
+      tools.addEventListener('submit', e => { e.preventDefault(); q.blur(); });
+      q.addEventListener('input', again);
+      [year, kind, sort].forEach(s => s?.addEventListener('change', again));
+      clear?.addEventListener('click', () => { q.value = ''; again(); q.focus(); });
+      el.querySelector('[data-reset]')?.addEventListener('click', () => {
+        q.value = ''; [year, kind].forEach(s => s && (s.value = '')); if (sort) sort.value = 'new'; setTopic('all'); again();
+      });
+      const params = new URLSearchParams(location.search);       // a shared search opens as it was
+      if (params.get('q')) q.value = params.get('q');
+      const set = (s, v) => { if (s && v && [...s.options].some(o => o.value === v)) s.value = v; };
+      set(year, params.get('year')); set(kind, params.get('type')); set(sort, params.get('sort'));
+      if (params.get('topic') && [...tabs].some(t => t.dataset.filter === params.get('topic'))) setTopic(params.get('topic'));
+    }
     if (grid) filter();
     el.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () =>
       navigator.clipboard?.writeText(b.dataset.copy).then(() => { b.classList.add('done'); b.setAttribute('aria-label', b.dataset.done); })));

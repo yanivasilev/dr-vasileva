@@ -27,11 +27,19 @@ COLOURS = ('sage', 'lilac', 'gold', 'forest', 'plum', 'sand')    # cover colours
 ICONS = ('i-sun', 'i-heart', 'i-smile', 'i-leaf', 'i-puzzle', 'i-globe', 'i-feather')
 TEXT_COLOURS = ('green', 'lilac', 'gold', 'rose')                    # text colours (see extra.css .tc-*)
 PER_PAGE = 12                                                     # cards shown before "Show more"
+# Reading speed, in words per minute, of an adult reading non-fiction silently (Brysbaert 2019, a review of
+# 190 studies: 238 for English). The same text in Bulgarian takes about 5% fewer, slightly longer words
+# (measured on her 18 columns in both languages), so the same reading time works out at about 225.
+READING_WPM = {'en': 238, 'bg': 225}
 
 UI = {
     'en': dict(home='Home', crumbs='Breadcrumb', articles='Articles', eyebrow='Articles', title='School of <em>Psychology</em>',
                lead='Practical psychology for everyday life: my articles and my column in BG BEN, the newspaper for Bulgarians in the UK.',
                all='All', filter='Filter by topic', more='Show more articles', min_read='{} min read', column='BG BEN column',
+               search='Search the articles', search_ph='Search by title, topic or any word…', clear='Clear the search',
+               year='Year', all_years='All years', kind='Type', all_kinds='All types', kind_article='Articles', kind_column='BG BEN columns',
+               order='Order', newest='Newest first', oldest='Oldest first', count_one='1 article', count_many='{} articles',
+               none='No articles match your search.', reset='Clear the search and filters',
                read_full='Read the full column on BG BEN (in Bulgarian)', read_pdf='Read the full column on BG BEN (PDF, in Bulgarian)',
                originally='Originally published in BG BEN, “School of Psychology”', share='Share', copy='Copy link', copied='Link copied',
                related='You might also <em>like</em>', author='Dr Mirena Vasileva',
@@ -43,6 +51,10 @@ UI = {
     'bg': dict(home='Начало', crumbs='Навигационна пътека', articles='Статии', eyebrow='Статии', title='Училище по <em>психология</em>',
                lead='Практична психология за всеки ден: моите статии и рубриката ми в БГ БЕН – вестникът на българите във Великобритания.',
                all='Всички', filter='Филтър по тема', more='Още статии', min_read='{} мин. четене', column='Рубрика в БГ БЕН',
+               search='Търсене в статиите', search_ph='Търсете по заглавие, тема или дума…', clear='Изчисти търсенето',
+               year='Година', all_years='Всички години', kind='Вид', all_kinds='Всички видове', kind_article='Статии', kind_column='Рубрики в БГ БЕН',
+               order='Подредба', newest='Първо най-новите', oldest='Първо най-старите', count_one='1 статия', count_many='{} статии',
+               none='Няма статии, които да отговарят на търсенето.', reset='Изчисти търсенето и филтрите',
                read_full='Прочетете цялата рубрика в БГ БЕН', read_pdf='Прочетете цялата рубрика в БГ БЕН (PDF)',
                originally='Публикувано за първи път в БГ БЕН, „Училище по психология“', share='Споделете', copy='Копирай връзката', copied='Връзката е копирана',
                related='Може да Ви <em>харесат</em>', author='д-р Мирена Василева',
@@ -114,8 +126,20 @@ def render_text(text):
     return '\n'.join(out)
 
 
+def plain_text(text):
+    """The words of a post's text, without the formatting marks: links keep their words, colours their text."""
+    text = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text)
+    text = re.sub(r'\{(?:' + '|'.join(TEXT_COLOURS) + r')\|', '', text)
+    return ' '.join(re.findall(r'\w+(?:[-’\']\w+)*', text))
+
+
 def plain_words(text):
-    return len(re.findall(r'\w+', re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text)))
+    return len(plain_text(text).split())
+
+
+def reading_minutes(text, lang):
+    """Minutes to read the text, to the nearest minute (at least 1)."""
+    return max(1, int(plain_words(text) / READING_WPM[lang] + 0.5))
 
 
 def format_date(date, lang):
@@ -325,16 +349,23 @@ class Blog:
             art = f'<span class="bg"></span>{self.ic(t["icon"], "icon motif")}'
         return art + f'<span class="label">{esc(t[self.lang])}</span>'
 
-    def meta_line(self, post):
-        words = plain_words(post['text'][self.lang]['body'])
-        extra = self.ui['column'] if post['bgben'] else self.ui['min_read'].format(max(1, round(words / 200)))
-        return f'<time datetime="{post["date"]}">{format_date(post["date"], self.lang)}</time><span class="dot">·</span><span>{extra}</span>'
+    def meta_line(self, post, column=True):
+        parts = [f'<time datetime="{post["date"]}">{format_date(post["date"], self.lang)}</time>']
+        if post['bgben'] and column:
+            parts.append(f'<span>{self.ui["column"]}</span>')
+        parts.append(f'<span class="read-time">{self.ui["min_read"].format(reading_minutes(post["text"][self.lang]["body"], self.lang))}</span>')
+        return '<span class="dot">·</span>'.join(parts)
 
-    def card(self, post, featured=False):
+    def card(self, post, featured=False, search=False):
         t, x = self.topics[post['topic']], post['text'][self.lang]
-        return f'''<a class="article c-{t['colour']}{' featured' if featured else ''}" data-tag="{t['id']}" href="{self.href(post=post)}" data-reveal>
+        extra = ''
+        if search:            # what the Articles page's search and filters look at
+            words = ' '.join((x['title'], x['summary'], t[self.lang], plain_text(x['body']))).lower()
+            extra = (f' data-date="{esc(post["date"])}" data-year="{post["date"][:4]}" data-kind="{"column" if post["bgben"] else "article"}"'
+                     f' data-text="{esc(words)}"')
+        return f'''<a class="article c-{t['colour']}{' featured' if featured else ''}" data-tag="{t['id']}" href="{self.href(post=post)}"{extra} data-reveal>
         <div class="top">{self.cover(post)}</div>
-        <div class="body"><h3>{esc(x['title'])}</h3><p class="sum">{esc(x['summary'])}</p><div class="meta"><span class="when">{self.meta_line(post)}</span>{self.ic('i-arrow')}</div></div>
+        <div class="body"><h3>{esc(x['title'])}</h3><p class="sum">{esc(x['summary'])}</p><div class="meta"><span class="when">{self.meta_line(post, column=False)}</span>{self.ic('i-arrow')}</div></div>
       </a>'''
 
     # --- the two kinds of page (inner HTML of the page)
@@ -342,13 +373,35 @@ class Blog:
         used = [t for t in self.topics.values() if any(p['topic'] == t['id'] for p in self.posts)]
         tabs = f'<button class="tab" aria-pressed="true" data-filter="all">{self.ui["all"]}</button>' + ''.join(
             f'<button class="tab" aria-pressed="false" data-filter="{t["id"]}">{esc(t[self.lang])}</button>' for t in used)
-        cards = '\n      '.join(self.card(p, featured=(i == 0)) for i, p in enumerate(self.posts))
-        return self.hero([(self.ui['articles'], None)], self.ui['eyebrow'], self.ui['title'], self.ui['lead'], 'i-feather') + f'''
+        cards = '\n      '.join(self.card(p, featured=(i == 0), search=True) for i, p in enumerate(self.posts))
+        ui = self.ui
+        opt = lambda v, label: f'<option value="{v}">{label}</option>'
+        years = sorted({p['date'][:4] for p in self.posts}, reverse=True)
+        kinds = {bool(p['bgben']) for p in self.posts}
+        selects = [f'<label class="blog-select"><span>{ui["order"]}</span><select data-sort>{opt("new", ui["newest"])}{opt("old", ui["oldest"])}</select></label>']
+        if len(years) > 1:
+            selects.insert(0, f'<label class="blog-select"><span>{ui["year"]}</span><select data-year>{opt("", ui["all_years"])}{"".join(opt(y, y) for y in years)}</select></label>')
+        if len(kinds) > 1:         # only when there are both her own articles and BG BEN columns
+            selects.insert(1, f'<label class="blog-select"><span>{ui["kind"]}</span><select data-kind>{opt("", ui["all_kinds"])}'
+                              f'{opt("article", ui["kind_article"])}{opt("column", ui["kind_column"])}</select></label>')
+        count = ui['count_one'] if len(self.posts) == 1 else ui['count_many'].format(len(self.posts))
+        return self.hero([(ui['articles'], None)], ui['eyebrow'], ui['title'], ui['lead'], 'i-feather') + f'''
     <section class="page-body"><div class="wrap">
-      <div class="tabs" role="group" aria-label="{self.ui['filter']}" data-reveal>{tabs}</div>
+      <form class="blog-tools" role="search" data-blog-tools data-count-one="{esc(ui['count_one'])}" data-count-many="{esc(ui['count_many'])}" data-reveal>
+        <div class="blog-search">
+          {self.ic('i-search', 'icon search-i')}
+          <label class="sr-only" for="blog-q">{ui['search']}</label>
+          <input id="blog-q" type="search" name="q" placeholder="{esc(ui['search_ph'])}" autocomplete="off" enterkeyhint="search" data-q>
+          <button class="search-clear" type="button" aria-label="{ui['clear']}" data-clear hidden>×</button>
+        </div>
+        <div class="blog-selects">{''.join(selects)}</div>
+      </form>
+      <div class="tabs" role="group" aria-label="{ui['filter']}" data-reveal>{tabs}</div>
+      <p class="blog-count" aria-live="polite" data-count>{count}</p>
       <div class="articles-grid blog-grid" data-per-page="{PER_PAGE}">
       {cards}
       </div>
+      <div class="blog-empty" data-empty hidden><p>{ui['none']}</p><button class="btn btn-green" type="button" data-reset>{ui['reset']}</button></div>
       <div class="more-row"><button class="btn btn-green more-btn" type="button" hidden>{self.ui['more']}</button></div>
       <p class="pubs-link" data-reveal>{self.ui['pubs'].format(self.href('/publications'))}</p>
     </div></section>''' + self.cta_band()

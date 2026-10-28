@@ -9,7 +9,7 @@ import blog
 from editor_i18n import _, lang, msg, path as current_path, when, JS_KEYS, BG
 
 esc = html.escape
-APP = 'Dr Vasileva editor'
+APP = 'Dr Vasileva Admin Dashboard'
 LANG_NAMES = {'bg': 'Български', 'en': 'English'}
 COLOUR_NAMES = dict(sage='Sage green', lilac='Lilac', gold='Gold', forest='Forest green', plum='Plum', sand='Sand')
 ICON_NAMES = {'i-sun': 'Sun', 'i-heart': 'Heart', 'i-smile': 'Smile', 'i-leaf': 'Leaf', 'i-puzzle': 'Puzzle', 'i-globe': 'Globe', 'i-feather': 'Feather'}
@@ -262,6 +262,7 @@ header.top .ui-lang { margin: 0; flex-wrap: nowrap; }
 header.top .ui-lang a { padding: 5px 11px; font-size: .78rem; }
 header.top .ui-lang a[aria-current] { background: var(--cream); color: var(--green-deep); }
 .card { position: relative; }
+.human-check { margin-top: 20px; min-height: 65px; }
 .card .ui-lang { position: absolute; top: 18px; right: 18px; background: #F3EEE5; }
 .card .ui-lang a { color: var(--green-deep); }
 .card .ui-lang a[aria-current] { background: var(--green-dark); color: var(--white); }
@@ -295,7 +296,7 @@ EDITOR_JS = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'edito
 VERSION = hashlib.sha256(CSS.encode() + EDITOR_JS).hexdigest()[:10]
 
 
-def page(title, body, cls='', script=False):
+def page(title, body, cls='', script=False, head=''):
     words = ''
     if lang() == 'bg' and script:           # the texts editor.js shows, as data (not a script, so the CSP allows it)
         words = ('<script type="application/json" id="i18n">' +
@@ -311,7 +312,7 @@ def page(title, body, cls='', script=False):
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 <link rel="stylesheet" href="/fonts/fonts.css">
-{words}
+{words}{head}
 <link rel="stylesheet" href="/admin.css?v={VERSION}">
 {f'<script src="/editor.js?v={VERSION}" defer></script>' if script else ''}
 </head>
@@ -321,7 +322,8 @@ def page(title, body, cls='', script=False):
 </html>'''
 
 
-def login_page(error='', notice=''):
+def login_page(error='', notice='', turnstile=''):
+    """turnstile: the Cloudflare Turnstile site key, when the check is on."""
     err = f'<p class="error" role="alert">{esc(msg(error))}</p>' if error else ''
     if notice:
         form = f'<p class="sub">{esc(msg(notice))}</p>'
@@ -331,29 +333,31 @@ def login_page(error='', notice=''):
       <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
       <label for="code">{_('Code')} <small>{_('from your authenticator app, or a backup code')}</small></label>
       <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="14" required>
+      {f'<div class="cf-turnstile human-check" data-sitekey="{esc(turnstile)}" data-language="{lang()}" data-theme="light" data-size="flexible"></div>' if turnstile else ''}
       <button class="btn wide" type="submit">{_('Sign in')}</button>
     </form>'''
     return page(_('Sign in'), f'''<main class="login"><div class="card">
     {ui_lang_switch()}
     <span class="word">DR VASILEVA</span>
-    <h1>{_('Website editor')}</h1>
+    <h1>{_('Admin Dashboard')}</h1>
     <p class="sub">{_('Sign in to write and publish articles.')}</p>
     {err}
     {form}
     <p class="note">{_('Every sign-in is emailed to the owner.')}</p>
-  </div></main>''', 'login-page')
+  </div></main>''', 'login-page',
+                head='<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' if turnstile and not notice else '')
 
 
 def not_found_page():
-    return page(_('Not found'), f'<main class="login"><div class="card"><h1>{_("Not found")}</h1><p class="sub"><a href="/">{_("Back to the editor")}</a></p></div></main>')
+    return page(_('Not found'), f'<main class="login"><div class="card"><h1>{_("Not found")}</h1><p class="sub"><a href="/">{_("Back to the Admin Dashboard")}</a></p></div></main>')
 
 
 def frame(title, csrf, current, body, script=False):
     nav = ''.join(f'<a href="{h}"{" aria-current=page" if h == current else ""}>{t}</a>'
                   for h, t in (('/', _('Posts')), ('/topics', _('Topics')), ('/bin', _('Bin'))))
     return page(title, f'''<header class="top"><div class="wrap">
-    <a class="word" href="/">DR VASILEVA<span>{_('Editor')}</span></a>
-    <nav aria-label="{_('Editor')}">{nav}</nav>
+    <a class="word" href="/">DR VASILEVA<span>{_('Admin Dashboard')}</span></a>
+    <nav aria-label="{_('Admin Dashboard')}">{nav}</nav>
     {ui_lang_switch()}
     <form method="post" action="/logout" data-signout><input type="hidden" name="csrf" value="{esc(csrf)}"><button class="btn signout" type="submit">{_('Sign out')}</button></form>
   </div></header>
@@ -630,7 +634,7 @@ def topics_page(csrf, topics, counts, ok='', error=''):
       <td>{counts.get(t['id'], 0)}</td>
       <td class="actions"><span class="icons">
         <a class="icon-btn" href="/topics/{esc(t['id'])}" title="{_('Edit')}" aria-label="{_('Edit')}: {esc(topic_name(t))}">{icon('edit')}</a>
-        {delete_link(f"/topics/{esc(t['id'])}/delete", topic_name(t), 'topic', 'It disappears from the editor. This can’t be undone.') if not counts.get(t['id']) else
+        {delete_link(f"/topics/{esc(t['id'])}/delete", topic_name(t), 'topic', 'It disappears from the Admin Dashboard. This can’t be undone.') if not counts.get(t['id']) else
          f'<button class="icon-btn disabled" type="button" aria-disabled="true" title="{_("Can’t be deleted")}" data-blocked="{esc(blocked_text(t, counts[t["id"]]))}">{icon("delete")}</button>'}
       </span></td></tr>""" for t in topics)
     head = lambda code: 'Български' if code == 'bg' else _('English')

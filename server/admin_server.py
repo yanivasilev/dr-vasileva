@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The website editor at admin.drvasileva.co.uk: secure sign-in, then writing and publishing the articles.
+"""The Admin Dashboard at admin.drvasileva.co.uk: secure sign-in, then writing and publishing the articles.
 
 Runs behind nginx on 127.0.0.1:8788. Python standard library, plus Pillow for cover photos.
 The posts are kept by server/content_store.py, the screens are in server/editor_pages.py.
@@ -7,7 +7,10 @@ The posts are kept by server/content_store.py, the screens are in server/editor_
 Security:
   - One account, created only with a command on the server (no sign-up page, no "forgot password" email).
   - Password (stored as a scrypt hash) plus a 6-digit code from an authenticator app (TOTP), or a one-time backup code.
-  - 5 wrong tries lock sign-in for 15 minutes; one address may fail 10 times in 15 minutes. Both are emailed.
+  - Cloudflare Turnstile on the sign-in form (when its keys are set): bots never get as far as trying a password,
+    so they can't guess, and can't trigger the pauses below either.
+  - 5 wrong tries from one address pause that address for 15 minutes; 20 wrong tries in 15 minutes from all
+    addresses together pause sign-in for everyone for 15 minutes. Both are emailed.
   - Every successful sign-in is emailed, and the dashboard shows the previous one.
   - Session cookie: __Host- prefix, Secure, HttpOnly, SameSite=Strict; ends after 1 hour idle and always after 12 hours.
   - Every form post needs this site's Origin and, when signed in, the session's CSRF token.
@@ -28,6 +31,7 @@ Settings (environment, see deploy/admin.env.example):
   BLOG_OUT_DIR       where the published blog pages go (served by nginx), default /var/www/drvasileva-blog
   SITE_DIST_DIR      the built site, whose page shell the blog uses, default <repository>/dist
   SMTP_* and MAIL_FROM as for the contact form (server/mailer.py)
+  TURNSTILE_SITE_KEY, TURNSTILE_SECRET_KEY   Cloudflare Turnstile on the sign-in page (without them it is off)
   LISTEN_HOST, LISTEN_PORT   default 127.0.0.1:8788
   COOKIE_SECURE=0, SESSION_IDLE, SESSION_MAX, LOCK_SECONDS: for local testing only
 """
@@ -46,6 +50,7 @@ import sys
 import threading
 import time
 import urllib.parse
+import urllib.request
 from email.parser import BytesParser
 from email.policy import HTTP
 from http.cookies import SimpleCookie
@@ -73,17 +78,21 @@ COOKIE = '__Host-drv_session' if SECURE else 'drv_session'
 LANG_COOKIE = '__Host-drv_lang' if SECURE else 'drv_lang'
 IDLE = int(ENV.get('SESSION_IDLE', 3600))
 MAX_AGE = int(ENV.get('SESSION_MAX', 12 * 3600))
-LOCK_AFTER, LOCK_SECONDS = 5, int(ENV.get('LOCK_SECONDS', 15 * 60))
-IP_FAILS, IP_WINDOW = 10, 15 * 60
+LOCK_SECONDS = int(ENV.get('LOCK_SECONDS', 15 * 60))
+IP_FAILS, ALL_FAILS = 5, 20          # wrong tries within LOCK_SECONDS: from one address / from all addresses together
+TURNSTILE_SITE = ENV.get('TURNSTILE_SITE_KEY', '')
+TURNSTILE_SECRET = ENV.get('TURNSTILE_SECRET_KEY', '')
+TURNSTILE_URL = ENV.get('TURNSTILE_VERIFY_URL', 'https://challenges.cloudflare.com/turnstile/v0/siteverify')
 MAX_FORM = 64 * 1024
 MAX_UPLOAD = 12 * 1024 * 1024            # a post's text plus a cover photo
 SCRYPT = dict(n=2 ** 15, r=8, p=1)
-APP = 'Dr Vasileva editor'
+APP = 'Dr Vasileva Admin Dashboard'
 
 _lock = threading.Lock()
 _sessions = {}                 # sha256(token) -> {created, seen, csrf}
-_ip_fails = {}                 # address -> [times]
-_state = {'fails': 0, 'locked_until': 0}
+_ip_fails = {}                 # address -> [times of wrong tries]
+_all_fails = []                # times of wrong tries from every address
+_state = {'locked_until': 0}
 _login_lock = threading.Lock()   # one sign-in at a time, so a code can never be used twice
 
 
@@ -191,22 +200,40 @@ def end_session(s):
 def ip_blocked(ip):
     now = time.time()
     with _lock:
-        recent = [t for t in _ip_fails.get(ip, []) if now - t < IP_WINDOW]
-        _ip_fails[ip] = recent
-        return len(recent) >= IP_FAILS
+        for k in [k for k, v in _ip_fails.items() if not v or now - v[-1] > LOCK_SECONDS]:
+            del _ip_fails[k]
+        return len(_ip_fails.get(ip, [])) >= IP_FAILS
 
 
 def record_failure(ip):
-    """Returns True when this failure locks sign-in."""
+    """Returns 'address' when this failure pauses this address, 'everyone' when it pauses all sign-ins, else None."""
     now = time.time()
     with _lock:
-        _ip_fails.setdefault(ip, []).append(now)
-        _state['fails'] += 1
-        if _state['fails'] >= LOCK_AFTER:
-            _state['fails'] = 0
+        mine = [t for t in _ip_fails.get(ip, []) if now - t < LOCK_SECONDS] + [now]
+        _ip_fails[ip] = mine
+        _all_fails[:] = [t for t in _all_fails if now - t < LOCK_SECONDS] + [now]
+        if len(_all_fails) >= ALL_FAILS:
+            _all_fails.clear()
             _state['locked_until'] = now + LOCK_SECONDS
-            return True
-    return False
+            return 'everyone'
+        return 'address' if len(mine) == IP_FAILS else None
+
+
+def turnstile_ok(token, ip):
+    """Cloudflare's answer on the sign-in form's check: True (a person), False (failed or missing), None (unreachable)."""
+    if not TURNSTILE_SECRET:
+        return True
+    if not token or len(token) > 2048:
+        return False
+    data = urllib.parse.urlencode({'secret': TURNSTILE_SECRET, 'response': token, 'remoteip': ip}).encode()
+    try:
+        with urllib.request.urlopen(urllib.request.Request(TURNSTILE_URL, data=data), timeout=8) as r:
+            answer = json.loads(r.read())
+    except Exception as e:      # noqa: BLE001
+        print('turnstile unreachable:', type(e).__name__, file=sys.stderr)
+        return None
+    # the token must also have been made on this site's own sign-in page
+    return bool(answer.get('success')) and answer.get('hostname') in (None, urllib.parse.urlparse(ORIGIN).hostname)
 
 
 def alert(subject, lines):
@@ -241,12 +268,16 @@ HEADERS = {
     'Cross-Origin-Resource-Policy': 'same-origin',
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
 }
+# The sign-in page also loads Cloudflare's Turnstile check (a script and its frame), and nothing else
+LOGIN_CSP = HEADERS['Content-Security-Policy'].replace("script-src 'self'", "script-src 'self' https://challenges.cloudflare.com") + '; frame-src https://challenges.cloudflare.com'
 # A preview is shown as a sandbox: it can't run scripts, can't reach her session and can't post forms
 PREVIEW_CSP = "sandbox; default-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
 OK = {'saved': 'Saved.', 'published': 'Published. The post is now on both sites.', 'unpublished': 'Unpublished. The post is no longer on the site.',
       'created': 'Saved as a draft.', 'restored': 'Restored.', 'deleted': ('removed', 'The post was moved to the bin.'), 'topics': 'Topic saved.',
       'topic_added': 'New topic added.', 'topic_deleted': ('removed', 'The topic was deleted.')}
 GENERIC = 'That didn’t work. Check your password and the code, then try again.'
+NOT_HUMAN = 'Please complete the security check above the button, then try again.'
+NO_CHECK = 'The security check couldn’t be reached. Please try again in a minute.'
 LOCKED = 'Too many attempts. Sign-in is paused for 15 minutes.'
 
 
@@ -383,7 +414,7 @@ class Handler(BaseHTTPRequestHandler):
         if path == '/login':
             if s:
                 return self.redirect('/')
-            return self.send(200, login_page(notice='' if load_account() else 'The editor has not been set up yet. Run the setup command on the server (see deploy/README.md).'))
+            return self.login_screen(200, notice='' if load_account() else 'The Admin Dashboard has not been set up yet. Run the setup command on the server (see deploy/README.md).')
         acc = load_account()
         if not s or not acc:
             return self.redirect('/login')
@@ -484,7 +515,7 @@ class Handler(BaseHTTPRequestHandler):
             note = 'It disappears from the site and stays in the bin for 30 days.' if p['status'] == 'published' else 'It stays in the bin for 30 days.'
             return ui.post_title(p) or p['id'], 'post', note
         t = next((x for x in store.topics() if x['id'] == item), None)
-        return (ui.topic_name(t), 'topic', 'It disappears from the editor. This can’t be undone.') if t else None
+        return (ui.topic_name(t), 'topic', 'It disappears from the Admin Dashboard. This can’t be undone.') if t else None
 
     def check_name(self, kind, item, form):
         info = self.delete_info(kind, item)
@@ -571,26 +602,38 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(400, ui.topic_form(s['csrf'], values, error))
         return self.send(400, 'Bad request', 'text/plain')
 
+    def login_screen(self, status, error='', notice=''):
+        return self.send(status, login_page(error, notice, turnstile=TURNSTILE_SITE if TURNSTILE_SECRET else ''),
+                         csp=LOGIN_CSP if TURNSTILE_SECRET else None)
+
     def login(self, form):
         acc, ip, now = load_account(), self.ip(), time.time()
         if not acc:
             return self.redirect('/login')
         if ip_blocked(ip) or _state['locked_until'] > now:
-            return self.send(429, login_page(LOCKED))
+            return self.login_screen(429, LOCKED)
+        human = turnstile_ok(form.get('cf-turnstile-response', ''), ip)     # before the password is even looked at
+        if human is None:
+            return self.login_screen(503, NO_CHECK)
+        if not human:
+            return self.login_screen(400, NOT_HUMAN)
         password, code = form.get('password', '')[:200], form.get('code', '')[:20]
         ok = check_password(password, acc['password'])          # always checked, so timing says nothing
         changes = check_second_factor(acc, code) if ok else None
         if not changes:
             print(f'sign-in failed from {ip}', file=sys.stderr)
-            if record_failure(ip):
-                alert('Website editor: sign-in locked', [
-                    f'There were {LOCK_AFTER} wrong sign-in attempts, so sign-in to the editor is paused for 15 minutes.',
+            paused = record_failure(ip)
+            if paused:
+                alert('Admin Dashboard: sign-in paused', [
+                    f'There were {IP_FAILS} wrong sign-in attempts from {ip}, so that address can’t sign in for 15 minutes.'
+                    if paused == 'address' else
+                    f'There were {ALL_FAILS} wrong sign-in attempts within 15 minutes, so sign-in to the Admin Dashboard is paused for everyone for 15 minutes.',
                     '', f'Last attempt: {when(now)} from {ip}', f'Browser: {self.headers.get("User-Agent", "-")[:200]}',
                     '', 'If this wasn’t you, nothing needs doing: the password and code were not accepted.',
                     'If it keeps happening, change the password on the server (see deploy/README.md).'])
-            return self.send(400, login_page(GENERIC))
+            return self.login_screen(400, GENERIC)
         with _lock:
-            _state['fails'] = 0
+            _ip_fails.pop(ip, None)
         acc.update(changes)
         if acc.get('last_login'):
             acc['previous_login'] = acc['last_login']
@@ -598,8 +641,8 @@ class Handler(BaseHTTPRequestHandler):
         save_account(acc)
         token = new_session()
         backup_left = f' {len(acc["backup"])} backup codes are left.' if 'backup' in changes else ''
-        alert('Website editor: new sign-in', [
-            'Someone signed in to the website editor.', '', f'Time: {when(now)}', f'Address: {ip}',
+        alert('Admin Dashboard: new sign-in', [
+            'Someone signed in to the Admin Dashboard.', '', f'Time: {when(now)}', f'Address: {ip}',
             f'Browser: {self.headers.get("User-Agent", "-")[:200]}',
             *(['', f'A backup code was used.{backup_left}'] if backup_left else []),
             '', 'If this wasn’t you, change the password and reset the authenticator on the server straight away (see deploy/README.md).'])
@@ -634,12 +677,12 @@ def new_authenticator(acc):
     secret = base64.b32encode(secrets.token_bytes(20)).decode().rstrip('=')
     label = urllib.parse.quote(f'{APP}:admin')
     uri = f'otpauth://totp/{label}?secret={secret}&issuer={urllib.parse.quote(APP)}&digits=6&period=30'
-    print('\nAdd the editor to an authenticator app (Google Authenticator, Microsoft Authenticator, 2FAS, Aegis …):')
+    print('\nAdd the Admin Dashboard to an authenticator app (Google Authenticator, Microsoft Authenticator, 2FAS, Aegis …):')
     if shutil.which('qrencode'):
         print('Scan this code with the app:\n')
         subprocess.run(['qrencode', '-t', 'ANSIUTF8', uri], check=False)
     print('Or choose "enter a setup key" and type:', ' '.join(secret[i:i + 4] for i in range(0, len(secret), 4)))
-    print('  (account name: Dr Vasileva editor, time-based)\n')
+    print('  (account name: Dr Vasileva Admin Dashboard, time-based)\n')
     for _ in range(5):
         code = input('Type the 6-digit code the app now shows: ').strip().replace(' ', '')
         now = int(time.time() // 30)
@@ -686,7 +729,7 @@ def command(name):
     else:
         sys.exit(__doc__)
     save_account(acc)
-    print('Saved. Restart the editor so everyone is signed out: systemctl restart drvasileva-admin')
+    print('Saved. Restart the Admin Dashboard so everyone is signed out: systemctl restart drvasileva-admin')
 
 
 if __name__ == '__main__':

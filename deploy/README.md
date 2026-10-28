@@ -234,16 +234,17 @@ That's all: the pages are plain files, so changes show up straight away. Only th
 - If anything in `server/` changed, or the design changed, restart the services: `systemctl restart drvasileva-contact drvasileva-admin`. When the editor starts, it rebuilds the Articles pages with the current design.
 - If the files in `deploy/nginx/` changed, copy them again and reload nginx.
 
-## 8. The website editor (admin.drvasileva.co.uk)
+## 8. The Admin Dashboard (admin.drvasileva.co.uk)
 
-The editor is where she writes and publishes articles. Step 8 sets up the editor and its sign-in. Step 9 connects it to the live sites, so that what she publishes appears there.
+The Admin Dashboard ("the editor" below) is where she writes and publishes articles. Step 8 sets up the editor and its sign-in. Step 9 connects it to the live sites, so that what she publishes appears there.
 
 **How sign-in is protected:**
 - **Two-step sign-in:** a password plus a 6-digit code from an authenticator app on her phone. A stolen password alone is not enough.
 - **Backup codes:** 10 one-time codes for when the phone isn't at hand.
+- **Cloudflare Turnstile** on the sign-in form: a bot is turned away before its password is even looked at. So bots can neither guess nor cause the pauses below, which keeps her from being locked out by someone else's attack.
 - **Lockout:**
-  - 5 wrong tries pause sign-in for 15 minutes;
-  - one address may fail only 10 times in 15 minutes;
+  - 5 wrong tries from one address pause that address for 15 minutes (she can still sign in from her own);
+  - 20 wrong tries within 15 minutes from all addresses together pause sign-in for everyone for 15 minutes;
   - nginx also limits how often sign-in can be tried.
 - **Emails:** every sign-in and every lock is emailed. The editor also shows the previous sign-in, so a stranger's visit stands out.
 - **No sign-up page and no "forgot password" email.** The account is created and changed only with a command on the server.
@@ -251,7 +252,7 @@ The editor is where she writes and publishes articles. Step 8 sets up the editor
   - she is signed out after 1 hour without activity, and always after 12 hours;
   - the session cookie can't be read by scripts, is only sent over HTTPS, and is never sent from other sites;
   - form posts from any other site are refused.
-- **The editor page itself:** it runs no scripts, can't be put inside another site's frame, isn't stored by the browser, and isn't shown by search engines.
+- **The editor page itself:** it runs only its own script (the sign-in page also Cloudflare's Turnstile), can't be put inside another site's frame, isn't stored by the browser, and isn't shown by search engines.
 - **The editor service:** it runs as its own user, which can write only to `/var/lib/drvasileva-admin`.
 
 ### Set it up
@@ -287,6 +288,7 @@ The editor is where she writes and publishes articles. Step 8 sets up the editor
    - Set `ADMIN_ORIGIN` to the address you use: `https://admin.drvasileva.co.uk`, or `https://drvasileva-admin.vasilevdigital.com` while testing.
    - Set `ADMIN_ALERT_TO` to the inbox for sign-in emails.
    - Use the same mailcow details as the contact form.
+   - **Turnstile:** set `TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY`. You can use the contact form's widget: in Cloudflare → Turnstile → the widget → Hostnames, make sure `drvasileva.co.uk` (which covers `admin.`) and, while testing, `drvasileva-admin.vasilevdigital.com` are listed. Without the keys the check is simply off.
 5. **Create her account,** with her phone next to you:
    ```
    apt install qrencode        # optional: shows a QR code to scan instead of typing the key
@@ -313,8 +315,8 @@ The editor is where she writes and publishes articles. Step 8 sets up the editor
 | Check the account | `status` |
 
 > **If you use Cloudflare's proxy (orange cloud) for the editor:** nginx then sees Cloudflare's addresses, not the visitor's.
-> - The 5-tries lockout still protects the account.
-> - The per-address limit becomes shared between visitors, so it can block her too.
+> - Turnstile and the 20-tries pause still protect the account.
+> - The per-address pause becomes shared between visitors, so it can block her too.
 >
 > Keep the editor's DNS record "DNS only" (grey cloud), or set up nginx's real-IP module for Cloudflare.
 

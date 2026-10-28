@@ -19,7 +19,7 @@ Both sites have the same content in different languages, and the EN / BG switch 
 | `build/` | The scripts that turn `src/` + `public/` into `dist/` and `preview/`. |
 | `preview/` | One-file previews (`site.html`, `site-bg.html`) you can open from your computer. Built automatically. |
 | `brand/` | Logo files for use outside the website, and the sources of the share images and app icons. |
-| `server/` | The services that run on the VPS: the contact form (sends through mailcow) and the website editor at `admin.drvasileva.co.uk`. |
+| `server/` | The services that run on the VPS: the contact form (sends through mailcow) and the Admin Dashboard (the editor) at `admin.drvasileva.co.uk`. |
 | `deploy/` | nginx and systemd settings, plus **`deploy/README.md`**, the step-by-step server guide. |
 | `docs/` | `project-notes.md`: everything decided about the site, the content, and what's still to do. |
 
@@ -98,6 +98,10 @@ The text can't contain HTML: anything else is shown as plain text, which keeps t
 - an entry in `sitemap-articles.xml`.
 
 **Topics** appear in the filters only once they have a post.
+
+**The Articles page** has a search box (title, summary, topic and the whole text; capitals, accents and word endings don't matter), the topic buttons, Year, Order and, once there are both her own articles and BG BEN columns, Type. The choice stays in the page's address, so a search can be shared.
+
+**Reading time** (`reading_minutes` in `build/blog.py`): the words of the text in that language, divided by 238 words a minute for English (Brysbaert 2019, silent reading of non-fiction) or 225 for Bulgarian (her texts have about 5% fewer words in Bulgarian, so the same text takes the same time), rounded to the nearest minute, at least 1.
 
 To add a post by hand, copy a post folder, edit it, and rebuild.
 
