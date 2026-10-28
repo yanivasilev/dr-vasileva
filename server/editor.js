@@ -2,6 +2,46 @@
 // Everything here is a convenience: without it the forms still work, with plain text boxes and
 // both languages shown one under the other.
 (() => {
+  // Sign out asks first, so a click by accident doesn't sign her out
+  const signout = document.querySelector('form[data-signout]'), dialog = document.getElementById('signout-dialog');
+  if (signout && dialog?.showModal) {
+    signout.addEventListener('submit', e => { if (!signout.dataset.confirmed) { e.preventDefault(); dialog.returnValue = ''; dialog.showModal(); } });
+    dialog.addEventListener('close', () => {
+      if (dialog.returnValue !== 'yes') return;
+      signout.dataset.confirmed = '1';
+      const editor = document.querySelector('form[data-editor]');
+      if (editor) editor.dataset.submitting = '1';            // no second "leave page?" question
+      signout.submit();
+    });
+  }
+
+  // Posts: search by title as you type
+  const search = document.querySelector('[data-search]');
+  if (search) {
+    const rows = [...document.querySelectorAll('tr[data-title]')], none = document.querySelector('[data-none]');
+    const run = () => {
+      const q = search.value.trim().toLowerCase();
+      let shown = 0;
+      rows.forEach(r => { r.hidden = q && !r.dataset.title.includes(q); shown += !r.hidden; });
+      if (none) none.hidden = shown > 0 || !rows.length;
+    };
+    search.addEventListener('input', run);
+    search.closest('form').addEventListener('submit', e => { e.preventDefault(); run(); });
+  }
+
+  // Topics: the preview follows the chosen colour, icon and name
+  document.querySelectorAll('[data-topic-row]').forEach(row => {
+    const preview = row.querySelector('[data-preview]');
+    if (!preview) return;
+    const colour = row.querySelector('[data-colour-select]'), icon = row.querySelector('[data-icon-select]'), name = row.querySelector('[data-name]');
+    const update = () => {
+      preview.className = `topic-preview c-${colour.value}`;
+      preview.querySelector('use').setAttribute('href', `#${icon.value}`);
+      if (name) preview.querySelector('.label').textContent = name.value.trim() || 'New topic';
+    };
+    [colour, icon, name].forEach(el => el?.addEventListener('input', update));
+  });
+
   const form = document.querySelector('form[data-editor]');
   if (!form) return;
 

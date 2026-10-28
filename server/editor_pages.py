@@ -13,6 +13,17 @@ COLOUR_NAMES = dict(sage='Sage green', lilac='Lilac', gold='Gold', forest='Fores
 ICON_NAMES = {'i-sun': 'Sun', 'i-heart': 'Heart', 'i-smile': 'Smile', 'i-leaf': 'Leaf', 'i-puzzle': 'Puzzle', 'i-globe': 'Globe', 'i-feather': 'Feather'}
 
 
+def _topic_icons():
+    """The site's own icons for topics, so the editor's previews match the Articles page."""
+    import re
+    src = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src', 'home.html'), encoding='utf-8').read()
+    found = [m.group(0) for i in blog.ICONS for m in [re.search(rf'<symbol id="{i}"[^>]*>.*?</symbol>', src, re.S)] if m]
+    return '<svg xmlns="http://www.w3.org/2000/svg" hidden>' + ''.join(found) + '</svg>'
+
+
+ICON_SPRITE = _topic_icons()
+
+
 def when(t):
     return time.strftime('%d %b %Y, %H:%M', time.localtime(t))
 
@@ -34,7 +45,7 @@ a { color: var(--green-dark); }
 label { display: block; font-weight: 600; font-size: .88rem; margin: 18px 0 6px; color: var(--green-deep); }
 label small, .hint { font-weight: 500; color: var(--muted); font-size: .82rem; }
 .hint { display: block; margin-top: 4px; }
-input[type=password], input[type=text], input[type=url], select, textarea { width: 100%; font: inherit; font-size: 1rem; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); color: inherit; }
+input[type=password], input[type=text], input[type=url], input[type=search], select, textarea { width: 100%; font: inherit; font-size: 1rem; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); color: inherit; }
 .login input { background: var(--cream); }
 textarea { min-height: 380px; line-height: 1.7; resize: vertical; }
 textarea.short { min-height: 0; }
@@ -46,6 +57,33 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--lilac); out
 .btn.outline { background: var(--white); color: var(--green-deep); border: 1px solid var(--line); }
 .btn.lilac { background: var(--lilac-deep); }
 .btn.danger { background: var(--white); color: var(--red); border: 1px solid #E7C9C5; }
+.btn.red, .btn.signout { background: var(--red); color: var(--white); }
+.btn.signout { padding: 9px 18px; }
+dialog.confirm { border: 0; border-radius: 20px; padding: 28px 28px 24px; max-width: 380px; width: calc(100% - 40px); box-shadow: 0 30px 70px -20px rgba(0,0,0,.45); }
+dialog.confirm::backdrop { background: rgba(28,40,30,.55); }
+dialog.confirm h2 { margin: 0 0 8px; }
+dialog.confirm p { margin: 0 0 22px; color: var(--muted); }
+.btn-row { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.search { display: flex; gap: 10px; margin: 0 0 16px; }
+.search input { max-width: 460px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.topic-preview { position: relative; display: block; width: 150px; height: 82px; border-radius: 12px; overflow: hidden; }
+.topic-preview .bg { position: absolute; inset: 0; }
+.topic-preview .motif { position: absolute; right: -14px; bottom: -14px; width: 74px; height: 74px; fill: none; stroke: rgba(255,255,255,.3); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.topic-preview .label { position: absolute; left: 10px; bottom: 9px; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .62rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.95); background: rgba(0,0,0,.16); padding: 3px 8px; border-radius: 999px; }
+.c-sage .bg { background: linear-gradient(135deg, #7E9C80, #3E5A41); } .c-lilac .bg { background: linear-gradient(135deg, #C9B6D6, #7C6797); }
+.c-gold .bg { background: linear-gradient(135deg, #DEC189, #A9823D); } .c-forest .bg { background: linear-gradient(135deg, #5F7F62, #24392A); }
+.c-plum .bg { background: linear-gradient(135deg, #A58BBE, #4E3D66); } .c-sand .bg { background: linear-gradient(135deg, #D8C6A4, #8F7650); }
+.new-topic { display: grid; grid-template-columns: 1.3fr 1fr; gap: 30px; align-items: start; }
+.new-topic .topic-preview { width: 100%; max-width: 340px; height: 180px; border-radius: 18px; }
+.new-topic .topic-preview .motif { width: 160px; height: 160px; right: -30px; bottom: -30px; }
+.new-topic .topic-preview .label { font-size: .74rem; left: 16px; bottom: 14px; max-width: 280px; }
+table.topics td { vertical-align: middle; padding: 10px 8px; }
+table.topics th { padding: 12px 8px; }
+table.topics td:first-child, table.topics th:first-child { padding-left: 16px; }
+table.topics input { min-width: 150px; }
+table.topics select { min-width: 132px; padding-right: 8px; }
+table.topics .topic-preview { width: 124px; height: 72px; }
 .btn.small { padding: 7px 14px; font-size: .84rem; }
 .error, .ok { border-radius: 12px; padding: 12px 14px; font-size: .92rem; font-weight: 600; margin: 0 0 18px; }
 .error { background: #F8E9E7; color: var(--red); }
@@ -128,12 +166,14 @@ details.more summary { cursor: pointer; font-weight: 600; font-size: .88rem; col
 .empty { padding: 30px; text-align: center; color: var(--muted); background: var(--white); border-radius: 16px; }
 @media (max-width: 760px) {
   .grid2, .grid3, .cover { grid-template-columns: 1fr; }
-  th:nth-child(2), td:nth-child(2), th:nth-child(4), td:nth-child(4) { display: none; }
+  table.posts th:nth-child(2), table.posts td:nth-child(2), table.posts th:nth-child(4), table.posts td:nth-child(4) { display: none; }
   header.top .wrap { flex-wrap: wrap; gap: 10px; }
   .card { padding: 28px 22px; }
   .actionbar { padding: 10px 12px; gap: 8px; border-radius: 14px; }
   .actionbar .status { display: none; }
   .actionbar .btn { flex: 1; padding: 11px 12px; }
+  .new-topic { grid-template-columns: 1fr; }
+  table.topics th:nth-child(6), table.topics td:nth-child(6) { display: none; }
 }
 """
 
@@ -190,16 +230,23 @@ def frame(title, csrf, current, body, script=False):
     return page(title, f'''<header class="top"><div class="wrap">
     <a class="word" href="/">DR VASILEVA<span>Editor</span></a>
     <nav aria-label="Editor">{nav}</nav>
-    <form method="post" action="/logout"><input type="hidden" name="csrf" value="{esc(csrf)}"><button class="btn light" type="submit">Sign out</button></form>
+    <form method="post" action="/logout" data-signout><input type="hidden" name="csrf" value="{esc(csrf)}"><button class="btn signout" type="submit">Sign out</button></form>
   </div></header>
-  <main class="wrap">{body}</main>''', script=script)
+  <main class="wrap">{body}</main>
+  <dialog class="confirm" id="signout-dialog" aria-labelledby="signout-title">
+    <form method="dialog">
+      <h2 id="signout-title">Sign out?</h2>
+      <p>Anything not saved on this page will be lost.</p>
+      <div class="btn-row"><button class="btn outline" value="no" autofocus>No, stay</button><button class="btn red" value="yes">Yes, sign out</button></div>
+    </form>
+  </dialog>''', script=True)
 
 
 def message(ok='', error=''):
     return (f'<p class="ok" role="status">{esc(ok)}</p>' if ok else '') + (f'<p class="error" role="alert">{esc(error)}</p>' if error else '')
 
 
-def posts_list(csrf, posts, topics, previous, ok='', error=''):
+def posts_list(csrf, posts, topics, previous, ok='', error='', query=''):
     names = {t['id']: t['en'] for t in topics}
     rows = []
     for p in posts:
@@ -208,21 +255,29 @@ def posts_list(csrf, posts, topics, previous, ok='', error=''):
         state = f'<span class="tag {p["status"]}">{"Published" if p["status"] == "published" else "Draft"}</span>'
         if missing:
             state += f' <span class="tag warn">{" + ".join(missing)} missing</span>'
-        rows.append(f'''<tr>
+        words = f"{bg['title']} {en['title']}".lower()
+        rows.append(f'''<tr data-title="{esc(words)}"{' hidden' if query and query.lower() not in words else ''}>
         <td><a class="title" href="/posts/{p['id']}">{esc(bg['title'] or en['title'] or '(no title)')}</a><small>{esc(en['title'] if bg['title'] else '')}</small></td>
         <td>{esc(names.get(p['topic'], ''))}</td>
         <td>{state}</td>
         <td>{esc(blog.format_date(p['date'], 'en')) if p['date'] else '–'}</td>
         <td class="actions"><a href="/posts/{p['id']}">Edit</a><a href="/preview/{p['id']}/bg" target="_blank" rel="noopener">Preview</a></td>
       </tr>''')
-    table = (f'<table><thead><tr><th>Title</th><th>Topic</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>{"".join(rows)}</tbody></table>'
+    table = (f'<table class="posts"><thead><tr><th>Title</th><th>Topic</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>{"".join(rows)}</tbody></table>'
              if rows else '<p class="empty">No posts yet.</p>')
-    prev = f'{when(previous["time"])} from {esc(previous["ip"])}' if previous else 'this is the first sign-in'
+    prev = when(previous['time']) if previous else 'this is the first sign-in'
+    shown = sum(1 for p in posts if not query or query.lower() in f"{p['text']['bg']['title']} {p['text']['en']['title']}".lower())
     return frame('Posts', csrf, '/', f'''
     <div class="head"><h1>Posts</h1><a class="btn" href="/posts/new">+ New post</a></div>
     <div class="info"><span>Previous sign-in: <b>{prev}</b></span><span>You are signed out after 1 hour without activity.</span></div>
     {message(ok, error)}
-    {table}''')
+    <form class="search" method="get" action="/" role="search">
+      <label class="sr" for="q">Search posts by title</label>
+      <input id="q" name="q" type="search" value="{esc(query)}" placeholder="Search by title, in Bulgarian or English…" autocomplete="off" data-search>
+      <button class="btn outline small" type="submit">Search</button>
+    </form>
+    {table}
+    <p class="empty" data-none{' hidden' if shown or not posts else ''}>No posts with that title.</p>''')
 
 
 def edit_form(csrf, post, topics, ok='', error='', is_new=False):
@@ -345,25 +400,62 @@ def versions_page(csrf, pid, title, versions, ok='', error=''):
     {message(ok, error)}{table}''')
 
 
+def topic_preview(t, label=None):
+    """A small version of the topic's cover on the Articles page: its colour and icon."""
+    return (f'<span class="topic-preview c-{esc(t.get("colour") or blog.COLOURS[0])}" data-preview><span class="bg"></span>'
+            f'<svg class="motif" aria-hidden="true"><use href="#{esc(t.get("icon") or "i-leaf")}"/></svg>'
+            f'<span class="label">{esc(label if label is not None else t.get("en", ""))}</span></span>')
+
+
+def topic_selects(prefix, t):
+    cs = ''.join(f'<option value="{c}"{" selected" if t.get("colour") == c else ""}>{COLOUR_NAMES[c]}</option>' for c in blog.COLOURS)
+    ic = ''.join(f'<option value="{i}"{" selected" if t.get("icon") == i else ""}>{ICON_NAMES[i]}</option>' for i in blog.ICONS)
+    return (f'<select name="{prefix}_colour" aria-label="Colour" data-colour-select>{cs}</select>',
+            f'<select name="{prefix}_icon" aria-label="Icon" data-icon-select>{ic}</select>')
+
+
 def topics_page(csrf, topics, counts, ok='', error=''):
-    def selects(prefix, t):
-        cs = ''.join(f'<option value="{c}"{" selected" if t.get("colour") == c else ""}>{COLOUR_NAMES[c]}</option>' for c in blog.COLOURS)
-        ic = ''.join(f'<option value="{i}"{" selected" if t.get("icon") == i else ""}>{ICON_NAMES[i]}</option>' for i in blog.ICONS)
-        return f'<td><select name="{prefix}_colour" aria-label="Colour">{cs}</select></td><td><select name="{prefix}_icon" aria-label="Icon">{ic}</select></td>'
-    rows = ''.join(f'''<tr><td><input type="text" name="{esc(t['id'])}_en" value="{esc(t['en'])}" maxlength="60" aria-label="English name" required></td>
-      <td><input type="text" name="{esc(t['id'])}_bg" value="{esc(t['bg'])}" maxlength="60" aria-label="Bulgarian name" required></td>
-      {selects(esc(t['id']), t)}<td>{counts.get(t['id'], 0)}</td>
-      <td class="actions">{'' if counts.get(t['id']) else f'<button class="btn danger small" type="submit" name="remove" value="{esc(t["id"])}" formnovalidate>Delete</button>'}</td></tr>''' for t in topics)
-    return frame('Topics', csrf, '/topics', f'''
-    <div class="head"><h1>Topics</h1></div>
+    rows = []
+    for t in topics:
+        tid = esc(t['id'])
+        colour, icon = topic_selects(tid, t)
+        delete = '' if counts.get(t['id']) else f'<button class="btn danger small" type="submit" name="remove" value="{tid}" formnovalidate>Delete</button>'
+        rows.append(f'''<tr data-topic-row>
+      <td>{topic_preview(t)}</td>
+      <td><input type="text" name="{tid}_en" value="{esc(t['en'])}" maxlength="60" aria-label="English name" required data-name></td>
+      <td><input type="text" name="{tid}_bg" value="{esc(t['bg'])}" maxlength="60" aria-label="Bulgarian name" required></td>
+      <td>{colour}</td><td>{icon}</td><td>{counts.get(t['id'], 0)}</td>
+      <td class="actions">{delete}</td></tr>''')
+    return frame('Topics', csrf, '/topics', f'''{ICON_SPRITE}
+    <div class="head"><h1>Topics</h1><a class="btn" href="/topics/new">+ New topic</a></div>
     <p class="info">Topics appear as filters on the Articles page once they have a published post. A topic with posts can’t be deleted.</p>
     {message(ok, error)}
     <form method="post" action="/topics"><input type="hidden" name="csrf" value="{esc(csrf)}">
-      <table><thead><tr><th>English</th><th>Български</th><th>Colour</th><th>Icon</th><th>Posts</th><th></th></tr></thead><tbody>{rows}
-      <tr><td><input type="text" name="new_en" maxlength="60" placeholder="New topic (English)" aria-label="New topic, English"></td>
-      <td><input type="text" name="new_bg" maxlength="60" placeholder="Нова тема" aria-label="New topic, Bulgarian"></td>{selects('new', {})}<td></td><td></td></tr>
-      </tbody></table>
-      <div class="actionbar"><span class="grow status">Changes to names go live on the site when you save.</span><button class="btn" type="submit">Save topics</button></div>
+      <table class="topics"><thead><tr><th>Looks like</th><th>English</th><th>Български</th><th>Colour</th><th>Icon</th><th>Posts</th><th></th></tr></thead>
+      <tbody>{"".join(rows)}</tbody></table>
+      <div class="actionbar"><span class="grow status">Changes go live on the site when you save.</span><button class="btn" type="submit">Save topics</button></div>
+    </form>''')
+
+
+def new_topic_page(csrf, values=None, error=''):
+    v = values or {}
+    t = dict(en=v.get('en', ''), bg=v.get('bg', ''), colour=v.get('colour') or blog.COLOURS[1], icon=v.get('icon') or 'i-leaf')
+    colour, icon = topic_selects('new', t)
+    return frame('New topic', csrf, '/topics', f'''{ICON_SPRITE}
+    <div class="head"><h1>New topic</h1><a href="/topics">← All topics</a></div>
+    {message(error=error)}
+    <form method="post" action="/topics/new" data-topic-row><input type="hidden" name="csrf" value="{esc(csrf)}">
+      <section class="panel new-topic">
+        <div>
+          <label for="new_en">English name</label><input id="new_en" name="new_en" type="text" maxlength="60" value="{esc(t['en'])}" placeholder="e.g. Grief &amp; loss" required data-name>
+          <label for="new_bg">Bulgarian name</label><input id="new_bg" name="new_bg" type="text" maxlength="60" value="{esc(t['bg'])}" placeholder="напр. Загуба и скръб" required>
+          <div class="grid2"><div><label for="new_colour">Colour</label>{colour.replace('<select ', '<select id="new_colour" ', 1)}</div>
+            <div><label for="new_icon">Icon</label>{icon.replace('<select ', '<select id="new_icon" ', 1)}</div></div>
+        </div>
+        <div><label>How it looks on the Articles page</label>{topic_preview(t, t['en'] or 'New topic')}</div>
+      </section>
+      <div class="actionbar"><span class="grow status">The topic appears on the site once it has a published post.</span>
+        <a class="btn outline" href="/topics">Cancel</a><button class="btn" type="submit">Add topic</button></div>
     </form>''')
 
 

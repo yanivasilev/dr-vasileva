@@ -896,3 +896,12 @@ Setup: `deploy/README.md` step 9.
   - A heading starts again at 1.
   - **Restart numbering** (shown when the cursor is in a list that carries on) starts a list at 1 on purpose. It's remembered after saving; clicking again carries on.
 
+### Update: posts, sign out and topics
+- **Posts:**
+  - shows only the time of the previous sign-in (the sign-in emails still include the address);
+  - a search box filters the posts by title, Bulgarian or English, as she types.
+- **Sign out:** a red button with a "Sign out? No, stay / Yes, sign out" box, so a click by accident doesn't sign her out.
+- **Topics:**
+  - each topic shows how its cover looks, with its colour and icon, and the preview changes as soon as another one is chosen;
+  - **+ New topic** opens its own form, with the same preview.
+

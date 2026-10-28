@@ -242,7 +242,7 @@ HEADERS = {
 # A preview is shown as a sandbox: it can't run scripts, can't reach her session and can't post forms
 PREVIEW_CSP = "sandbox; default-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
 OK = {'saved': 'Saved.', 'published': 'Published. The post is now on both sites.', 'unpublished': 'Unpublished. The post is no longer on the site.',
-      'created': 'Saved as a draft.', 'restored': 'Restored.', 'deleted': 'The post was moved to the bin.', 'topics': 'Topics saved.'}
+      'created': 'Saved as a draft.', 'restored': 'Restored.', 'deleted': 'The post was moved to the bin.', 'topics': 'Topics saved.', 'topic_added': 'New topic added.'}
 GENERIC = 'That didn’t work. Check your password and the code, then try again.'
 LOCKED = 'Too many attempts. Sign-in is paused for 15 minutes.'
 
@@ -361,7 +361,8 @@ class Handler(BaseHTTPRequestHandler):
         ok = OK.get((query.get('ok') or [''])[0], '')
         try:
             if path == '/':
-                return self.send(200, ui.posts_list(s['csrf'], store.list_posts(), store.topics(), acc.get('previous_login'), ok))
+                q = (query.get('q') or [''])[0].strip()[:100]
+                return self.send(200, ui.posts_list(s['csrf'], store.list_posts(), store.topics(), acc.get('previous_login'), ok, query=q))
             if path == '/posts/new':
                 empty = dict(id='', topic=None, date='', bgben='', status='draft', cover=None,
                              text={l: dict(title='', summary='', slug='', cover_alt='', body='') for l in blog.LANGS})
@@ -389,6 +390,8 @@ class Handler(BaseHTTPRequestHandler):
                 for p in store.list_posts():
                     counts[p['topic']] = counts.get(p['topic'], 0) + 1
                 return self.send(200, ui.topics_page(s['csrf'], store.topics(), counts, ok))
+            if path == '/topics/new':
+                return self.send(200, ui.new_topic_page(s['csrf']))
             if path == '/bin':
                 return self.send(200, ui.bin_page(s['csrf'], store.list_bin(), ok))
         except store.EditError:
@@ -445,6 +448,11 @@ class Handler(BaseHTTPRequestHandler):
         if m:
             pid = store.restore_bin(m.group(1))
             return self.redirect(f'/posts/{pid}?ok=restored')
+        if path == '/topics/new':
+            if not (form.get('new_en', '').strip() and form.get('new_bg', '').strip()):
+                raise store.EditError('Please give the topic a name in both English and Bulgarian.')
+            store.save_topics({}, {k: form.get(f'new_{k}') or '' for k in ('en', 'bg', 'colour', 'icon')})
+            return self.redirect('/topics?ok=topic_added')
         if path == '/topics':
             rows = {t['id']: {k: form.get(f'{t["id"]}_{k}') for k in ('en', 'bg', 'colour', 'icon')} for t in store.topics()}
             new = {k: form.get(f'new_{k}') for k in ('en', 'bg', 'colour', 'icon')}
@@ -473,6 +481,9 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(400, ui.versions_page(s['csrf'], pid, post['text']['bg']['title'], store.versions(pid), error=error))
         if path.startswith('/bin/'):
             return self.send(400, ui.bin_page(s['csrf'], store.list_bin(), error=error))
+        if path == '/topics/new':
+            values = {k: form.get(f'new_{k}', '') for k in ('en', 'bg', 'colour', 'icon')}
+            return self.send(400, ui.new_topic_page(s['csrf'], values, error))
         if path == '/topics':
             counts = {}
             for p in store.list_posts():
