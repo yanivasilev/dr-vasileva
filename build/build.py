@@ -93,7 +93,7 @@ s, n = re.subn(r'<a class="card" href="#"', lambda m: f'<a class="card" href="#/
 assert n == 6
 rep('<a class="btn btn-green" href="#" data-reveal style="--d:.35s">More about me', '<a class="btn btn-green" href="#/about" data-reveal style="--d:.35s">More about me')
 rep('<ul><li><a href="#about">About me</a></li><li><a href="#who">Who I help</a></li><li><a href="#">What I help with</a></li><li><a href="#articles">Articles</a></li><li><a href="#">Fees</a></li></ul>',
-    '<ul><li><a href="#/about">About me</a></li><li><a href="#/who-i-help">Who I help</a></li><li><a href="#/issues">What I help with</a></li><li><a href="#/articles">Articles</a></li><li><a href="#/fees">Fees</a></li></ul>')
+    '<ul><li><a href="#/about">About me</a></li><li><a href="#/who-i-help">Who I help</a></li><li><a href="#/issues">What I help with</a></li><li><a href="#/articles">Articles</a></li><li><a href="#/publications">Scientific publications</a></li><li><a href="#/fees">Fees</a></li></ul>')
 rep('<ul><li><a href="#">FAQ</a></li><li><a href="#">Press</a></li><li><a href="#">Crisis help</a></li><li><a href="#contact">Contact</a></li></ul>',
     '<ul><li><a href="#/faq">FAQ</a></li><li><a href="#/press">Press</a></li><li><a href="#/crisis">Crisis help</a></li><li><a href="#/contact">Contact</a></li></ul>')
 rep('<ul><li><a href="#">Privacy</a></li><li><a href="#">Cookies</a></li><li><a href="#">Terms</a></li></ul>',
