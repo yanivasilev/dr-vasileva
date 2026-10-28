@@ -90,7 +90,7 @@ dialog.confirm p { margin: 0 0 22px; color: var(--muted); }
 .icon-btn { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; color: var(--green-deep); border: 1px solid transparent; }
 .icon-btn:hover { background: var(--sand); border-color: var(--line); }
 .icon-btn.danger { color: var(--red); } .icon-btn.danger:hover { background: #F8E9E7; border-color: #E7C9C5; }
-.icon-btn.disabled { color: #B9B6AE; cursor: not-allowed; }
+.icon-btn.disabled { color: #B9B6AE; cursor: not-allowed; background: transparent; font: inherit; padding: 0; }
 .icon-btn .ico { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
 td.actions a.icon-btn { margin-left: 0; }
 dialog.confirm label { margin-top: 0; font-weight: 500; color: var(--muted); }
@@ -98,8 +98,14 @@ dialog.confirm code, .delete-page code { font: 600 .9rem/1.4 ui-monospace, SFMon
 dialog.confirm input { margin: 8px 0 20px; }
 .delete-page { max-width: 560px; } .delete-page input { margin: 8px 0 20px; }
 .btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
-.search { display: flex; gap: 10px; margin: 0 0 16px; }
-.search input { max-width: 460px; }
+.search { margin: 0 0 16px; }
+.search-row { display: flex; gap: 10px; }
+.search-row input { flex: 1; }
+.search-row .btn { padding: 12px 26px; }
+.filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 12px; }
+.filter-row label { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: .86rem; color: var(--muted); }
+.filter-row select { width: auto; padding: 8px 12px; font-size: .9rem; }
+.filter-row .reset { font-size: .86rem; font-weight: 600; margin-left: auto; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .topic-preview { position: relative; display: block; width: 150px; height: 82px; border-radius: 12px; overflow: hidden; }
 .topic-preview .bg { position: absolute; inset: 0; }
@@ -122,6 +128,13 @@ table.topics .topic-preview { width: 124px; height: 72px; }
 .error, .ok { border-radius: 12px; padding: 12px 14px; font-size: .92rem; font-weight: 600; margin: 0 0 18px; }
 .error { background: #F8E9E7; color: var(--red); }
 .ok { background: #E4ECE3; color: var(--green-dark); }
+.msg { display: flex; align-items: center; gap: 12px; border-radius: 12px; padding: 12px 10px 12px 16px; margin: 0 0 18px; font-size: .92rem; font-weight: 600; border: 1px solid transparent; }
+.msg > span { flex: 1; }
+.msg.ok { background: #E4ECE3; color: var(--green-dark); border-color: #CFDDCD; }
+.msg.removed, .msg.error { background: #F8E9E7; color: var(--red); border-color: #EBCFCB; }
+.msg.warn { background: #FBF0DC; color: #7A5418; border-color: #EFD9AE; }
+.msg-x { flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px; border: 0; background: transparent; color: inherit; font-size: 1.3rem; line-height: 1; cursor: pointer; opacity: .7; }
+.msg-x:hover { opacity: 1; background: rgba(0,0,0,.06); }
 .note { margin: 22px 0 0; font-size: .82rem; color: var(--muted); text-align: center; }
 header.top { background: var(--green-deep); color: var(--cream); position: sticky; top: 0; z-index: 10; }
 header.top .wrap { display: flex; align-items: center; gap: 22px; padding-top: 14px; padding-bottom: 14px; }
@@ -151,12 +164,19 @@ td.actions a { margin-left: 10px; font-size: .86rem; font-weight: 600; }
 .panel { background: var(--white); border-radius: 18px; padding: 22px 24px; box-shadow: 0 16px 40px -34px rgba(44,68,48,.6); margin-bottom: 20px; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
 .grid3 { display: grid; grid-template-columns: 1.2fr 1fr 1.4fr; gap: 0 20px; }
-.tabs { display: flex; gap: 6px; margin: 4px 0 18px; }
-.tab { font: inherit; font-weight: 700; font-size: .92rem; padding: 9px 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--white); color: var(--green-deep); cursor: pointer; }
-.tab[aria-selected=true] { background: var(--green-dark); color: var(--white); border-color: var(--green-dark); }
-.tab .done { margin-left: 6px; opacity: .8; }
+.lang-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 5px; margin: 0 0 14px; background: var(--white); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 16px 40px -34px rgba(44,68,48,.6); }
+.lang-switch .tab { display: flex; align-items: center; justify-content: center; gap: 12px; font: inherit; font-weight: 700; font-size: 1rem; padding: 12px 16px; border: 0; border-radius: 12px; background: transparent; color: var(--green-deep); cursor: pointer; }
+.lang-switch .tab:hover { background: #F6F2EA; }
+.lang-switch .tab[aria-selected=true] { background: var(--green-dark); color: var(--white); }
+.lang-switch .state { font-size: .74rem; font-weight: 700; letter-spacing: .02em; padding: 3px 10px 3px 8px; border-radius: 999px; background: #FBF0DC; color: #7A5418; display: inline-flex; align-items: center; gap: 6px; }
+.lang-switch .state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #C08A2D; }
+.lang-switch .state.ready { background: #E4ECE3; color: var(--green-dark); }
+.lang-switch .state.ready::before { background: var(--green); }
+.lang-switch .tab[aria-selected=true] .state { background: rgba(255,255,255,.16); color: var(--white); }
+.lang-switch .tab[aria-selected=true] .state::before { background: #F0C77A; }
+.lang-switch .tab[aria-selected=true] .state.ready::before { background: #A9D3AE; }
 .lang-panel > h2 { margin-top: 6px; }
-.toolbar { position: sticky; top: 66px; z-index: 4; display: flex; flex-wrap: wrap; gap: 8px 14px; padding: 8px; margin: 4px 0 0; background: #F6F2EA; border: 1px solid var(--line); border-bottom: 0; border-radius: 12px 12px 0 0; }
+.toolbar { position: sticky; top: 65px; z-index: 4; display: flex; flex-wrap: wrap; gap: 8px 14px; padding: 8px; margin: 4px 0 0; background: #F6F2EA; border: 1px solid var(--line); border-bottom: 0; border-radius: 12px 12px 0 0; }
 .toolbar .group { display: flex; flex-wrap: wrap; gap: 4px; }
 .toolbar button { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-weight: 600; font-size: .84rem; padding: 6px 10px 6px 6px; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--green-deep); cursor: pointer; white-space: nowrap; }
 .toolbar button:hover { background: var(--white); border-color: var(--line); }
@@ -182,15 +202,26 @@ td.actions a { margin-left: 10px; font-size: .86rem; font-weight: 600; }
 .rich a { color: var(--green-dark); font-weight: 600; }
 .rich u { text-underline-offset: .18em; }
 .rich .tc-green { color: #344E38; } .rich .tc-lilac { color: #6E5A8A; } .rich .tc-gold { color: #8A6A2B; } .rich .tc-rose { color: #A4423A; }
-.rich.empty::before { content: attr(data-placeholder); color: #9A9C97; pointer-events: none; position: absolute; }
+.rich.empty::before { content: attr(data-placeholder); color: #9A9C97; pointer-events: none; position: absolute; left: 20px; top: 18px; }
 details.more { margin-top: 18px; }
 details.more summary { cursor: pointer; font-weight: 600; font-size: .88rem; color: var(--muted); }
-.cover { display: grid; grid-template-columns: 220px 1fr; gap: 20px; align-items: start; }
-.cover .thumb { aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; background: var(--sand); display: grid; place-items: center; color: var(--muted); font-size: .85rem; text-align: center; padding: 8px; }
-.cover .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cover { display: grid; grid-template-columns: 300px 1fr; gap: 26px; align-items: start; margin-top: 6px; }
+.cover .label { display: block; font-weight: 600; font-size: .88rem; margin: 18px 0 6px; color: var(--green-deep); }
+.cover .thumb { display: block; margin: 0; cursor: pointer; border-radius: 14px; outline-offset: 3px; }
+.cover .thumb:focus-within { outline: 2px solid var(--lilac-deep); }
+.cover .thumb-art { display: grid; place-items: center; aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; background: #F6F2EA; border: 2px dashed var(--line); color: var(--muted); text-align: center; transition: border-color .2s, background .2s; }
+.cover .thumb:hover .thumb-art { border-color: var(--lilac-deep); background: #F3EEF6; }
+.cover .thumb-art img { width: 100%; height: 100%; object-fit: cover; }
+.cover .thumb-art:has(img) { border-style: solid; border-color: transparent; }
+.empty-photo { display: grid; gap: 4px; padding: 12px; } .empty-photo b { color: var(--green-deep); font-size: 1rem; } .empty-photo span { font-size: .85rem; }
+.alt-fields { padding-top: 6px; }
+.hint.above { margin: -2px 0 8px; }
+textarea.grow { field-sizing: content; min-height: 3.4em; resize: none; overflow: hidden; }
 .check { display: flex; gap: 8px; align-items: center; font-weight: 500; margin-top: 10px; }
-.actionbar { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 14px 18px; margin: 24px 0 0; background: rgba(250,247,242,.94); backdrop-filter: blur(6px); border: 1px solid var(--line); border-radius: 18px; }
+.actionbar { position: sticky; bottom: -1px; z-index: 5; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 14px 18px; margin: 24px 0 0; background: rgba(250,247,242,.94); backdrop-filter: blur(6px); border: 1px solid var(--line); border-radius: 18px; }
 .actionbar .grow { flex: 1; }
+.actionbar.stuck { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom-color: transparent; box-shadow: 0 -10px 30px -24px rgba(44,68,48,.5); }
+.toolbar.stuck { border-top-left-radius: 0; border-top-right-radius: 0; box-shadow: 0 10px 24px -22px rgba(44,68,48,.6); }
 .actionbar .status { font-size: .86rem; color: var(--muted); }
 .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
 .restore { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 12px 16px; border-radius: 14px; background: #EEE7F3; margin-bottom: 18px; font-weight: 600; font-size: .92rem; }
@@ -207,6 +238,8 @@ details.more summary { cursor: pointer; font-weight: 600; font-size: .88rem; col
   .actionbar .status { display: none; }
   .actionbar .btn { flex: 1; padding: 11px 12px; }
   .new-topic { grid-template-columns: 1fr; }
+  .lang-switch .tab { flex-direction: column; gap: 6px; padding: 10px 8px; }
+  .search-row .btn { padding: 12px 16px; }
   table.topics th:nth-child(6), table.topics td:nth-child(6) { display: none; }
 }
 """
@@ -286,11 +319,20 @@ def frame(title, csrf, current, body, script=False):
   </dialog>''', script=True)
 
 
+def note(kind, text):
+    """A message at the top of a screen. kind: ok (green), removed (red), error (red), warn (amber)."""
+    role = 'alert' if kind in ('error', 'warn') else 'status'
+    return (f'<div class="msg {kind}" role="{role}"><span>{esc(text)}</span>'
+            f'<button class="msg-x" type="button" aria-label="Close this message" hidden>×</button></div>')
+
+
 def message(ok='', error=''):
-    return (f'<p class="ok" role="status">{esc(ok)}</p>' if ok else '') + (f'<p class="error" role="alert">{esc(error)}</p>' if error else '')
+    """ok: text, or (kind, text) for a red 'removed' message."""
+    kind, text = ok if isinstance(ok, tuple) else ('ok', ok)
+    return (note(kind, text) if text else '') + (note('error', error) if error else '') + '<div data-messages></div>'
 
 
-def posts_list(csrf, posts, topics, previous, ok='', error='', query=''):
+def posts_list(csrf, posts, topics, previous, ok='', error='', query='', sort='new', topic='', status=''):
     names = {t['id']: t['en'] for t in topics}
     rows = []
     for p in posts:
@@ -300,7 +342,8 @@ def posts_list(csrf, posts, topics, previous, ok='', error='', query=''):
         if missing:
             state += f' <span class="tag warn">{" + ".join(missing)} missing</span>'
         words = f"{bg['title']} {en['title']}".lower()
-        rows.append(f'''<tr data-title="{esc(words)}"{' hidden' if query and query.lower() not in words else ''}>
+        hide = (query and query.lower() not in words) or (topic and p['topic'] != topic) or (status and p['status'] != status)
+        rows.append(f'''<tr data-title="{esc(words)}" data-topic="{esc(p['topic'])}" data-status="{p['status']}" data-date="{esc(p['date'] or '9999')}"{' hidden' if hide else ''}>
         <td><a class="title" href="/posts/{p['id']}">{esc(bg['title'] or en['title'] or '(no title)')}</a><small>{esc(en['title'] if bg['title'] else '')}</small></td>
         <td>{esc(names.get(p['topic'], ''))}</td>
         <td>{state}</td>
@@ -315,18 +358,28 @@ def posts_list(csrf, posts, topics, previous, ok='', error='', query=''):
     table = (f'<table class="posts"><thead><tr><th>Title</th><th>Topic</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>{"".join(rows)}</tbody></table>'
              if rows else '<p class="empty">No posts yet.</p>')
     prev = when(previous['time']) if previous else 'this is the first sign-in'
-    shown = sum(1 for p in posts if not query or query.lower() in f"{p['text']['bg']['title']} {p['text']['en']['title']}".lower())
+    shown = sum(1 for p in posts if (not query or query.lower() in f"{p['text']['bg']['title']} {p['text']['en']['title']}".lower())
+                and (not topic or p['topic'] == topic) and (not status or p['status'] == status))
+    opt = lambda value, label, current: f'<option value="{esc(value)}"{" selected" if value == current else ""}>{esc(label)}</option>'
     return frame('Posts', csrf, '/', f'''
     <div class="head"><h1>Posts</h1><a class="btn" href="/posts/new">+ New post</a></div>
     <div class="info"><span>Previous sign-in: <b>{prev}</b></span><span>You are signed out after 1 hour without activity.</span></div>
     {message(ok, error)}
-    <form class="search" method="get" action="/" role="search">
-      <label class="sr" for="q">Search posts by title</label>
-      <input id="q" name="q" type="search" value="{esc(query)}" placeholder="Search by title, in Bulgarian or English…" autocomplete="off" data-search>
-      <button class="btn outline small" type="submit">Search</button>
+    <form class="search" method="get" action="/" role="search" data-filters>
+      <div class="search-row">
+        <label class="sr" for="q">Search posts by title</label>
+        <input id="q" name="q" type="search" value="{esc(query)}" placeholder="Search by title, in Bulgarian or English…" autocomplete="off" data-search>
+        <button class="btn" type="submit">Search</button>
+      </div>
+      <div class="filter-row">
+        <label>Order <select name="sort" data-sort>{opt('new', 'Newest first', sort)}{opt('old', 'Oldest first', sort)}</select></label>
+        <label>Topic <select name="topic" data-topic>{opt('', 'All topics', topic)}{''.join(opt(t['id'], t['en'], topic) for t in topics)}</select></label>
+        <label>Status <select name="status" data-status>{opt('', 'All', status)}{opt('published', 'Published', status)}{opt('draft', 'Drafts', status)}</select></label>
+        <a class="reset" href="/" data-reset{'' if (query or topic or status or sort != 'new') else ' hidden'}>Clear filters</a>
+      </div>
     </form>
     {table}
-    <p class="empty" data-none{' hidden' if shown or not posts else ''}>No posts with that title.</p>''')
+    <p class="empty" data-none{' hidden' if shown or not posts else ''}>No posts match.</p>''')
 
 
 def edit_form(csrf, post, topics, ok='', error='', is_new=False):
@@ -336,17 +389,21 @@ def edit_form(csrf, post, topics, ok='', error='', is_new=False):
     published = post.get('status') == 'published'
     options = ''.join(f'<option value="{esc(t["id"])}"{" selected" if t["id"] == post.get("topic") else ""}>{esc(t["en"])} / {esc(t["bg"])}</option>' for t in topics)
     cover = post.get('cover')
-    thumb = f'<img src="/media/{esc(pid)}/{esc(cover)}" alt="">' if cover and pid else 'No photo: the post shows its topic’s coloured cover.'
+    thumb = (f'<img src="/media/{esc(pid)}/{esc(cover)}" alt="">' if cover and pid else
+             '<span class="empty-photo"><b>No photo yet</b><span>Click here to add one</span></span>')
     tabs, panels = [], []
     for lang in ('bg', 'en'):
         x = post['text'][lang]
-        tabs.append(f'<button class="tab" type="button" role="tab" data-tab="{lang}" aria-selected="{"true" if lang == "bg" else "false"}">{LANG_NAMES[lang]}<span class="done" data-done="{lang}"></span></button>')
+        ready = bool(x['title'] and x['summary'] and (x['body'] or post.get('bgben')))
+        tabs.append(f'<button class="tab" type="button" role="tab" data-tab="{lang}" aria-selected="{"true" if lang == "bg" else "false"}">'
+                    f'<span class="name">{LANG_NAMES[lang]}</span><span class="state{" ready" if ready else ""}" data-done="{lang}">{"Complete" if ready else "Not finished"}</span></button>')
         panels.append(f'''<section class="panel lang-panel" data-panel="{lang}" lang="{lang}">
       <h2>{LANG_NAMES[lang]}</h2>
       <label for="{lang}_title">Title</label>
       <input id="{lang}_title" name="{lang}_title" type="text" maxlength="200" value="{esc(x['title'])}">
-      <label for="{lang}_summary">Summary <small>one or two sentences, shown on the cards and in Google</small></label>
-      <textarea class="short" id="{lang}_summary" name="{lang}_summary" rows="2" maxlength="400">{esc(x['summary'])}</textarea>
+      <label for="{lang}_summary">Short description</label>
+      <span class="hint above">One or two sentences that tell readers what the article is about. They appear under the title on the Articles page, and in Google’s search results.</span>
+      <textarea class="short grow" id="{lang}_summary" name="{lang}_summary" rows="2" maxlength="400">{esc(x['summary'])}</textarea>
       <label for="{lang}_body">Text</label>
       <div class="toolbar" data-for="{lang}_body" role="toolbar" aria-label="Formatting" hidden>
         <div class="group">
@@ -382,13 +439,6 @@ def edit_form(csrf, post, topics, ok='', error='', is_new=False):
       </div>
       <textarea id="{lang}_body" name="{lang}_body" rows="18" maxlength="100000">{esc(x['body'])}</textarea>
       <span class="hint" data-hint>A blank line starts a new paragraph. **bold**, *italic*, ++underline++, {{lilac|coloured words}}, ## heading, - list, &gt; quote, [link text](https://…)</span>
-      <details class="more">
-        <summary>Web address and photo description</summary>
-        <label for="{lang}_slug">Web address <small>made from the title if left empty; avoid changing it once published</small></label>
-        <input id="{lang}_slug" name="{lang}_slug" type="text" maxlength="80" value="{esc(x['slug'])}">
-        <label for="{lang}_cover_alt">Photo description <small>for blind visitors and Google, e.g. “A mother and daughter talking”</small></label>
-        <input id="{lang}_cover_alt" name="{lang}_cover_alt" type="text" maxlength="200" value="{esc(x['cover_alt'])}">
-      </details>
     </section>''')
     problems = post.get('problems') or []
     todo = f'<p class="hint">Before it can be published: {esc("; ".join(problems))}.</p>' if problems and not is_new else ''
@@ -415,14 +465,24 @@ def edit_form(csrf, post, topics, ok='', error='', is_new=False):
           <div><label for="bgben">BG BEN link <small>only for columns</small></label><input id="bgben" name="bgben" type="url" maxlength="300" placeholder="https://bgben.co.uk/…" value="{esc(post.get('bgben') or '')}"></div>
         </div>
         <div class="cover">
-          <div><label>Cover photo</label><div class="thumb" data-thumb>{thumb}</div></div>
-          <div><label for="photo">Choose a photo <small>JPG, PNG or WebP, up to 10 MB</small></label>
-            <input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp">
-            <span class="hint">The photo is resized for the web, and the location your phone saves in photos is removed.</span>
-            {'<label class="check"><input type="checkbox" name="remove_photo" value="yes"> Remove the photo</label>' if cover else ''}</div>
+          <div><span class="label">Cover photo</span>
+            <label class="thumb" title="Click to choose a photo">
+              <input class="sr" id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp">
+              <span class="thumb-art" data-thumb>{thumb}</span>
+            </label>
+            <span class="hint">JPG, PNG or WebP, up to 10 MB. Click the box to {'change' if cover else 'add'} the photo. The location phones save in photos is removed.</span>
+            {'<label class="check"><input type="checkbox" name="remove_photo" value="yes"> Remove the photo</label>' if cover else ''}
+          </div>
+          <div class="alt-fields" data-alt{'' if cover else ' hidden'}>
+            <label for="bg_cover_alt">Photo description in Bulgarian</label>
+            <input id="bg_cover_alt" name="bg_cover_alt" type="text" maxlength="200" value="{esc(post['text']['bg']['cover_alt'])}" lang="bg">
+            <label for="en_cover_alt">Photo description in English</label>
+            <input id="en_cover_alt" name="en_cover_alt" type="text" maxlength="200" value="{esc(post['text']['en']['cover_alt'])}">
+            <span class="hint">Say in a few words what the photo shows, for example “A mother and daughter talking”. It is read out to blind visitors and helps Google.</span>
+          </div>
         </div>
       </section>
-      <div class="tabs" role="tablist" hidden>{''.join(tabs)}</div>
+      <div class="tabs lang-switch" role="tablist" aria-label="Language" hidden>{''.join(tabs)}</div>
       {''.join(panels)}
       {todo}
       {f'<div class="links">{links}</div>' if links else ''}
@@ -467,7 +527,7 @@ def topics_page(csrf, topics, counts, ok='', error=''):
       <td class="actions"><span class="icons">
         <a class="icon-btn" href="/topics/{esc(t['id'])}" title="Edit" aria-label="Edit {esc(t['en'])}">{icon('edit')}</a>
         {delete_link(f"/topics/{esc(t['id'])}/delete", t['en'], 'topic', 'It disappears from the editor. This can’t be undone.') if not counts.get(t['id']) else
-         f'<span class="icon-btn disabled" title="Can’t delete: {counts[t["id"]]} post{"s use" if counts[t["id"]] != 1 else " uses"} this topic" aria-disabled="true">{icon("delete")}</span>'}
+         f'<button class="icon-btn disabled" type="button" aria-disabled="true" title="Can’t be deleted" data-blocked="“{esc(t["en"])}” can’t be deleted because {counts[t["id"]]} post{"s use" if counts[t["id"]] != 1 else " uses"} it. Move {"them" if counts[t["id"]] != 1 else "it"} to another topic first.">{icon("delete")}</button>'}
       </span></td></tr>''' for t in topics)
     return frame('Topics', csrf, '/topics', f'''{ICON_SPRITE}
     <div class="head"><h1>Topics</h1><a class="btn" href="/topics/new">+ New topic</a></div>

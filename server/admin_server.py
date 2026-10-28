@@ -242,7 +242,8 @@ HEADERS = {
 # A preview is shown as a sandbox: it can't run scripts, can't reach her session and can't post forms
 PREVIEW_CSP = "sandbox; default-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
 OK = {'saved': 'Saved.', 'published': 'Published. The post is now on both sites.', 'unpublished': 'Unpublished. The post is no longer on the site.',
-      'created': 'Saved as a draft.', 'restored': 'Restored.', 'deleted': 'The post was moved to the bin.', 'topics': 'Topics saved.', 'topic_added': 'New topic added.', 'topic_deleted': 'The topic was deleted.'}
+      'created': 'Saved as a draft.', 'restored': 'Restored.', 'deleted': ('removed', 'The post was moved to the bin.'), 'topics': 'Topic saved.',
+      'topic_added': 'New topic added.', 'topic_deleted': ('removed', 'The topic was deleted.')}
 GENERIC = 'That didn’t work. Check your password and the code, then try again.'
 LOCKED = 'Too many attempts. Sign-in is paused for 15 minutes.'
 
@@ -361,8 +362,16 @@ class Handler(BaseHTTPRequestHandler):
         ok = OK.get((query.get('ok') or [''])[0], '')
         try:
             if path == '/':
-                q = (query.get('q') or [''])[0].strip()[:100]
-                return self.send(200, ui.posts_list(s['csrf'], store.list_posts(), store.topics(), acc.get('previous_login'), ok, query=q))
+                arg = lambda k: (query.get(k) or [''])[0].strip()[:100]
+                topics = store.topics()
+                sort = 'old' if arg('sort') == 'old' else 'new'
+                topic = arg('topic') if any(t['id'] == arg('topic') for t in topics) else ''
+                status = arg('status') if arg('status') in ('published', 'draft') else ''
+                posts = store.list_posts()
+                if sort == 'old':
+                    posts.reverse()
+                return self.send(200, ui.posts_list(s['csrf'], posts, topics, acc.get('previous_login'), ok,
+                                                    query=arg('q'), sort=sort, topic=topic, status=status))
             if path == '/posts/new':
                 empty = dict(id='', topic=None, date='', bgben='', status='draft', cover=None,
                              text={l: dict(title='', summary='', slug='', cover_alt='', body='') for l in blog.LANGS})

@@ -159,6 +159,19 @@ def restore_files(folder, vdir):
         shutil.copy2(os.path.join(vdir, name), folder)
 
 
+def unique_slug(lang, slug, pid):
+    """slug, or slug-2, slug-3 … if another post already uses it in that language"""
+    used = set()
+    for other in os.listdir(POSTS):
+        path = os.path.join(POSTS, other, f'{lang}.md')
+        if other != pid and os.path.isfile(path):
+            used.add(blog.read_text_file(path)[0].get('slug'))
+    base, n = slug or 'post', 2
+    while slug in used or not slug:
+        slug, n = f'{base[:74]}-{n}', n + 1
+    return slug
+
+
 def unchanged(folder, meta, data):
     """True if saving would write exactly what is already there."""
     if (meta.get('topic'), meta.get('bgben') or None) != (data['topic'], data['bgben'] or None):
@@ -196,14 +209,20 @@ def save(pid, fields, action='save', photo=None, remove_photo=False):
             meta = json.load(open(os.path.join(folder_of(pid), 'post.json'), encoding='utf-8'))
         folder = os.path.join(POSTS, pid)
         was_published = meta.get('status') == 'published'
-        # Web addresses: an empty field keeps the post's current address (so links never break);
-        # a post without one gets it from its title
+        # Web addresses come from the title. Once a post has been published its address never changes,
+        # so links to it keep working; until then it follows the title.
+        if meta.get('status') == 'published':
+            meta['published_once'] = True
         for lang in blog.LANGS:
             x = data['text'][lang]
-            if not x['slug']:
-                path = os.path.join(folder, f'{lang}.md')
-                current = blog.read_text_file(path)[0].get('slug') if os.path.isfile(path) else ''
-                x['slug'] = current or blog.slugify(x['title'])
+            path = os.path.join(folder, f'{lang}.md')
+            current = blog.read_text_file(path)[0].get('slug') if os.path.isfile(path) else ''
+            if meta.get('published_once') and current:
+                x['slug'] = current
+            elif x['title']:
+                x['slug'] = unique_slug(lang, blog.slugify(x['title']), pid)
+            else:
+                x['slug'] = current
         if action == 'save' and not image and not (remove_photo and meta.get('cover')) and unchanged(folder, meta, data):
             return pid                                              # nothing changed: no new version, no rebuild
         snapshot(folder)
@@ -221,6 +240,7 @@ def save(pid, fields, action='save', photo=None, remove_photo=False):
             os.remove(os.path.join(folder, old_cover))          # still kept in the version just made
         if action == 'publish':
             meta['status'] = 'published'
+            meta['published_once'] = True
             meta['date'] = meta['date'] or time.strftime('%Y-%m-%d')
         elif action == 'unpublish':
             meta['status'] = 'draft'
@@ -429,11 +449,15 @@ def preview(pid, lang):
         published = []
     posts = [post] + [p for p in published if p['id'] != pid]
     b = blog.Blog(lang, t, posts)
-    key = f'{blog.BLOG_KEY}/{pid}'
-    inner, info = b.pages()[key]
+    inner = b.post_page(post, preview=True)          # just the article: no related posts, no contact band
     shell = open(os.path.join(DIST, lang, 'index.html'), encoding='utf-8').read()
-    page = blog.static_page(shell, key, inner, info, lang)
+    body = shell.index('<body')
+    icons = re.search(r'<svg width="0" height="0"[^>]*>.*?</svg>\s*(?=<header)', shell, re.S)
+    page = (shell[:shell.index('>', body) + 1] + (icons.group(0) if icons else '') +
+            f'<main id="top"><div id="pages"><div class="page active" data-route="{blog.BLOG_KEY}/{pid}">{inner}</div></div></main></body></html>')
     page = re.sub(r'<script\b[^>]*>.*?</script>', '', page, flags=re.S | re.I)
+    # in the preview, buttons and links (share, contact, BG BEN …) do nothing
+    page = page.replace('</head>', '<style>a, button { pointer-events: none; cursor: default; } .page-hero { padding-top: 90px; }</style></head>', 1)
     if post['cover']:          # the preview can't send the sign-in cookie, so the photo travels inside the page
         import base64
         data = base64.b64encode(open(os.path.join(post['folder'], post['cover']), 'rb').read()).decode()

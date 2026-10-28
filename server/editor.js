@@ -53,18 +53,58 @@
     update();
   }
 
-  // Posts: search by title as you type
-  const search = document.querySelector('[data-search]');
-  if (search) {
-    const rows = [...document.querySelectorAll('tr[data-title]')], none = document.querySelector('[data-none]');
+  // Messages at the top can be closed
+  const closable = msg => {
+    const x = msg.querySelector('.msg-x');
+    if (!x) return;
+    x.hidden = false;
+    x.addEventListener('click', () => msg.remove());
+  };
+  document.querySelectorAll('.msg').forEach(closable);
+  const say = (kind, text) => {                    // a new message, e.g. why a topic can't be deleted
+    const box = document.querySelector('[data-messages]');
+    if (!box) return;
+    const msg = document.createElement('div');
+    msg.className = `msg ${kind}`;
+    msg.setAttribute('role', 'alert');
+    const span = document.createElement('span');
+    span.textContent = text;
+    const x = document.createElement('button');
+    x.className = 'msg-x'; x.type = 'button'; x.textContent = '×'; x.setAttribute('aria-label', 'Close this message');
+    msg.append(span, x);
+    box.replaceChildren(msg);
+    closable(msg);
+    msg.scrollIntoView({ block: 'nearest' });
+  };
+  document.querySelectorAll('[data-blocked]').forEach(btn => btn.addEventListener('click', () => say('warn', btn.dataset.blocked)));
+
+  // Posts: search by title, filter by topic and status, newest or oldest first, as you choose
+  const filters = document.querySelector('form[data-filters]');
+  if (filters) {
+    const search = filters.querySelector('[data-search]'), sort = filters.querySelector('[data-sort]');
+    const topic = filters.querySelector('[data-topic]'), status = filters.querySelector('[data-status]');
+    const body = document.querySelector('table.posts tbody'), none = document.querySelector('[data-none]'), reset = filters.querySelector('[data-reset]');
+    const rows = [...document.querySelectorAll('tr[data-title]')];
     const run = () => {
       const q = search.value.trim().toLowerCase();
       let shown = 0;
-      rows.forEach(r => { r.hidden = q && !r.dataset.title.includes(q); shown += !r.hidden; });
+      rows.forEach(r => {
+        r.hidden = (q && !r.dataset.title.includes(q)) || (topic.value && r.dataset.topic !== topic.value) || (status.value && r.dataset.status !== status.value);
+        shown += !r.hidden;
+      });
+      const ordered = [...rows].sort((a, b) => a.dataset.date < b.dataset.date ? -1 : a.dataset.date > b.dataset.date ? 1 : 0);
+      if (sort.value !== 'old') ordered.reverse();
+      body?.append(...ordered);
       if (none) none.hidden = shown > 0 || !rows.length;
+      if (reset) reset.hidden = !(q || topic.value || status.value || sort.value !== 'new');
+      const url = new URL(location.href);                // keep the choice when coming back to the list
+      for (const [k, v] of [['q', q], ['topic', topic.value], ['status', status.value], ['sort', sort.value === 'new' ? '' : sort.value]]) v ? url.searchParams.set(k, v) : url.searchParams.delete(k);
+      history.replaceState(null, '', url);
     };
     search.addEventListener('input', run);
-    search.closest('form').addEventListener('submit', e => { e.preventDefault(); run(); });
+    [sort, topic, status].forEach(el => el.addEventListener('change', run));
+    filters.addEventListener('submit', e => { e.preventDefault(); run(); });
+    reset?.addEventListener('click', e => { e.preventDefault(); search.value = ''; topic.value = ''; status.value = ''; sort.value = 'new'; run(); });
   }
 
   // Topics: the preview follows the chosen colour, icon and name
@@ -426,12 +466,16 @@
   tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.tab)));
   if (tabs.length) { document.querySelector('.tabs').hidden = false; show('bg'); }
   const ticks = () => tabs.forEach(t => {
-    const l = t.dataset.tab, done = form.elements[`${l}_title`].value.trim() && form.elements[`${l}_body`].value.trim();
-    t.querySelector('[data-done]').textContent = done ? '✓' : '';
+    const l = t.dataset.tab, el = n => form.elements[`${l}_${n}`].value.trim();
+    const done = el('title') && el('summary') && (el('body') || form.elements.bgben.value.trim());
+    const state = t.querySelector('[data-done]');
+    state.textContent = done ? 'Complete' : 'Not finished';
+    state.classList.toggle('ready', !!done);
   });
 
   // Cover photo: show the chosen photo straight away
   const photo = form.elements.photo, thumb = document.querySelector('[data-thumb]');
+  const alt = document.querySelector('[data-alt]');
   photo?.addEventListener('change', () => {
     const f = photo.files[0];
     if (!f) return;
@@ -439,7 +483,32 @@
     img.src = URL.createObjectURL(f);
     img.alt = '';
     thumb.replaceChildren(img);
+    if (alt) alt.hidden = false;
   });
+  form.elements.remove_photo?.addEventListener('change', e => { if (alt) alt.hidden = e.target.checked && !photo.files.length; });
+
+  // The short description grows with its text (for browsers without field-sizing)
+  if (!CSS.supports('field-sizing', 'content')) {
+    document.querySelectorAll('textarea.grow').forEach(ta => {
+      const fit = () => { ta.style.height = 'auto'; ta.style.height = `${ta.scrollHeight + 2}px`; };
+      ta.addEventListener('input', fit);
+      fit();
+    });
+  }
+
+  // The toolbar and the save bar lose their rounded corners while they are pinned to the screen
+  // (a toolbar is pinned when it has moved down over the text box below it; the save bar when the spot
+  // just after it is below the screen)
+  const actionbar = document.querySelector('.actionbar'), endMark = document.createElement('div');
+  if (actionbar) actionbar.after(endMark);
+  const pin = () => {
+    document.querySelectorAll('.toolbar').forEach(bar =>
+      bar.classList.toggle('stuck', bar.offsetParent && bar.parentElement.querySelector('.rich') &&
+        bar.getBoundingClientRect().bottom - bar.parentElement.querySelector('.rich').getBoundingClientRect().top > 1));
+    if (actionbar) actionbar.classList.toggle('stuck', endMark.getBoundingClientRect().top > innerHeight + 1);
+  };
+  addEventListener('scroll', pin, { passive: true }); addEventListener('resize', pin);
+  document.addEventListener('click', () => requestAnimationFrame(pin)); pin();
 
   /* ---------------------------------------------------------------------
      Autosave in this browser every 30 seconds, so nothing is lost if the browser closes before saving

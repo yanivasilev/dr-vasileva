@@ -364,7 +364,7 @@ class Blog:
           <button class="social copy-link" type="button" data-copy="{esc(url)}" data-done="{self.ui['copied']}" aria-label="{self.ui['copy']}">{self.ic('i-link')}</button>
         </div>'''
 
-    def post_page(self, post):
+    def post_page(self, post, preview=False):
         t, x, ui = self.topics[post['topic']], post['text'][self.lang], self.ui
         meta = f'<p class="post-meta" data-reveal style="--d:.18s">{self.meta_line(post)}</p>'
         body = render_text(x['body'])
@@ -391,13 +391,13 @@ class Blog:
         <div><b>{ui['author']}</b><p>{ui['author_text']}</p>
           <a class="btn btn-green" href="{self.href('/contact')}">{ui['author_btn']} {self.ic('i-arrow', 'icon arrow-i')}</a></div>
       </aside>
-    </div></section>''' + (f'''
+    </div></section>''' + ('' if preview else (f'''
     <section class="page-body related"><div class="wrap">
       <h2 data-reveal>{ui['related']}</h2>
       <div class="articles-grid">
       {related_cards}
       </div>
-    </div></section>''' if related_cards else '') + self.cta_band()
+    </div></section>''' if related_cards else '') + self.cta_band())
 
     def pages(self):
         """route key -> (inner HTML, page details) for the list page and every post"""
