@@ -903,5 +903,6 @@ Setup: `deploy/README.md` step 9.
 - **Sign out:** a red button with a "Sign out? No, stay / Yes, sign out" box, so a click by accident doesn't sign her out.
 - **Topics:**
   - each topic shows how its cover looks, with its colour and icon, and the preview changes as soon as another one is chosen;
-  - **+ New topic** opens its own form, with the same preview.
+  - **+ New topic** opens its own form, with the same preview;
+  - like posts, the Topics page is a list; **Edit** opens a topic's own page (names, colour, icon, preview), with **Delete** at the bottom behind a tick box. A topic with posts says how many use it and can't be deleted.
 

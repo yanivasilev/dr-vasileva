@@ -334,6 +334,8 @@ def save_topics(rows, new=None, remove=None):
             if not en or not bg:
                 raise EditError('A new topic needs both an English and a Bulgarian name.')
             tid = blog.slugify(en) or blog.slugify(bg)
+            if tid == 'new':                     # /topics/new is the New topic form
+                tid = 'new-topic'
             if any(t['id'] == tid for t in out):
                 raise EditError('There is already a topic with this name.')
             out.append(dict(id=tid, en=en, bg=bg, colour=new.get('colour') if new.get('colour') in blog.COLOURS else blog.COLOURS[len(out) % len(blog.COLOURS)],

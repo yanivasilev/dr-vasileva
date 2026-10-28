@@ -242,7 +242,7 @@ HEADERS = {
 # A preview is shown as a sandbox: it can't run scripts, can't reach her session and can't post forms
 PREVIEW_CSP = "sandbox; default-src 'none'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'"
 OK = {'saved': 'Saved.', 'published': 'Published. The post is now on both sites.', 'unpublished': 'Unpublished. The post is no longer on the site.',
-      'created': 'Saved as a draft.', 'restored': 'Restored.', 'deleted': 'The post was moved to the bin.', 'topics': 'Topics saved.', 'topic_added': 'New topic added.'}
+      'created': 'Saved as a draft.', 'restored': 'Restored.', 'deleted': 'The post was moved to the bin.', 'topics': 'Topics saved.', 'topic_added': 'New topic added.', 'topic_deleted': 'The topic was deleted.'}
 GENERIC = 'That didn’t work. Check your password and the code, then try again.'
 LOCKED = 'Too many attempts. Sign-in is paused for 15 minutes.'
 
@@ -391,7 +391,14 @@ class Handler(BaseHTTPRequestHandler):
                     counts[p['topic']] = counts.get(p['topic'], 0) + 1
                 return self.send(200, ui.topics_page(s['csrf'], store.topics(), counts, ok))
             if path == '/topics/new':
-                return self.send(200, ui.new_topic_page(s['csrf']))
+                return self.send(200, ui.topic_form(s['csrf']))
+            m = re.fullmatch(r'/topics/([a-z0-9-]{1,80})', path)
+            if m:
+                t = next((x for x in store.topics() if x['id'] == m.group(1)), None)
+                if not t:
+                    return self.not_found()
+                used = sum(1 for p in store.list_posts() if p['topic'] == t['id'])
+                return self.send(200, ui.topic_form(s['csrf'], t, posts=used))
             if path == '/bin':
                 return self.send(200, ui.bin_page(s['csrf'], store.list_bin(), ok))
         except store.EditError:
@@ -453,10 +460,21 @@ class Handler(BaseHTTPRequestHandler):
                 raise store.EditError('Please give the topic a name in both English and Bulgarian.')
             store.save_topics({}, {k: form.get(f'new_{k}') or '' for k in ('en', 'bg', 'colour', 'icon')})
             return self.redirect('/topics?ok=topic_added')
-        if path == '/topics':
-            rows = {t['id']: {k: form.get(f'{t["id"]}_{k}') for k in ('en', 'bg', 'colour', 'icon')} for t in store.topics()}
-            new = {k: form.get(f'new_{k}') for k in ('en', 'bg', 'colour', 'icon')}
-            store.save_topics(rows, new, form.get('remove'))
+        m = re.fullmatch(r'/topics/([a-z0-9-]{1,80})/delete', path)
+        if m:
+            if form.get('confirm') != 'yes':
+                raise store.EditError('Tick the box to confirm.')
+            if not any(t['id'] == m.group(1) for t in store.topics()):
+                raise store.EditError('No such topic.')
+            store.save_topics({}, None, m.group(1))
+            return self.redirect('/topics?ok=topic_deleted')
+        m = re.fullmatch(r'/topics/([a-z0-9-]{1,80})', path)
+        if m:
+            if not any(t['id'] == m.group(1) for t in store.topics()):
+                raise store.EditError('No such topic.')
+            if not (form.get('new_en', '').strip() and form.get('new_bg', '').strip()):
+                raise store.EditError('Please give the topic a name in both English and Bulgarian.')
+            store.save_topics({m.group(1): {k: form.get(f'new_{k}') for k in ('en', 'bg', 'colour', 'icon')}})
             return self.redirect('/topics?ok=topics')
         return self.send(404, 'Not found', 'text/plain')
 
@@ -481,14 +499,18 @@ class Handler(BaseHTTPRequestHandler):
             return self.send(400, ui.versions_page(s['csrf'], pid, post['text']['bg']['title'], store.versions(pid), error=error))
         if path.startswith('/bin/'):
             return self.send(400, ui.bin_page(s['csrf'], store.list_bin(), error=error))
-        if path == '/topics/new':
+        m = re.fullmatch(r'/topics/(new|[a-z0-9-]{1,80})(/delete)?', path)
+        if m:
             values = {k: form.get(f'new_{k}', '') for k in ('en', 'bg', 'colour', 'icon')}
-            return self.send(400, ui.new_topic_page(s['csrf'], values, error))
-        if path == '/topics':
-            counts = {}
-            for p in store.list_posts():
-                counts[p['topic']] = counts.get(p['topic'], 0) + 1
-            return self.send(400, ui.topics_page(s['csrf'], store.topics(), counts, error=error))
+            current = next((x for x in store.topics() if x['id'] == m.group(1)), None)
+            if m.group(1) != 'new' and not current:
+                return self.not_found()
+            if m.group(2):                                   # delete refused: show the topic as it is
+                values = current
+            elif current:
+                values['id'] = current['id']
+            used = sum(1 for p in store.list_posts() if current and p['topic'] == current['id'])
+            return self.send(400, ui.topic_form(s['csrf'], values, error, posts=used))
         return self.send(400, 'Bad request', 'text/plain')
 
     def login(self, form):

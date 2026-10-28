@@ -415,36 +415,38 @@ def topic_selects(prefix, t):
 
 
 def topics_page(csrf, topics, counts, ok='', error=''):
-    rows = []
-    for t in topics:
-        tid = esc(t['id'])
-        colour, icon = topic_selects(tid, t)
-        delete = '' if counts.get(t['id']) else f'<button class="btn danger small" type="submit" name="remove" value="{tid}" formnovalidate>Delete</button>'
-        rows.append(f'''<tr data-topic-row>
+    rows = ''.join(f'''<tr>
       <td>{topic_preview(t)}</td>
-      <td><input type="text" name="{tid}_en" value="{esc(t['en'])}" maxlength="60" aria-label="English name" required data-name></td>
-      <td><input type="text" name="{tid}_bg" value="{esc(t['bg'])}" maxlength="60" aria-label="Bulgarian name" required></td>
-      <td>{colour}</td><td>{icon}</td><td>{counts.get(t['id'], 0)}</td>
-      <td class="actions">{delete}</td></tr>''')
+      <td><a class="title" href="/topics/{esc(t['id'])}">{esc(t['en'])}</a></td>
+      <td>{esc(t['bg'])}</td>
+      <td>{counts.get(t['id'], 0)}</td>
+      <td class="actions"><a href="/topics/{esc(t['id'])}">Edit</a></td></tr>''' for t in topics)
     return frame('Topics', csrf, '/topics', f'''{ICON_SPRITE}
     <div class="head"><h1>Topics</h1><a class="btn" href="/topics/new">+ New topic</a></div>
-    <p class="info">Topics appear as filters on the Articles page once they have a published post. A topic with posts can’t be deleted.</p>
+    <p class="info">Topics appear as filters on the Articles page once they have a published post.</p>
     {message(ok, error)}
-    <form method="post" action="/topics"><input type="hidden" name="csrf" value="{esc(csrf)}">
-      <table class="topics"><thead><tr><th>Looks like</th><th>English</th><th>Български</th><th>Colour</th><th>Icon</th><th>Posts</th><th></th></tr></thead>
-      <tbody>{"".join(rows)}</tbody></table>
-      <div class="actionbar"><span class="grow status">Changes go live on the site when you save.</span><button class="btn" type="submit">Save topics</button></div>
-    </form>''')
+    <table class="topics"><thead><tr><th>Looks like</th><th>English</th><th>Български</th><th>Posts</th><th></th></tr></thead>
+    <tbody>{rows}</tbody></table>''')
 
 
-def new_topic_page(csrf, values=None, error=''):
-    v = values or {}
-    t = dict(en=v.get('en', ''), bg=v.get('bg', ''), colour=v.get('colour') or blog.COLOURS[1], icon=v.get('icon') or 'i-leaf')
+def topic_form(csrf, t=None, error='', posts=0):
+    """New topic (t None) or edit an existing one; the preview follows the choices."""
+    is_new = not (t and t.get('id'))
+    t = {'en': '', 'bg': '', 'colour': blog.COLOURS[1], 'icon': 'i-leaf', **{k: v for k, v in (t or {}).items() if v}}
     colour, icon = topic_selects('new', t)
-    return frame('New topic', csrf, '/topics', f'''{ICON_SPRITE}
-    <div class="head"><h1>New topic</h1><a href="/topics">← All topics</a></div>
+    action = '/topics/new' if is_new else f'/topics/{esc(t["id"])}'
+    danger = ''
+    if not is_new:
+        danger = (f'''<div class="danger-zone"><form method="post" action="/topics/{esc(t['id'])}/delete">
+      <input type="hidden" name="csrf" value="{esc(csrf)}">
+      <label class="check"><input type="checkbox" name="confirm" value="yes" required> Delete this topic</label>
+      <button class="btn danger small" type="submit">Delete</button></form></div>''' if not posts else
+                  f'''<div class="danger-zone"><p class="hint">This topic can’t be deleted while {posts} post{'s use' if posts != 1 else ' uses'} it.
+      Move {'them' if posts != 1 else 'it'} to another topic first.</p></div>''')
+    return frame('New topic' if is_new else t['en'], csrf, '/topics', f'''{ICON_SPRITE}
+    <div class="head"><h1>{'New topic' if is_new else 'Edit topic'}</h1><a href="/topics">← All topics</a></div>
     {message(error=error)}
-    <form method="post" action="/topics/new" data-topic-row><input type="hidden" name="csrf" value="{esc(csrf)}">
+    <form method="post" action="{action}" data-topic-row><input type="hidden" name="csrf" value="{esc(csrf)}">
       <section class="panel new-topic">
         <div>
           <label for="new_en">English name</label><input id="new_en" name="new_en" type="text" maxlength="60" value="{esc(t['en'])}" placeholder="e.g. Grief &amp; loss" required data-name>
@@ -454,9 +456,10 @@ def new_topic_page(csrf, values=None, error=''):
         </div>
         <div><label>How it looks on the Articles page</label>{topic_preview(t, t['en'] or 'New topic')}</div>
       </section>
-      <div class="actionbar"><span class="grow status">The topic appears on the site once it has a published post.</span>
-        <a class="btn outline" href="/topics">Cancel</a><button class="btn" type="submit">Add topic</button></div>
-    </form>''')
+      <div class="actionbar"><span class="grow status">{'The topic appears on the site once it has a published post.' if is_new else 'Changes go live on the site when you save.'}</span>
+        <a class="btn outline" href="/topics">Cancel</a><button class="btn" type="submit">{'Add topic' if is_new else 'Save changes'}</button></div>
+    </form>
+    {danger}''')
 
 
 def bin_page(csrf, items, ok='', error=''):
