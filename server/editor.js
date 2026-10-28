@@ -100,6 +100,7 @@
   document.execCommand('styleWithCSS', false, false);
   const editors = [];
   document.querySelectorAll('.toolbar[data-for]').forEach(bar => {
+    if (!bar.querySelector('[data-cmd]')) return;          // a page from an older version: keep the plain text box
     const ta = document.getElementById(bar.dataset.for);
     const rich = document.createElement('div');
     rich.className = 'rich';

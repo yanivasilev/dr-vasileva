@@ -67,7 +67,6 @@ ACCOUNT = os.path.join(DATA_DIR, 'account.json')
 ORIGIN = ENV.get('ADMIN_ORIGIN', 'https://admin.drvasileva.co.uk').rstrip('/')
 FONTS = os.path.join(REPO, 'public', 'fonts')
 IMAGES = os.path.join(store.DIST, 'en', 'images')       # the site's own images, for previews
-EDITOR_JS = os.path.join(HERE, 'editor.js')
 SECURE = ENV.get('COOKIE_SECURE', '1') != '0'
 COOKIE = '__Host-drv_session' if SECURE else 'drv_session'
 IDLE = int(ENV.get('SESSION_IDLE', 3600))
@@ -326,7 +325,7 @@ class Handler(BaseHTTPRequestHandler):
         if path == '/admin.css':
             return self.send(200, ui.CSS, 'text/css; charset=utf-8', cache=True)
         if path == '/editor.js':
-            return self.send(200, open(EDITOR_JS, 'rb').read(), 'text/javascript; charset=utf-8', cache=True)
+            return self.send(200, ui.EDITOR_JS, 'text/javascript; charset=utf-8', cache=True)
         m = re.fullmatch(r'/fonts/([a-z0-9-]+\.(woff2|css))', path)
         if m:
             f = os.path.join(FONTS, m.group(1))

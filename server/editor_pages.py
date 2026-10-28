@@ -1,5 +1,7 @@
 """The editor's screens (HTML). Everything shown is escaped; the only script is /editor.js."""
+import hashlib
 import html
+import os
 import time
 
 import blog
@@ -136,6 +138,12 @@ details.more summary { cursor: pointer; font-weight: 600; font-size: .88rem; col
 """
 
 
+# The editor's script, read once at start-up, so the page, the styles and the script always belong together.
+# Their addresses carry a version, so browsers load the new ones after every update instead of a cached copy.
+EDITOR_JS = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'editor.js'), 'rb').read()
+VERSION = hashlib.sha256(CSS.encode() + EDITOR_JS).hexdigest()[:10]
+
+
 def page(title, body, cls='', script=False):
     return f'''<!doctype html>
 <html lang="en">
@@ -145,8 +153,8 @@ def page(title, body, cls='', script=False):
 <meta name="robots" content="noindex, nofollow">
 <title>{esc(title)} – {APP}</title>
 <link rel="stylesheet" href="/fonts/fonts.css">
-<link rel="stylesheet" href="/admin.css">
-{'<script src="/editor.js" defer></script>' if script else ''}
+<link rel="stylesheet" href="/admin.css?v={VERSION}">
+{f'<script src="/editor.js?v={VERSION}" defer></script>' if script else ''}
 </head>
 <body class="{cls}">
 {body}
