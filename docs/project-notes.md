@@ -906,3 +906,18 @@ Setup: `deploy/README.md` step 9.
   - **+ New topic** opens its own form, with the same preview;
   - like posts, the Topics page is a list; **Edit** opens a topic's own page (names, colour, icon, preview), with **Delete** at the bottom behind a tick box. A topic with posts says how many use it and can't be deleted.
 
+### Update: icons, deleting and saving
+- **Icons in the lists:**
+  - Posts: Edit, Preview and Delete;
+  - Topics: Edit and Delete;
+  - each icon shows its name on hover.
+- **Deleting happens only from the lists**, not from the edit pages:
+  - a box asks for the name with dashes for spaces, like GitHub (e.g. `Self-growth`), and Delete only works once it matches;
+  - the server checks the name too;
+  - a topic that still has posts has a greyed-out bin icon, and hovering shows how many posts use it;
+  - without JavaScript, the icon opens a confirm page with the same question.
+- **Save only after a real change:**
+  - Save draft, Save changes and the topic Save stay greyed out until something has changed, and grey out again when the change is undone;
+  - Publish and Unpublish always work;
+  - the server also ignores a save with no changes, so no new version is stored and the site isn't rebuilt.
+

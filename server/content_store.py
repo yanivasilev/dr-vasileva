@@ -159,6 +159,21 @@ def restore_files(folder, vdir):
         shutil.copy2(os.path.join(vdir, name), folder)
 
 
+def unchanged(folder, meta, data):
+    """True if saving would write exactly what is already there."""
+    if (meta.get('topic'), meta.get('bgben') or None) != (data['topic'], data['bgben'] or None):
+        return False
+    if (data['date'] or meta.get('date') or '') != (meta.get('date') or ''):
+        return False
+    for lang in blog.LANGS:
+        path = os.path.join(folder, f'{lang}.md')
+        head, body = blog.read_text_file(path) if os.path.isfile(path) else ({}, '')
+        x = data['text'][lang]
+        if any((head.get(k) or '') != (x[k] or '') for k in ('title', 'slug', 'summary', 'cover_alt')) or body != x['body']:
+            return False
+    return True
+
+
 def save(pid, fields, action='save', photo=None, remove_photo=False):
     """Save a post (pid None = new). action: save | publish | unpublish. Returns the post id.
     A published post only changes on the site if the change can be published; otherwise nothing changes."""
@@ -189,6 +204,8 @@ def save(pid, fields, action='save', photo=None, remove_photo=False):
                 path = os.path.join(folder, f'{lang}.md')
                 current = blog.read_text_file(path)[0].get('slug') if os.path.isfile(path) else ''
                 x['slug'] = current or blog.slugify(x['title'])
+        if action == 'save' and not image and not (remove_photo and meta.get('cover')) and unchanged(folder, meta, data):
+            return pid                                              # nothing changed: no new version, no rebuild
         snapshot(folder)
         vdir = None
         if os.path.isdir(os.path.join(folder, 'versions')):
@@ -340,6 +357,8 @@ def save_topics(rows, new=None, remove=None):
                 raise EditError('There is already a topic with this name.')
             out.append(dict(id=tid, en=en, bg=bg, colour=new.get('colour') if new.get('colour') in blog.COLOURS else blog.COLOURS[len(out) % len(blog.COLOURS)],
                             icon=new.get('icon') if new.get('icon') in blog.ICONS else 'i-leaf'))
+        if out == current:
+            return                                                  # nothing changed
         tmp = os.path.join(CONTENT, 'topics.json.tmp')
         with open(tmp, 'w', encoding='utf-8') as f:
             json.dump({'topics': out}, f, ensure_ascii=False, indent=2)

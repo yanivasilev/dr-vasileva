@@ -24,6 +24,28 @@ def _topic_icons():
 ICON_SPRITE = _topic_icons()
 
 
+_ICON_PATHS = {
+    'edit': '<path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/>',
+    'preview': '<path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/>',
+    'delete': '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/>',
+}
+
+
+def icon(name):
+    return f'<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">{_ICON_PATHS[name]}</svg>'
+
+
+def confirm_name(name):
+    """What she types to confirm a delete: the name with dashes for spaces (like GitHub)."""
+    return '-'.join(str(name).split())
+
+
+def delete_link(href, name, what, note):
+    """A bin icon. With the script it opens the delete box; without, it opens a page with the same question."""
+    return (f'<a class="icon-btn danger" href="{href}" data-delete data-name="{esc(confirm_name(name))}" data-what="{what}" '
+            f'data-note="{esc(note)}" title="Delete" aria-label="Delete {esc(name)}">{icon("delete")}</a>')
+
+
 def when(t):
     return time.strftime('%d %b %Y, %H:%M', time.localtime(t))
 
@@ -64,6 +86,18 @@ dialog.confirm::backdrop { background: rgba(28,40,30,.55); }
 dialog.confirm h2 { margin: 0 0 8px; }
 dialog.confirm p { margin: 0 0 22px; color: var(--muted); }
 .btn-row { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.icons { display: inline-flex; gap: 4px; }
+.icon-btn { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; color: var(--green-deep); border: 1px solid transparent; }
+.icon-btn:hover { background: var(--sand); border-color: var(--line); }
+.icon-btn.danger { color: var(--red); } .icon-btn.danger:hover { background: #F8E9E7; border-color: #E7C9C5; }
+.icon-btn.disabled { color: #B9B6AE; cursor: not-allowed; }
+.icon-btn .ico { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+td.actions a.icon-btn { margin-left: 0; }
+dialog.confirm label { margin-top: 0; font-weight: 500; color: var(--muted); }
+dialog.confirm code, .delete-page code { font: 600 .9rem/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--red); background: #F8E9E7; padding: 2px 6px; border-radius: 6px; word-break: break-all; }
+dialog.confirm input { margin: 8px 0 20px; }
+.delete-page { max-width: 560px; } .delete-page input { margin: 8px 0 20px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
 .search { display: flex; gap: 10px; margin: 0 0 16px; }
 .search input { max-width: 460px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -239,6 +273,16 @@ def frame(title, csrf, current, body, script=False):
       <p>Anything not saved on this page will be lost.</p>
       <div class="btn-row"><button class="btn outline" value="no" autofocus>No, stay</button><button class="btn red" value="yes">Yes, sign out</button></div>
     </form>
+  </dialog>
+  <dialog class="confirm" id="delete-dialog" aria-labelledby="delete-title">
+    <form method="post" data-delete-form>
+      <input type="hidden" name="csrf" value="{esc(csrf)}">
+      <h2 id="delete-title">Delete this <span data-what>post</span>?</h2>
+      <p data-note></p>
+      <label for="confirm_name">To confirm, type <code data-expected></code></label>
+      <input id="confirm_name" name="confirm_name" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" required>
+      <div class="btn-row"><button class="btn outline" type="button" data-cancel>Cancel</button><button class="btn red" type="submit" disabled>Delete</button></div>
+    </form>
   </dialog>''', script=True)
 
 
@@ -261,7 +305,12 @@ def posts_list(csrf, posts, topics, previous, ok='', error='', query=''):
         <td>{esc(names.get(p['topic'], ''))}</td>
         <td>{state}</td>
         <td>{esc(blog.format_date(p['date'], 'en')) if p['date'] else '–'}</td>
-        <td class="actions"><a href="/posts/{p['id']}">Edit</a><a href="/preview/{p['id']}/bg" target="_blank" rel="noopener">Preview</a></td>
+        <td class="actions"><span class="icons">
+          <a class="icon-btn" href="/posts/{p['id']}" title="Edit" aria-label="Edit {esc(bg['title'] or en['title'])}">{icon('edit')}</a>
+          <a class="icon-btn" href="/preview/{p['id']}/bg" target="_blank" rel="noopener" title="Preview" aria-label="Preview {esc(bg['title'] or en['title'])}">{icon('preview')}</a>
+          {delete_link(f"/posts/{p['id']}/delete", bg['title'] or en['title'] or p['id'], 'post',
+                       'It disappears from the site and stays in the bin for 30 days.' if p['status'] == 'published' else 'It stays in the bin for 30 days.')}
+        </span></td>
       </tr>''')
     table = (f'<table class="posts"><thead><tr><th>Title</th><th>Topic</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>{"".join(rows)}</tbody></table>'
              if rows else '<p class="empty">No posts yet.</p>')
@@ -343,18 +392,13 @@ def edit_form(csrf, post, topics, ok='', error='', is_new=False):
     </section>''')
     problems = post.get('problems') or []
     todo = f'<p class="hint">Before it can be published: {esc("; ".join(problems))}.</p>' if problems and not is_new else ''
-    buttons = (f'''<button class="btn" type="submit" name="action" value="save">Save changes</button>
+    buttons = (f'''<button class="btn" type="submit" name="action" value="save" data-save>Save changes</button>
         <button class="btn outline" type="submit" name="action" value="unpublish">Unpublish</button>''' if published else
-               f'''<button class="btn outline" type="submit" name="action" value="save">Save draft</button>
+               f'''<button class="btn outline" type="submit" name="action" value="save" data-save>Save draft</button>
         <button class="btn" type="submit" name="action" value="publish">Publish</button>''')
     links = '' if is_new else f'''<a class="btn outline small" href="/preview/{esc(pid)}/bg" target="_blank" rel="noopener">Preview BG</a>
         <a class="btn outline small" href="/preview/{esc(pid)}/en" target="_blank" rel="noopener">Preview EN</a>
         <a class="btn outline small" href="/posts/{esc(pid)}/versions">Versions</a>'''
-    danger = '' if is_new else f'''<div class="danger-zone"><form method="post" action="/posts/{esc(pid)}/delete">
-      <input type="hidden" name="csrf" value="{esc(csrf)}">
-      <label class="check"><input type="checkbox" name="confirm" value="yes" required> Move this post to the bin{" (it disappears from the site)" if published else ""}</label>
-      <button class="btn danger small" type="submit">Delete</button>
-      <span class="hint">The bin keeps it for 30 days.</span></form></div>'''
     state = 'Published – changes go live when you save' if published else ('New post' if is_new else 'Draft – not on the site')
     return frame('New post' if is_new else (post['text']['bg']['title'] or post['text']['en']['title'] or 'Post'), csrf, '/', f'''
     <div class="head"><h1>{'New post' if is_new else 'Edit post'}</h1><a href="/">← All posts</a></div>
@@ -387,7 +431,7 @@ def edit_form(csrf, post, topics, ok='', error='', is_new=False):
         {buttons}
       </div>
     </form>
-    {danger}''', script=True)
+''', script=True)
 
 
 def versions_page(csrf, pid, title, versions, ok='', error=''):
@@ -420,7 +464,11 @@ def topics_page(csrf, topics, counts, ok='', error=''):
       <td><a class="title" href="/topics/{esc(t['id'])}">{esc(t['en'])}</a></td>
       <td>{esc(t['bg'])}</td>
       <td>{counts.get(t['id'], 0)}</td>
-      <td class="actions"><a href="/topics/{esc(t['id'])}">Edit</a></td></tr>''' for t in topics)
+      <td class="actions"><span class="icons">
+        <a class="icon-btn" href="/topics/{esc(t['id'])}" title="Edit" aria-label="Edit {esc(t['en'])}">{icon('edit')}</a>
+        {delete_link(f"/topics/{esc(t['id'])}/delete", t['en'], 'topic', 'It disappears from the editor. This can’t be undone.') if not counts.get(t['id']) else
+         f'<span class="icon-btn disabled" title="Can’t delete: {counts[t["id"]]} post{"s use" if counts[t["id"]] != 1 else " uses"} this topic" aria-disabled="true">{icon("delete")}</span>'}
+      </span></td></tr>''' for t in topics)
     return frame('Topics', csrf, '/topics', f'''{ICON_SPRITE}
     <div class="head"><h1>Topics</h1><a class="btn" href="/topics/new">+ New topic</a></div>
     <p class="info">Topics appear as filters on the Articles page once they have a published post.</p>
@@ -429,20 +477,12 @@ def topics_page(csrf, topics, counts, ok='', error=''):
     <tbody>{rows}</tbody></table>''')
 
 
-def topic_form(csrf, t=None, error='', posts=0):
+def topic_form(csrf, t=None, error=''):
     """New topic (t None) or edit an existing one; the preview follows the choices."""
     is_new = not (t and t.get('id'))
     t = {'en': '', 'bg': '', 'colour': blog.COLOURS[1], 'icon': 'i-leaf', **{k: v for k, v in (t or {}).items() if v}}
     colour, icon = topic_selects('new', t)
     action = '/topics/new' if is_new else f'/topics/{esc(t["id"])}'
-    danger = ''
-    if not is_new:
-        danger = (f'''<div class="danger-zone"><form method="post" action="/topics/{esc(t['id'])}/delete">
-      <input type="hidden" name="csrf" value="{esc(csrf)}">
-      <label class="check"><input type="checkbox" name="confirm" value="yes" required> Delete this topic</label>
-      <button class="btn danger small" type="submit">Delete</button></form></div>''' if not posts else
-                  f'''<div class="danger-zone"><p class="hint">This topic can’t be deleted while {posts} post{'s use' if posts != 1 else ' uses'} it.
-      Move {'them' if posts != 1 else 'it'} to another topic first.</p></div>''')
     return frame('New topic' if is_new else t['en'], csrf, '/topics', f'''{ICON_SPRITE}
     <div class="head"><h1>{'New topic' if is_new else 'Edit topic'}</h1><a href="/topics">← All topics</a></div>
     {message(error=error)}
@@ -457,9 +497,22 @@ def topic_form(csrf, t=None, error='', posts=0):
         <div><label>How it looks on the Articles page</label>{topic_preview(t, t['en'] or 'New topic')}</div>
       </section>
       <div class="actionbar"><span class="grow status">{'The topic appears on the site once it has a published post.' if is_new else 'Changes go live on the site when you save.'}</span>
-        <a class="btn outline" href="/topics">Cancel</a><button class="btn" type="submit">{'Add topic' if is_new else 'Save changes'}</button></div>
-    </form>
-    {danger}''')
+        <a class="btn outline" href="/topics">Cancel</a><button class="btn" type="submit" data-save>{'Add topic' if is_new else 'Save changes'}</button></div>
+    </form>''')
+
+
+def delete_page(csrf, action, name, what, note, error=''):
+    """The delete question as a page: used when the script is off, or after a wrong name."""
+    return frame(f'Delete {what}', csrf, '/topics' if what == 'topic' else '/', f'''
+    <div class="head"><h1>Delete this {what}?</h1><a href="{'/topics' if what == 'topic' else '/'}">← Back</a></div>
+    {message(error=error)}
+    <form class="panel delete-page" method="post" action="{esc(action)}">
+      <input type="hidden" name="csrf" value="{esc(csrf)}">
+      <p><b>{esc(name)}</b></p><p class="hint">{esc(note)}</p>
+      <label for="confirm_page_name">To confirm, type <code>{esc(confirm_name(name))}</code></label>
+      <input id="confirm_page_name" name="confirm_name" type="text" autocomplete="off" spellcheck="false" required>
+      <div class="btn-row"><a class="btn outline" href="{'/topics' if what == 'topic' else '/'}">Cancel</a><button class="btn red" type="submit">Delete</button></div>
+    </form>''')
 
 
 def bin_page(csrf, items, ok='', error=''):

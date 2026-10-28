@@ -15,6 +15,44 @@
     });
   }
 
+  // Delete asks first, and only works once the name is typed (with dashes for spaces), like GitHub
+  const del = document.getElementById('delete-dialog');
+  if (del?.showModal) {
+    const delForm = del.querySelector('form'), typed = del.querySelector('input[name=confirm_name]'), go = del.querySelector('button[type=submit]');
+    const check = () => { go.disabled = typed.value.trim() !== typed.dataset.expected; };
+    document.querySelectorAll('a[data-delete]').forEach(a => a.addEventListener('click', e => {
+      e.preventDefault();
+      delForm.action = a.getAttribute('href');
+      del.querySelector('[data-what]').textContent = a.dataset.what;
+      del.querySelector('[data-note]').textContent = a.dataset.note;
+      del.querySelector('[data-expected]').textContent = a.dataset.name;
+      typed.dataset.expected = a.dataset.name;
+      typed.value = '';
+      check();
+      del.showModal();
+      typed.focus();
+    }));
+    typed.addEventListener('input', check);
+    delForm.addEventListener('submit', e => { if (go.disabled) e.preventDefault(); });
+    del.querySelector('[data-cancel]').addEventListener('click', () => del.close());
+  }
+
+  // Topic pages: Save only once something has changed (a new topic needs both names)
+  const topicForm = document.querySelector('form[data-topic-row]');
+  const topicSave = topicForm?.querySelector('[data-save]');
+  if (topicSave) {
+    const now = () => JSON.stringify([...topicForm.querySelectorAll('input[type=text], select')].map(f => f.value.trim()));
+    const start = now(), isNew = topicForm.getAttribute('action') === '/topics/new';
+    const update = () => {
+      const named = [...topicForm.querySelectorAll('input[type=text]')].every(f => f.value.trim());
+      topicSave.disabled = !named || (!isNew && now() === start);
+      topicSave.title = topicSave.disabled ? (named ? 'Nothing has changed yet' : 'Fill in both names') : '';
+    };
+    topicForm.addEventListener('input', update);
+    topicForm.addEventListener('submit', e => { if (topicSave.disabled) e.preventDefault(); });
+    update();
+  }
+
   // Posts: search by title as you type
   const search = document.querySelector('[data-search]');
   if (search) {
@@ -422,7 +460,16 @@
     store.set({ time: Date.now(), values: values() });
     if (note) note.textContent = ` · unsaved changes kept in this browser at ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   };
-  form.addEventListener('input', () => { dirty = JSON.stringify(values()) !== initial; ticks(); });
+  // Save only once something has really changed (Publish and Unpublish always work)
+  const saveBtn = form.querySelector('[data-save]'), removePhoto = form.elements.remove_photo;
+  const updateSave = () => {
+    if (!saveBtn) return;
+    saveBtn.disabled = !(dirty || photo?.files.length || removePhoto?.checked);
+    saveBtn.title = saveBtn.disabled ? 'Nothing has changed yet' : '';
+  };
+  form.addEventListener('input', () => { dirty = JSON.stringify(values()) !== initial; ticks(); updateSave(); });
+  form.addEventListener('change', updateSave);
+  form.addEventListener('submit', e => { if (e.submitter === saveBtn && saveBtn.disabled) e.preventDefault(); });
   setInterval(autosave, 30000);
   addEventListener('pagehide', autosave);
   addEventListener('beforeunload', e => { if (dirty && !form.dataset.submitting) { autosave(); e.preventDefault(); } });
@@ -436,11 +483,12 @@
     banner.querySelector('[data-restore-yes]').addEventListener('click', () => {
       fields.forEach(f => { if (f.name in kept.values) f.value = kept.values[f.name]; });
       editors.forEach(ed => ed.load(ed.ta.value));
-      dirty = true; ticks(); banner.hidden = true;
+      dirty = true; ticks(); updateSave(); banner.hidden = true;
     });
     banner.querySelector('[data-restore-no]').addEventListener('click', () => { store.clear(); banner.hidden = true; });
   } else if (kept) {
     store.clear();
   }
   ticks();
+  updateSave();
 })();

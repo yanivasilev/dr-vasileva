@@ -397,8 +397,11 @@ class Handler(BaseHTTPRequestHandler):
                 t = next((x for x in store.topics() if x['id'] == m.group(1)), None)
                 if not t:
                     return self.not_found()
-                used = sum(1 for p in store.list_posts() if p['topic'] == t['id'])
-                return self.send(200, ui.topic_form(s['csrf'], t, posts=used))
+                return self.send(200, ui.topic_form(s['csrf'], t))
+            m = re.fullmatch(r'/(posts|topics)/([a-z0-9-]{1,80})/delete', path)
+            if m:                                               # the delete question, for browsers without the script
+                info = self.delete_info(m.group(1), m.group(2))
+                return self.send(200, ui.delete_page(s['csrf'], path, *info)) if info else self.not_found()
             if path == '/bin':
                 return self.send(200, ui.bin_page(s['csrf'], store.list_bin(), ok))
         except store.EditError:
@@ -433,6 +436,26 @@ class Handler(BaseHTTPRequestHandler):
         except blog.PostError as e:
             return self.change_failed(path, form, s, f'Something in the posts needs fixing: {e}')
 
+    def delete_info(self, kind, item):
+        """(name, 'post'|'topic', note) for the delete question, or None if there is nothing to delete."""
+        if kind == 'posts':
+            try:
+                p = store.get(item)
+            except store.EditError:
+                return None
+            note = 'It disappears from the site and stays in the bin for 30 days.' if p['status'] == 'published' else 'It stays in the bin for 30 days.'
+            return p['text']['bg']['title'] or p['text']['en']['title'] or p['id'], 'post', note
+        t = next((x for x in store.topics() if x['id'] == item), None)
+        return (t['en'], 'topic', 'It disappears from the editor. This can’t be undone.') if t else None
+
+    def check_name(self, kind, item, form):
+        info = self.delete_info(kind, item)
+        if not info:
+            raise store.EditError('There is nothing to delete here.')
+        expected = ui.confirm_name(info[0])
+        if form.get('confirm_name', '').strip() != expected:
+            raise store.EditError(f'The name you typed doesn’t match. Type {expected} to delete.')
+
     def change(self, path, form, s):
         m = re.fullmatch(r'/posts/(new|[a-z0-9-]{1,80})', path)
         if m:
@@ -443,8 +466,7 @@ class Handler(BaseHTTPRequestHandler):
             return self.redirect(f'/posts/{pid}?ok={code}')
         m = re.fullmatch(r'/posts/([a-z0-9-]{1,80})/delete', path)
         if m:
-            if form.get('confirm') != 'yes':
-                raise store.EditError('Tick the box to confirm.')
+            self.check_name('posts', m.group(1), form)
             store.delete(m.group(1))
             return self.redirect('/?ok=deleted')
         m = re.fullmatch(r'/posts/([a-z0-9-]{1,80})/versions/(\d{8}-\d{6}-\d{6})/restore', path)
@@ -462,10 +484,7 @@ class Handler(BaseHTTPRequestHandler):
             return self.redirect('/topics?ok=topic_added')
         m = re.fullmatch(r'/topics/([a-z0-9-]{1,80})/delete', path)
         if m:
-            if form.get('confirm') != 'yes':
-                raise store.EditError('Tick the box to confirm.')
-            if not any(t['id'] == m.group(1) for t in store.topics()):
-                raise store.EditError('No such topic.')
+            self.check_name('topics', m.group(1), form)
             store.save_topics({}, None, m.group(1))
             return self.redirect('/topics?ok=topic_deleted')
         m = re.fullmatch(r'/topics/([a-z0-9-]{1,80})', path)
@@ -491,26 +510,27 @@ class Handler(BaseHTTPRequestHandler):
                          status=current['status'] if current else 'draft', cover=current['cover'] if current else None,
                          text={l: {k: form.get(f'{l}_{k}', '') for k in ('title', 'summary', 'slug', 'cover_alt', 'body')} for l in blog.LANGS})
             return self.send(400, ui.edit_form(s['csrf'], typed, store.topics(), error=error, is_new=is_new))
-        if path.startswith('/posts/') and path.endswith('/delete'):
-            return self.redirect(path[:-len('/delete')])
+        m = re.fullmatch(r'/(posts|topics)/([a-z0-9-]{1,80})/delete', path)
+        if m:
+            info = self.delete_info(m.group(1), m.group(2))
+            if not info:
+                return self.not_found()
+            return self.send(400, ui.delete_page(s['csrf'], path, *info, error=error))
         if '/versions/' in path:
             pid = path.split('/')[2]
             post = store.get(pid)
             return self.send(400, ui.versions_page(s['csrf'], pid, post['text']['bg']['title'], store.versions(pid), error=error))
         if path.startswith('/bin/'):
             return self.send(400, ui.bin_page(s['csrf'], store.list_bin(), error=error))
-        m = re.fullmatch(r'/topics/(new|[a-z0-9-]{1,80})(/delete)?', path)
+        m = re.fullmatch(r'/topics/(new|[a-z0-9-]{1,80})', path)
         if m:
             values = {k: form.get(f'new_{k}', '') for k in ('en', 'bg', 'colour', 'icon')}
             current = next((x for x in store.topics() if x['id'] == m.group(1)), None)
             if m.group(1) != 'new' and not current:
                 return self.not_found()
-            if m.group(2):                                   # delete refused: show the topic as it is
-                values = current
-            elif current:
+            if current:
                 values['id'] = current['id']
-            used = sum(1 for p in store.list_posts() if current and p['topic'] == current['id'])
-            return self.send(400, ui.topic_form(s['csrf'], values, error, posts=used))
+            return self.send(400, ui.topic_form(s['csrf'], values, error))
         return self.send(400, 'Bad request', 'text/plain')
 
     def login(self, form):
