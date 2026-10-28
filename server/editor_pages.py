@@ -262,7 +262,7 @@ header.top .ui-lang { margin: 0; flex-wrap: nowrap; }
 header.top .ui-lang a { padding: 5px 11px; font-size: .78rem; }
 header.top .ui-lang a[aria-current] { background: var(--cream); color: var(--green-deep); }
 .card { position: relative; }
-.human-check { margin-top: 20px; min-height: 65px; }
+.human-check { margin-top: 14px; }
 .card .ui-lang { position: absolute; top: 18px; right: 18px; background: #F3EEE5; }
 .card .ui-lang a { color: var(--green-deep); }
 .card .ui-lang a[aria-current] { background: var(--green-dark); color: var(--white); }
@@ -328,12 +328,12 @@ def login_page(error='', notice='', turnstile=''):
     if notice:
         form = f'<p class="sub">{esc(msg(notice))}</p>'
     else:
-        form = f'''<form method="post" action="/login" autocomplete="on">
+        form = f'''<form method="post" action="/login" autocomplete="on" data-login>
       <label for="password">{_('Password')}</label>
       <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
       <label for="code">{_('Code')} <small>{_('from your authenticator app, or a backup code')}</small></label>
       <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="14" required>
-      {f'<div class="cf-turnstile human-check" data-sitekey="{esc(turnstile)}" data-language="{lang()}" data-theme="light" data-size="flexible"></div>' if turnstile else ''}
+      {f'<div class="cf-turnstile human-check" data-sitekey="{esc(turnstile)}" data-language="{lang()}" data-theme="light" data-size="flexible" data-appearance="interaction-only"></div>' if turnstile else ''}
       <button class="btn wide" type="submit">{_('Sign in')}</button>
     </form>'''
     return page(_('Sign in'), f'''<main class="login"><div class="card">
@@ -344,7 +344,7 @@ def login_page(error='', notice='', turnstile=''):
     {err}
     {form}
     <p class="note">{_('Every sign-in is emailed to the owner.')}</p>
-  </div></main>''', 'login-page',
+  </div></main>''', 'login-page', script=bool(turnstile and not notice),
                 head='<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>' if turnstile and not notice else '')
 
 

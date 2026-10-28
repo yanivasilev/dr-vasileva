@@ -7,6 +7,27 @@
   const _ = text => WORDS[text] || text;
   const LOCALE = document.documentElement.lang === 'bg' ? 'bg-BG' : 'en-GB';
 
+  // Sign-in: Cloudflare's check runs out of sight and shows itself only when it needs a click. If she presses
+  // Sign in before it has finished, the button waits for it ("Checking…") and then signs in by itself.
+  const login = document.querySelector('form[data-login]');
+  if (login?.querySelector('.cf-turnstile')) {
+    const btn = login.querySelector('button[type=submit]');
+    const token = () => login.querySelector('[name="cf-turnstile-response"]')?.value;
+    login.addEventListener('submit', e => {
+      if (token()) return;
+      e.preventDefault();
+      if (!login.reportValidity() || btn.disabled) return;
+      const label = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = _('Checking…');
+      let waited = 0;
+      const wait = setInterval(() => {
+        if (token()) { clearInterval(wait); login.submit(); }
+        else if ((waited += 250) >= 20000) { clearInterval(wait); btn.disabled = false; btn.textContent = label; }
+      }, 250);
+    });
+  }
+
   // Sign out asks first, so a click by accident doesn't sign her out
   const signout = document.querySelector('form[data-signout]'), dialog = document.getElementById('signout-dialog');
   if (signout && dialog?.showModal) {

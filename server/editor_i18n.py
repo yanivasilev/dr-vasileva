@@ -248,6 +248,7 @@ BG = {
     'the date must look like 2026-09-19 (or 2026-09, or 2026)': 'датата трябва да изглежда така: 2026-09-19 (или 2026-09, или 2026)',
     'the BG BEN link must be an https://bgben.co.uk/… address': 'връзката към BG BEN трябва да е адрес https://bgben.co.uk/…',
     # in the browser (editor.js)
+    'Checking…': 'Проверка…',
     'Nothing has changed yet': 'Още няма промени',
     'Fill in both names': 'Попълнете и двете имена',
     'Start writing here…': 'Започнете да пишете тук…',
@@ -331,7 +332,7 @@ def when(t, fmt_time=True):
 
 
 # What editor.js needs, sent with each page in Bulgarian
-JS_KEYS = ('Nothing has changed yet', 'Fill in both names', 'Close this message', 'New topic', 'Start writing here…', 'Text',
+JS_KEYS = ('Checking…', 'Nothing has changed yet', 'Fill in both names', 'Close this message', 'New topic', 'Start writing here…', 'Text',
            'Select words, then click a button above. Press Enter for a new paragraph.', 'First select the words you want to colour.',
            'First select the words that should become a link.', 'Web address for the link (starting with https://):',
            'Please enter a full address, starting with https://', 'Continue numbering', 'Restart numbering', 'Complete',

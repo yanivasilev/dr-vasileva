@@ -960,7 +960,8 @@ Setup: `deploy/README.md` step 9.
   - the choice stays in the address (e.g. `/articles/?q=anxiety&year=2025`), so a search can be shared.
 - **Reading time** on every card and article: words ÷ 238 a minute in English, ÷ 225 in Bulgarian, to the nearest minute (at least 1). 238 is the average silent reading speed for non-fiction (Brysbaert 2019, 190 studies); Bulgarian uses about 5% fewer words for the same text (measured on her 18 columns), so the same article shows the same time in both languages.
 - **Sign-in with Cloudflare Turnstile** (when its keys are in `/etc/drvasileva/admin.env`):
-  - the check is made before the password is looked at, so bots can't guess and can't cause lockouts;
+  - the check is made before the password is looked at, so bots can’t guess and can’t cause lockouts;
+  - the box stays hidden and appears only when Cloudflare needs a click; if she presses Sign in before the check has finished, the button shows "Checking…" and signs in by itself a moment later;
   - wrong tries now pause only the address they come from (5 tries → 15 minutes), so she can still sign in from her own; 20 wrong tries from all addresses within 15 minutes still pause everyone, as a last line;
   - if Cloudflare can't be reached, sign-in waits (it never skips the check).
 - **"Admin Dashboard"** / **"Админ панел"** instead of "Website editor", on every screen and in the sign-in emails.
