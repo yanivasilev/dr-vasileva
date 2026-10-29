@@ -50,6 +50,29 @@ You don't need Node, a build step or a database.
 
 ---
 
+## Behind a Cloudflare Tunnel (instead of steps 1, 4 and 5)
+
+If the server is reached through a Cloudflare Tunnel (`cloudflared`), Cloudflare does HTTPS and the tunnel brings visitors to nginx on port 80. Then:
+
+- **No A records and no certificates:** skip steps 1, 4 and 5. The tunnel creates the DNS records itself.
+- **nginx:** use `deploy/nginx/drvasileva-tunnel.conf`, which serves both sites, the Admin Dashboard and the test addresses on port 80:
+  ```
+  cd /var/www/dr-vasileva
+  cp deploy/nginx/drvasileva-common.conf deploy/nginx/drvasileva-blog-en.conf deploy/nginx/drvasileva-blog-bg.conf deploy/nginx/drvasileva-admin-common.conf /etc/nginx/snippets/
+  cp deploy/nginx/drvasileva-limits.conf /etc/nginx/conf.d/
+  cp deploy/nginx/drvasileva-tunnel.conf /etc/nginx/sites-available/drvasileva
+  ln -sf /etc/nginx/sites-available/drvasileva /etc/nginx/sites-enabled/drvasileva
+  nginx -t && systemctl reload nginx
+  ```
+- **Visitors' real addresses:** the contact form's limits and the dashboard's sign-in pauses need them. nginx must take them from Cloudflare's `CF-Connecting-IP` header, trusting it only from the tunnel, which connects from the server itself. `/etc/nginx/conf.d/cloudflare-realip.conf`:
+  ```
+  set_real_ip_from 127.0.0.1;
+  set_real_ip_from ::1;
+  real_ip_header CF-Connecting-IP;
+  ```
+- **The tunnel's public hostnames** (Cloudflare → Zero Trust → Networks → Tunnels → the tunnel → Public hostnames), each with service **HTTP** and URL **localhost:80**: `drvasileva.co.uk`, `www.drvasileva.co.uk`, `admin.drvasileva.co.uk`, `drvasileva.bg`, `www.drvasileva.bg`. Remove any A or CNAME record with the same name first, because Cloudflare won't add a hostname that already has one. Mail records stay as they are.
+- **HTTPS everywhere:** in each domain's **SSL/TLS → Edge Certificates**, turn on **Always Use HTTPS**.
+
 ## 1. DNS
 
 Both domains and their `www` versions need to point at the VPS.
