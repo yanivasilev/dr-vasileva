@@ -801,8 +801,7 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 
 ### For her to check
 - [x] **The 18 introductions:** replaced by her own texts in the Admin Dashboard ✅ (the copies in `content/` are only the starting copies).
-- ~~The 18 introductions are placeholders.~~ BG BEN's site couldn't be opened from here, so each introduction was written from the column's title only, without reading the column. Please replace them with her own two or three paragraphs: `content/posts/<id>/en.md` and `bg.md`, or later in the editor.
-- [x] **The six PDF columns:** written in full by her in the Admin Dashboard ✅ ~~you're sending the full texts, which will then replace the introduction and the PDF link.
+- [x] **The six PDF columns:** written in full by her in the Admin Dashboard ✅
   - How to be ourselves…
   - Invitation to happiness
   - Understanding emotional intelligence…
