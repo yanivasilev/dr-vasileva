@@ -984,6 +984,11 @@ The sites are **locked for now** with Cloudflare Access (only approved emails ca
 Before that, still to do:
 - [x] **Website audit: Lighthouse, SEO, GEO and performance** ✅ done (see "Update: website audit" below).
 - Also: the highlighted **"to be added"** gaps on the Privacy and Terms pages (ICO number, supervision, how long records are kept, how notes are stored, online platform, in-person address, when payment is due, age for parental consent, reply time between sessions), ICO registration, BPS and Bulgarian society memberships, her own dashboard sign-in (phone code, backup codes, password), fees and session length, the scientific publications list, and the two possible typos in „Разговор с благодарността“ (сдодбим → сдобрим, изтъкват → изтъкават).
+- [ ] **Google reviews.** First set up her Google Business Profile, one for the UK practice and one for Bulgaria if she sees people there in person (online-only practices can still have one, with the address hidden). How many to aim for:
+  - **5** to start: enough that the star rating looks trustworthy, not like a lone review;
+  - **10–20** in the first few months: about what people expect from an established local therapist;
+  - then a steady **1–2 a month**: Google and visitors weigh recent reviews more than a big pile from long ago.
+  Ask only people who are happy to be asked: former clients who have finished, parents, schools and organisations she has worked with, workshop or group attendees. Never offer anything in return (Google forbids it), and don't ask current clients, because it can feel like pressure while they're still in therapy. Check her professional body's rules on testimonials first (HCPC/BPS in the UK, her Bulgarian society); see also "Testimonials" above. A short link from the profile (Ask for reviews → share) makes it easy. She should reply to reviews without confirming the person was a client (e.g. "Thank you for your kind words").
 
 ### Update: website audit (Lighthouse, SEO, GEO, performance)
 Lighthouse on the main pages of both sites, before → after (phone; desktop is 100 for performance):
