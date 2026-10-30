@@ -395,13 +395,15 @@
   footer a { text-decoration: none; transition: color .3s; }
   footer a:hover { color: var(--cream); }
   .socials { display: flex; gap: 10px; margin-top: 22px; }
-  .social { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: rgba(250,247,242,.07); color: var(--cream); border: 1px solid rgba(250,247,242,.12); transition: background .4s, transform .5s var(--ease), border-color .4s; }
+  .social { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: rgba(250,247,242,.07); color: var(--cream); border: 1px solid rgba(250,247,242,.12); transition: filter .4s, transform .5s var(--ease), box-shadow .4s; }
   .social svg { width: 20px; height: 20px; }
-  .social:hover { transform: translateY(-4px); border-color: transparent; }
-  .social.whatsapp:hover { background: var(--whatsapp); }
-  .social.viber:hover { background: var(--viber); }
-  .social.facebook:hover { background: var(--facebook); }
-  .social.phone:hover { background: var(--green); }
+  .social:hover { transform: translateY(-4px); filter: brightness(1.08); box-shadow: 0 10px 22px -10px rgba(0,0,0,.5); }
+  /* each in its own colour, the same as its buttons elsewhere on the site, so they're easy to spot on the dark green */
+  .social.whatsapp { background: var(--whatsapp); color: #08361C; border-color: transparent; }
+  .social.viber { background: var(--viber); color: var(--white); border-color: transparent; }
+  .social.facebook { background: var(--facebook); color: var(--white); border-color: transparent; }
+  .social.phone { background: var(--cream); color: var(--green-dark); border-color: transparent; }
+  .social.mail { background: var(--lilac); color: var(--green-deep); border-color: transparent; }
   .social.mail:hover { background: var(--lilac-deep); }
   .crisis { margin-top: 60px; padding: 20px 24px; border-radius: 16px; background: rgba(250,247,242,.05); border: 1px solid rgba(250,247,242,.08); font-size: .9rem; display: flex; gap: 14px; align-items: flex-start; }
   .crisis .icon { color: var(--gold); margin-top: 2px; }
