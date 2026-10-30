@@ -972,3 +972,12 @@ Setup: `deploy/README.md` step 9.
   - wrong tries now pause only the address they come from (5 tries → 15 minutes), so she can still sign in from her own; 20 wrong tries from all addresses within 15 minutes still pause everyone, as a last line;
   - if Cloudflare can't be reached, sign-in waits (it never skips the check).
 - **"Admin Dashboard"** / **"Админ панел"** instead of "Website editor", on every screen and in the sign-in emails.
+
+## Launch day: when everything else is done
+The sites are **locked for now** with Cloudflare Access (only approved emails can see them), until she's ready to go public. On launch day:
+- [ ] **Remove the lock:** Cloudflare → Zero Trust → Access → Applications → delete **"Dr Vasileva – before launch"** (the Admin Dashboard was never part of it).
+- [ ] **Uptime Kuma:** delete the **"Uptime Kuma"** service token (Zero Trust → Access → Service credentials) and remove the **Headers** from the "English site" and "Bulgarian site" monitors on the OVH Kuma.
+- [ ] **Google Search Console:** resubmit `sitemap.xml` and `sitemap-articles.xml` for both domains, so Google reads them straight away.
+- [ ] Open both sites in a private window to check they're public.
+
+Before that, still to do: ICO registration (then its number on the Privacy page), BPS and Bulgarian society memberships, her own dashboard sign-in (phone code, backup codes, password), fees and session length, the scientific publications list, and the two possible typos in „Разговор с благодарността“ (сдодбим → сдобрим, изтъкват → изтъкават).
