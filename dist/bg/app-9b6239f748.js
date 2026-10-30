@@ -9,9 +9,11 @@
   // Header style on scroll + mobile contact bar
   const header = document.getElementById('header');
   const bar = document.getElementById('mobile-bar');
+  // The contact bar appears once the page's first section (the hero) has scrolled away
   const onScroll = () => {
     header.classList.toggle('scrolled', scrollY > 40);
-    bar.classList.toggle('show', scrollY > innerHeight * .6);
+    const hero = document.querySelector('.page.active > section');
+    bar.classList.toggle('show', hero ? hero.getBoundingClientRect().bottom < 80 : scrollY > innerHeight * .6);
   };
   addEventListener('scroll', onScroll, { passive: true });
   onScroll();

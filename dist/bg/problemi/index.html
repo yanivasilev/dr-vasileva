@@ -945,9 +945,9 @@
     .tile { min-height: 0; }
     .foot-top { grid-template-columns: 1fr; }
     .quote { padding: 90px 0; }
-    .mobile-bar { display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 90; background: rgba(250,247,242,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 14px 40px -12px rgba(0,0,0,.35); padding: 7px; gap: 7px; border-radius: 22px; transform: translateY(140%); transition: transform .6s var(--ease); }
-    .mobile-bar.show { transform: none; }
-    .menu-open .mobile-bar { transform: translateY(140%); }
+    .mobile-bar { display: grid; grid-template-columns: repeat(3, 1fr); position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); z-index: 90; background: rgba(250,247,242,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 14px 40px -12px rgba(0,0,0,.35); padding: 7px; gap: 7px; border-radius: 22px; transform: translateY(calc(100% + 40px)); opacity: 0; visibility: hidden; transition: transform .6s var(--ease), opacity .4s, visibility 0s .6s; }
+    .mobile-bar.show { transform: none; opacity: 1; visibility: visible; transition: transform .6s var(--ease), opacity .4s, visibility 0s; }
+    .menu-open .mobile-bar { transform: translateY(calc(100% + 40px)); opacity: 0; visibility: hidden; }
     .mobile-bar a { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 12px 6px; border-radius: 16px; text-decoration: none; font-size: .84rem; font-weight: 700; color: var(--white); }
     .mobile-bar a svg { width: 19px; height: 19px; }
     .mobile-bar .m-call { background: var(--green-dark); }
@@ -1149,6 +1149,6 @@
   <a class="m-viber" href="viber://chat?number=%2B447999334778"><svg class="bi"><use href="#b-viber"/></svg>Viber</a>
 </nav>
 
-<script src="/app-38f7e79393.js" defer></script>
+<script src="/app-9b6239f748.js" defer></script>
 </body>
 </html>
