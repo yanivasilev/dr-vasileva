@@ -197,12 +197,19 @@ Use this title everywhere: header, About page, page titles, Facebook.
 - [x] "Organisations & schools" page: **yes**
 - [x] Group sessions: **yes**, gets its own page
 - [x] Columns: **translated into English** for .co.uk
-- [ ] **Full list of scientific papers** (she has more than the CV shows; coming soon)
+- [ ] **Full list of scientific papers**: for later (she has more than the CV shows)
 - [x] BG BEN: she can republish her columns in full ✅
 - [x] About me: EN + BG (section 9), **approved by her** ✅
 - [x] **Diploma in CBT** and **Diploma in SEND**: issued by **Burgas Free University** (shown with its logo). ✅ Confirmed.
 - [x] **Safeguarding Children Level 3**: removed from the site.
-- [ ] Check her current BPS letters (MBPsS → GMBPsS since 2022?), DBS date and Bulgarian society name (section 10)
+- [ ] **BPS and Bulgarian Psychological Society**: her membership applications and fees still need to be paid (section 10)
+- [ ] **DBS**: decide whether to keep the badge (only with a recent certificate or the DBS Update Service, section 10)
+- [ ] **ICO registration**: she needs to register with the ICO and pay the data protection fee; then add the number to the Privacy page
+- [x] **FAQ**: approved by her ✅
+- [x] **Payment methods and cancellation policy** on the site: approved ✅
+- [x] **Article texts**: written by her in the Admin Dashboard ✅
+- [x] **Article covers**: each article has its topic's cover ✅ (no photos needed)
+- [x] **Interviews**: no links or copies exist; they are listed as text only. Don't ask for them again.
 
 ---
 
@@ -414,7 +421,7 @@ The CV says 21 scientific publications on peer relationships, the family environ
 
 ---
 
-## 7. FAQ (draft – for her to check)
+## 7. FAQ ✅ (approved by her)
 
 The same questions go on both sites: English on .co.uk, Bulgarian on .bg. Anything in *[brackets]* gets filled in once prices are set.
 
@@ -761,8 +768,8 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 
 ### Still needed before launch
 
-- [ ] DNS for both domains (and www) → VPS
-- [ ] mailcow mailbox for the website (e.g. `website@drvasileva.co.uk`) + its password in `/etc/drvasileva/contact.env`
+- [x] DNS for both domains (and www) → the server, through the Cloudflare Tunnel ✅
+- [x] mailcow mailbox for the website (e.g. `website@drvasileva.co.uk`) + its password in `/etc/drvasileva/contact.env`
 - [x] Real Turnstile keys: the site key is built into the site; the secret key goes only in `/etc/drvasileva/contact.env` on the server (never in the repo)
 
 ---
@@ -793,15 +800,16 @@ Replying to the email goes straight to the visitor (the email's reply-to is set 
 - also set up, shown once they have a post: Special needs, Living abroad.
 
 ### For her to check
-- [ ] **The 18 introductions are placeholders.** BG BEN's site couldn't be opened from here, so each introduction was written from the column's title only, without reading the column. Please replace them with her own two or three paragraphs: `content/posts/<id>/en.md` and `bg.md`, or later in the editor.
-- [ ] **The six PDF columns:** you're sending the full texts, which will then replace the introduction and the PDF link.
+- [x] **The 18 introductions:** replaced by her own texts in the Admin Dashboard ✅ (the copies in `content/` are only the starting copies).
+- ~~The 18 introductions are placeholders.~~ BG BEN's site couldn't be opened from here, so each introduction was written from the column's title only, without reading the column. Please replace them with her own two or three paragraphs: `content/posts/<id>/en.md` and `bg.md`, or later in the editor.
+- [x] **The six PDF columns:** written in full by her in the Admin Dashboard ✅ ~~you're sending the full texts, which will then replace the introduction and the PDF link.
   - How to be ourselves…
   - Invitation to happiness
   - Understanding emotional intelligence…
   - How fears and emotions make us sick
   - Forgiveness is the greatest teacher
   - How parents can help their children in adolescence
-- [ ] **Cover photos:** add them later; a post without one shows its topic's coloured cover.
+- [x] **Cover photos:** not needed; each post shows its topic's coloured cover ✅
 
 ### Next: the editor (steps 2–4)
 `admin.drvasileva.co.uk`:
