@@ -1,0 +1,20 @@
+# Keeps a copy of each server's backups on the other server (see deploy/README.md, "Copies on the other server").
+# Runs on the home server, because the mail server can't reach it (it sits behind the Cloudflare Tunnel):
+#   1. sends the Admin Dashboard backups (/var/backups/drvasileva) to the mail server;
+#   2. fetches the mailcow backups from the mail server into /var/backups/mailcow-from-ovh.
+# The mail server only accepts these two keys, each locked to one job: one may only add files to one folder,
+# the other may only read the mailcow backup folder. Neither can delete anything or open a shell.
+[Unit]
+Description=Copy backups between the home server and the mail server
+After=network-online.target drvasileva-backup.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+UMask=0077
+Environment=MAILSERVER=backupsync@51.254.219.96
+ExecStart=/usr/bin/rsync -a -e "ssh -i /root/.ssh/backup_push -o IdentitiesOnly=yes -o BatchMode=yes" /var/backups/drvasileva/ ${MAILSERVER}:
+ExecStart=/usr/bin/mkdir -p /var/backups/mailcow-from-ovh
+ExecStart=/usr/bin/rsync -a -e "ssh -i /root/.ssh/backup_pull -o IdentitiesOnly=yes -o BatchMode=yes" ${MAILSERVER}: /var/backups/mailcow-from-ovh/
+# keep the last 14 days of mailcow backups here (the mail server itself keeps 7)
+ExecStart=/usr/bin/find /var/backups/mailcow-from-ovh -mindepth 1 -maxdepth 1 -name "mailcow-*" -mtime +14 -exec rm -rf {} +

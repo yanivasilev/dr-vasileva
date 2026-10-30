@@ -1,0 +1,12 @@
+# Copy to /etc/systemd/system/ with drvasileva-offsite.service, then: systemctl enable --now drvasileva-offsite.timer
+# 05:00, after both nightly backups (mailcow at 03:00, the Admin Dashboard at 03:17)
+[Unit]
+Description=Copy backups between the two servers every night
+
+[Timer]
+OnCalendar=*-*-* 05:00
+RandomizedDelaySec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

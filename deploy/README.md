@@ -398,6 +398,54 @@ The Admin Dashboard ("the editor" below) is where she writes and publishes artic
 3. Open https://drvasileva.co.uk/articles and https://drvasileva.bg/statii.
 4. Unpublish it again.
 
+## Copies on the other server
+
+Each server's nightly backups are also kept on the other server, so losing one server never loses its backups:
+
+- **The Admin Dashboard backups** (her posts) go from the home server to the mail server, into `/srv/backups/from-home` (kept 30 days).
+- **The mailcow backups** (her emails) come from the mail server to the home server, into `/var/backups/mailcow-from-ovh` (kept 14 days).
+
+The home server does both, every night at 05:00 (`deploy/systemd/drvasileva-offsite.*`), because the mail server can't reach it behind the Cloudflare Tunnel. It uses two SSH keys that the mail server locks to one job each with `rrsync`: one key may only **add** files to `/srv/backups/from-home`, the other may only **read** `/opt/mailcow-backups`. Neither can delete files, run commands, open a shell or forward ports.
+
+### On the mail server
+```
+sudo apt install rsync acl
+ls /usr/bin/rrsync                          # must exist (rsync 3.2.4 or newer)
+sudo useradd --create-home --shell /bin/sh backupsync && sudo passwd -l backupsync
+sudo install -d -o backupsync -g backupsync -m 700 /srv/backups/from-home /home/backupsync/.ssh
+```
+Let it read the mailcow backups, prune what it receives, and keep that going every night after mailcow's backup:
+```
+echo '30 4 * * * root setfacl -R -m u:backupsync:rX /opt/mailcow-backups; find /srv/backups/from-home -name "editor-*.tar.gz" -mtime +30 -delete' | sudo tee /etc/cron.d/backupsync
+sudo setfacl -R -m u:backupsync:rX /opt/mailcow-backups
+```
+If `sudo sshd -T | grep -i allowusers` prints a list, add `backupsync` to it in `/etc/ssh/sshd_config` and run `sudo systemctl reload ssh`.
+
+### On the home server
+```
+sudo ssh-keygen -t ed25519 -N "" -C backup-push -f /root/.ssh/backup_push
+sudo ssh-keygen -t ed25519 -N "" -C backup-pull -f /root/.ssh/backup_pull
+sudo cat /root/.ssh/backup_push.pub /root/.ssh/backup_pull.pub
+```
+On the **mail server**, `sudo nano /home/backupsync/.ssh/authorized_keys` and put the two keys in, each on one line after its lock:
+```
+restrict,command="/usr/bin/rrsync -wo -no-del /srv/backups/from-home" ssh-ed25519 AAAA…(backup_push.pub)… backup-push
+restrict,command="/usr/bin/rrsync -ro /opt/mailcow-backups" ssh-ed25519 AAAA…(backup_pull.pub)… backup-pull
+```
+```
+sudo chown backupsync: /home/backupsync/.ssh/authorized_keys && sudo chmod 600 /home/backupsync/.ssh/authorized_keys
+```
+Back on the **home server**:
+```
+sudo sh -c 'ssh-keyscan -H 51.254.219.96 >> /root/.ssh/known_hosts'
+sudo cp /var/www/dr-vasileva/deploy/systemd/drvasileva-offsite.* /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl start drvasileva-offsite.service && sudo systemctl status drvasileva-offsite.service --no-pager
+sudo ls /var/backups/mailcow-from-ovh                         # the mailcow backups arrived
+sudo systemctl enable --now drvasileva-offsite.timer
+```
+On the mail server, `sudo ls /srv/backups/from-home` shows the Admin Dashboard backups.
+
 ## Rebuilding `dist/` (only when the design or text changes)
 
 The server never builds anything. Changes to the text or design are made in `src/`, rebuilt with `build/build.py` and committed together with `dist/`. The main `README.md` explains how.
