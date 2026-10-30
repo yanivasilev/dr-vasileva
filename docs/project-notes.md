@@ -980,4 +980,6 @@ The sites are **locked for now** with Cloudflare Access (only approved emails ca
 - [ ] **Google Search Console:** resubmit `sitemap.xml` and `sitemap-articles.xml` for both domains, so Google reads them straight away.
 - [ ] Open both sites in a private window to check they're public.
 
-Before that, still to do: ICO registration (then its number on the Privacy page), BPS and Bulgarian society memberships, her own dashboard sign-in (phone code, backup codes, password), fees and session length, the scientific publications list, and the two possible typos in „Разговор с благодарността“ (сдодбим → сдобрим, изтъкват → изтъкават).
+Before that, still to do:
+- [ ] **Website audit (important): Lighthouse, SEO, GEO and performance.** Not done yet. Lighthouse scores (performance, accessibility, best practices, SEO) on phone and desktop for the main pages of both sites; SEO (titles, descriptions, headings, hreflang, sitemaps, structured data for a psychologist and her articles); GEO, so AI search tools (ChatGPT, Gemini, Perplexity, Google AI Overviews) can understand and quote her; and loading speed (images, fonts, caching, Core Web Vitals).
+- Also: ICO registration (then its number on the Privacy page), BPS and Bulgarian society memberships, her own dashboard sign-in (phone code, backup codes, password), fees and session length, the scientific publications list, and the two possible typos in „Разговор с благодарността“ (сдодбим → сдобрим, изтъкват → изтъкават).
