@@ -7,12 +7,12 @@
     document.getElementById('t-lon').textContent = clock('Europe/London');
     document.getElementById('t-sof').textContent = clock('Europe/Sofia');
   };
-  tickClocks(); setInterval(tickClocks, 15000);
+  if (document.getElementById('t-lon')) { tickClocks(); setInterval(tickClocks, 15000); }
 
   // Greeting switches between Bulgarian and English
   const greetWords = [...document.querySelectorAll('#greet span')];
   let gi = 0;
-  if (!reduce) setInterval(() => {
+  if (!reduce && greetWords.length) setInterval(() => {
     const cur = greetWords[gi]; gi = (gi + 1) % greetWords.length; const next = greetWords[gi];
     cur.classList.remove('on'); cur.classList.add('out');
     next.classList.remove('out'); next.classList.add('on');

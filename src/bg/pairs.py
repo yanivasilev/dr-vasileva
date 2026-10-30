@@ -3,6 +3,9 @@
 # The build stops if an English phrase is not found, so nothing is silently missed.
 
 HEAD = [
+    # the Bulgarian site's main fonts are the Cyrillic ones
+    ('<link rel="preload" href="../public/fonts/manrope-latin.woff2"', '<link rel="preload" href="../public/fonts/manrope-cyrillic.woff2"'),
+    ('<link rel="preload" href="../public/fonts/cormorant-garamond-latin.woff2"', '<link rel="preload" href="../public/fonts/cormorant-garamond-cyrillic.woff2"'),
     ('<html lang="en">', '<html lang="bg">'),
     ('<title>Dr Vasileva – Psychologist & CBT Psychotherapist</title>', '<title>д-р Василева – психолог и КПТ психотерапевт</title>'),
     ('<meta name="description" content="Dr Mirena Vasileva, PhD – psychologist and CBT psychotherapist. Online and in-person sessions in Bulgarian and English for adults, couples, families, children and teenagers.">',
@@ -50,9 +53,9 @@ PAIRS = [
     ('aria-label="Call"', 'aria-label="Обаждане"'),
     ('aria-label="Email"', 'aria-label="Имейл"'),
     ('<svg class="wordmark" role="img" aria-label="Dr Vasileva">', '<svg class="wordmark" role="img" aria-label="д-р Василева">'),
-    ('<h4>Explore</h4>', '<h4>Разгледайте</h4>'),
-    ('<h4>Help</h4>', '<h4>Помощ</h4>'),
-    ('<h4>Contact</h4>', '<h4>Контакти</h4>'),
+    ('<h2>Explore</h2>', '<h2>Разгледайте</h2>'),
+    ('<h2>Help</h2>', '<h2>Помощ</h2>'),
+    ('<h2>Contact</h2>', '<h2>Контакти</h2>'),
     ('<p>Dr Mirena Vasileva, PhD. Psychologist &amp; CBT psychotherapist, online and in person, in Bulgarian and English.</p>',
      '<p>д-р Мирена Василева – психолог и когнитивно-поведенчески психотерапевт. Онлайн и на живо, на български и английски.</p>'),
     ('<li>Online &amp; in person</li>', '<li>Онлайн и на живо</li>'),

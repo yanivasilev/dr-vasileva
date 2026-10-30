@@ -39,7 +39,7 @@ UI = {
                search='Search the articles', search_ph='Search by title, topic or any word…', clear='Clear the search',
                year='Year', all_years='All years', kind='Type', all_kinds='All types', kind_article='Articles', kind_column='BG BEN columns',
                order='Order', newest='Newest first', oldest='Oldest first', count_one='1 article', count_many='{} articles',
-               none='No articles match your search.', reset='Clear the search and filters',
+               none='No articles match your search.', reset='Clear the search and filters', list_heading='All articles',
                read_full='Read the full column on BG BEN (in Bulgarian)', read_pdf='Read the full column on BG BEN (PDF, in Bulgarian)',
                originally='Originally published in BG BEN, “School of Psychology”', share='Share', copy='Copy link', copied='Link copied',
                related='You might also <em>like</em>', author='Dr Mirena Vasileva',
@@ -54,7 +54,7 @@ UI = {
                search='Търсене в статиите', search_ph='Търсете по заглавие, тема или дума…', clear='Изчисти търсенето',
                year='Година', all_years='Всички години', kind='Вид', all_kinds='Всички видове', kind_article='Статии', kind_column='Рубрики в БГ БЕН',
                order='Подредба', newest='Първо най-новите', oldest='Първо най-старите', count_one='1 статия', count_many='{} статии',
-               none='Няма статии, които да отговарят на търсенето.', reset='Изчисти търсенето и филтрите',
+               none='Няма статии, които да отговарят на търсенето.', reset='Изчисти търсенето и филтрите', list_heading='Всички статии',
                read_full='Прочетете цялата рубрика в БГ БЕН', read_pdf='Прочетете цялата рубрика в БГ БЕН (PDF)',
                originally='Публикувано за първи път в БГ БЕН, „Училище по психология“', share='Споделете', copy='Копирай връзката', copied='Връзката е копирана',
                related='Може да Ви <em>харесат</em>', author='д-р Мирена Василева',
@@ -299,7 +299,7 @@ class Blog:
         return DOMAINS[lang or self.lang].rstrip('/') + path
 
     def asset(self, path):
-        """path under public/, e.g. 'images/dr-vasileva.jpg'"""
+        """path under public/, e.g. 'images/dr-vasileva.webp'"""
         return ('../public/' if self.mode == 'preview' else '/') + path
 
     def cover_src(self, post):
@@ -397,6 +397,7 @@ class Blog:
         <div class="blog-selects">{''.join(selects)}</div>
       </form>
       <div class="tabs" role="group" aria-label="{ui['filter']}" data-reveal>{tabs}</div>
+      <h2 class="sr-only">{ui['list_heading']}</h2>
       <p class="blog-count" aria-live="polite" data-count>{count}</p>
       <div class="articles-grid blog-grid" data-per-page="{PER_PAGE}">
       {cards}
@@ -426,7 +427,7 @@ class Blog:
             label = ui['read_pdf'] if post['bgben'].lower().endswith('.pdf') else ui['read_full']
             bgben = f'''
           <a class="read-more bgben" href="{esc(post['bgben'])}" target="_blank" rel="noopener" data-reveal>
-            <span class="ri"><img src="{self.asset('images/logos/bg-ben.png')}" alt="BG BEN" width="400" height="400" loading="lazy"></span>
+            <span class="ri"><img src="{self.asset('images/logos/bg-ben.webp')}" alt="BG BEN" width="400" height="400" loading="lazy" decoding="async"></span>
             <span><small>{ui['originally']}</small><b>{label}</b></span>{self.ic('i-arrow')}</a>'''
         related = [p for p in self.posts if p['topic'] == post['topic'] and p is not post]
         related += [p for p in self.posts if p['topic'] != post['topic'] and p is not post]
@@ -440,7 +441,7 @@ class Blog:
       </article>
       {self.share_links(post)}
       <aside class="author-box" data-reveal>
-        <img src="{self.asset('images/dr-vasileva.jpg')}" alt="{ui['author']}" width="1242" height="1242" loading="lazy">
+        <img src="{self.asset('images/dr-vasileva-small.webp')}" alt="{ui['author']}" width="240" height="240" loading="lazy" decoding="async">
         <div><b>{ui['author']}</b><p>{ui['author_text']}</p>
           <a class="btn btn-green" href="{self.href('/contact')}">{ui['author_btn']} {self.ic('i-arrow', 'icon arrow-i')}</a></div>
       </aside>
@@ -463,7 +464,7 @@ class Blog:
             out[f"{BLOG_KEY}/{p['id']}"] = (self.post_page(p), dict(
                 title=x['title'] + self.ui['suffix'], description=x['summary'], path=self.post_path(p),
                 other=self.absolute(self.post_path(p, self.other), self.other),
-                alternates={l: self.absolute(self.post_path(p, l), l) for l in LANGS}, post=p))
+                alternates={l: self.absolute(self.post_path(p, l), l) for l in LANGS}, post=p, topic=self.topics[p['topic']][self.lang]))
         return out
 
     def feed(self):
@@ -490,12 +491,15 @@ def static_page(shell, key, inner, info, lang):
     post = info['post']
     image = DOMAINS[lang].rstrip('/') + (f"/images/posts/{post['id']}/{post['cover']}" if post and post['cover'] else f'/images/og-{lang}.png')
     page = shell
-    page = _sub_once(r'<div class="page active" data-route="/">', '<div class="page" data-route="/">', page)
-    page = _sub_once(r'<div id="pages"></div>', f'<div id="pages"><div class="page active" data-route="{key}">{inner}</div></div>', page)
+    # only this page's content: the home page's is left out (an empty marker stays for the menu's Home link)
+    page = _sub_once(r'(?s)<div class="page active" data-route="/">.*?</div>\n<div id="pages"></div>',
+                     f'<div class="page" data-route="/" data-elsewhere></div>\n<div id="pages"><div class="page active" data-route="{key}">{inner}</div></div>', page)
+    page = _sub_once(r'(?s)<script>window\.POSTS = .*?</script>\n', '', page)      # the home row's cards: home page only
     page = _sub_once(r'<title>[^<]*</title>', f'<title>{esc(info["title"])}</title>', page)
     page = _sub_once(r'<link rel="canonical" href="[^"]*">', f'<link rel="canonical" href="{a(info["alternates"][lang])}">', page)
     page = _sub_once(r'<link rel="alternate" hreflang="en-GB" href="[^"]*">', f'<link rel="alternate" hreflang="en-GB" href="{a(info["alternates"]["en"])}">', page)
     page = _sub_once(r'<link rel="alternate" hreflang="bg" href="[^"]*">', f'<link rel="alternate" hreflang="bg" href="{a(info["alternates"]["bg"])}">', page)
+    page = _sub_once(r'<link rel="alternate" hreflang="x-default" href="[^"]*">', f'<link rel="alternate" hreflang="x-default" href="{a(info["alternates"]["en"])}">', page)
     page = _sub_once(r'<meta property="og:type" content="[^"]*">', f'<meta property="og:type" content="{"article" if post else "website"}">', page)
     page = _sub_once(r'<meta property="og:title" content="[^"]*">', f'<meta property="og:title" content="{a(info["title"])}">', page)
     page = _sub_once(r'<meta property="og:description" content="[^"]*">', f'<meta property="og:description" content="{a(info["description"])}">', page)
@@ -516,9 +520,14 @@ def static_page(shell, key, inner, info, lang):
         x = post['text'][lang]
         ld = {'@context': 'https://schema.org', '@type': 'Article', 'headline': x['title'], 'description': x['summary'],
               'inLanguage': ui['locale'], 'image': image, 'mainEntityOfPage': info['alternates'][lang],
-              'author': {'@type': 'Person', 'name': UI[lang]['author'], 'url': DOMAINS[lang].rstrip('/') + SLUGS[lang]['/about']}}
+              'author': {'@type': 'Person', '@id': DOMAINS[lang] + '#person', 'name': UI[lang]['author'], 'url': DOMAINS[lang].rstrip('/') + SLUGS[lang]['/about']},
+              'publisher': {'@id': DOMAINS[lang] + '#person'}, 'isPartOf': {'@id': DOMAINS[lang] + '#website'},
+              'articleSection': info['topic'], 'wordCount': plain_words(x['body'])}
         if len(post['date']) == 10:
-            ld['datePublished'] = post['date']
+            ld['datePublished'] = ld['dateModified'] = post['date']
+        crumbs = [(ui['home'], DOMAINS[lang]), (ui['articles'], DOMAINS[lang].rstrip('/') + SLUGS[lang][BLOG_KEY]), (x['title'], info['alternates'][lang])]
+        ld = [ld, {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': i + 1, 'name': n, 'item': u} for i, (n, u) in enumerate(crumbs)]}]
         ld_json = json.dumps(ld, ensure_ascii=False).replace('</', '<\\/')
         page = _sub_once(r'</head>', f'<script type="application/ld+json">{ld_json}</script>\n</head>', page)
     return page
@@ -560,7 +569,9 @@ def write_site(lang, shell_path, out_dir, content_dir=os.path.join(REPO, 'conten
     urls = ''.join(
         f'  <url><loc>{esc(info["alternates"][lang])}</loc>'
         f'<xhtml:link rel="alternate" hreflang="en-GB" href="{esc(info["alternates"]["en"])}"/>'
-        f'<xhtml:link rel="alternate" hreflang="bg" href="{esc(info["alternates"]["bg"])}"/></url>\n' for _, info in pages.values())
+        f'<xhtml:link rel="alternate" hreflang="bg" href="{esc(info["alternates"]["bg"])}"/>'
+        f'<xhtml:link rel="alternate" hreflang="x-default" href="{esc(info["alternates"]["en"])}"/>'
+        + (f'<lastmod>{info["post"]["date"]}</lastmod>' if info['post'] and len(info['post']['date']) == 10 else '') + '</url>\n' for _, info in pages.values())
     open(os.path.join(out_dir, 'sitemap-articles.xml'), 'w', encoding='utf-8').write(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
         'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + urls + '</urlset>\n')

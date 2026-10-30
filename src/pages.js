@@ -153,7 +153,7 @@
   /* =====================================================================
      Building blocks
      ===================================================================== */
-  const logo = (file, alt, w, h) => `<span class="ico logo-tile"><img src="../public/images/logos/${file}" alt="${alt}" width="${w}" height="${h}" loading="lazy"></span>`;
+  const logo = (file, alt, w, h) => `<span class="ico logo-tile"><img src="../public/images/logos/${file}" alt="${alt}" width="${w}" height="${h}" loading="lazy" decoding="async"></span>`;
   const ic = (id, cls = 'icon') => `<svg class="${cls}"><use href="#${id}"/></svg>`;
   const ctaButtons = `
     <a class="btn btn-whatsapp" href="${WA}">${ic('b-whatsapp', 'bi')}WhatsApp</a>
@@ -277,7 +277,7 @@
     ${hero({ crumbs: [['About me']], eyebrow: 'About me', title: 'Hello, I’m <em>Mirena</em>', lead: 'Dr Mirena Vasileva, PhD · Psychologist &amp; CBT Psychotherapist', icon: 'i-leaf' })}
     <section class="page-body"><div class="wrap split">
       <div class="prose">
-        <div class="about-photo" data-reveal="left" style="max-width:520px;margin-bottom:56px"><span class="frame"></span><div class="img"><img src="../public/images/dr-vasileva.jpg" alt="Dr Mirena Vasileva" width="1242" height="1242" loading="lazy"></div><div class="years"><strong><span class="js-count" data-to="${YEARS}">0</span><sup>+</sup></strong><span>years of experience</span></div></div>
+        <div class="about-photo" data-reveal="left" style="max-width:520px;margin-bottom:56px"><span class="frame"></span><div class="img"><img src="../public/images/dr-vasileva.webp" alt="Dr Mirena Vasileva" width="960" height="960" loading="lazy" decoding="async"></div><div class="years"><strong><span class="js-count" data-to="${YEARS}">0</span><sup>+</sup></strong><span>years of experience</span></div></div>
         <p data-reveal>For ${YEARS} years, since 2005, I have been doing the work I love most: helping people understand themselves, heal and find their way forward. I’m a psychologist and cognitive behavioural therapist (CBT) with a PhD in Pedagogical and Developmental Psychology. I work with adults, couples, families, children and teenagers.</p>
         <p data-reveal>My path began in Bulgaria. For eight years I worked as a psychologist at a home for children with intellectual disabilities near Nessebar, where I learned that every child, whatever their needs, deserves to be truly seen. Alongside that, I built my private practice, worked as a psychotherapist at Viva Clinic in Sunny Beach, and taught Experimental and Pedagogical Psychology at Burgas Free University as a Chief Assistant Professor.</p>
         <p data-reveal>In 2016 I moved to London. Since then I have worked with clients at the Doctors 4 You and Medi-Park clinics, and supported children with special educational needs at the Bulgarian school "Rodna Rech". Many of the people I see know what it’s like to build a life between two countries. So do I.</p>
@@ -319,8 +319,8 @@
 
         <h2 data-reveal>Awards</h2>
         <div class="recog-grid" style="margin-top:20px">
-          <div class="award" data-reveal><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">${ic('i-ring')}</span></span><h3>Gold Ring of Varna Free University</h3><p>For graduating with honours.</p><span class="by"><img src="../public/images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
-          <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master’s Thesis</h3><p>"Best diploma thesis" competition.</p><span class="by"><img src="../public/images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University</span></div>
+          <div class="award" data-reveal><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">${ic('i-ring')}</span></span><h3>Gold Ring of Varna Free University</h3><p>For graduating with honours.</p><span class="by"><img src="../public/images/logos/varna-free-university.webp" alt="" width="500" height="225" loading="lazy" decoding="async">Varna Free University</span></div>
+          <div class="award" data-reveal style="--d:.1s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master’s Thesis</h3><p>"Best diploma thesis" competition.</p><span class="by"><img src="../public/images/logos/varna-free-university.webp" alt="" width="500" height="225" loading="lazy" decoding="async">Varna Free University</span></div>
         </div>
       </div>
       <aside class="aside">
@@ -333,9 +333,9 @@
           <li>${ic('i-feather')}"School of Psychology" columnist, BG BEN</li>
         </ul></div>
         <div class="box" data-reveal><h3>Studied at &amp; member of</h3><div class="affil">
-          <figure><span><img src="../public/images/logos/varna-free-university-mark.png" alt="" width="224" height="225" loading="lazy"></span><figcaption>Varna Free University</figcaption></figure>
-          <figure><span><img src="../public/images/logos/bps-mark.png" alt="" width="153" height="200" loading="lazy"></span><figcaption>British Psychological Society</figcaption></figure>
-          <figure><span><img src="../public/images/logos/bulgarian-psychological-society.png" alt="" width="208" height="208" loading="lazy"></span><figcaption>Bulgarian Psychological Society</figcaption></figure>
+          <figure><span><img src="../public/images/logos/varna-free-university-mark.webp" alt="" width="224" height="225" loading="lazy" decoding="async"></span><figcaption>Varna Free University</figcaption></figure>
+          <figure><span><img src="../public/images/logos/bps-mark.webp" alt="" width="153" height="200" loading="lazy" decoding="async"></span><figcaption>British Psychological Society</figcaption></figure>
+          <figure><span><img src="../public/images/logos/bulgarian-psychological-society.webp" alt="" width="208" height="208" loading="lazy" decoding="async"></span><figcaption>Bulgarian Psychological Society</figcaption></figure>
         </div></div>
       </aside>
     </div></section>
@@ -456,11 +456,11 @@
   PAGES['/press'] = () => `
     ${hero({ crumbs: [['Press']], eyebrow: 'Press', title: 'Featured <em>in</em>', lead: 'Columns, interviews and lectures.', icon: 'i-mic' })}
     <section class="page-body"><div class="wrap"><div class="issue-grid">
-      <a class="issue" href="#/articles" data-reveal>${logo('bg-ben.png', 'BG BEN', 400, 400)}<span><h3>BG BEN</h3><p>"School of Psychology", my regular column, 2023 – now.</p></span></a>
-      <div class="issue" data-reveal style="--d:.07s">${logo('zdraveto.png', 'Zdraveto (blitz.bg)', 326, 100).replace('logo-tile', 'logo-tile wide')}<span><h3>"Doctor" newspaper</h3><p>Published by Zdraveto (blitz.bg). Interview: "Suicide is often a cry to be noticed", issue 15, 2015.</p></span></div>
-      <div class="issue" data-reveal style="--d:.14s">${logo('bg-radio.png', 'BG Radio', 203, 203)}<span><h3>BG Radio</h3><p>Interview: "Covid-19 and panic attacks", 2019.</p></span></div>
-      <div class="issue" data-reveal>${logo('burgas-free-university.png', 'Burgas Free University', 240, 250)}<span><h3>Burgas Free University</h3><p>Lectures in Experimental and Pedagogical Psychology, art therapy in crisis intervention, and family stress in adolescence.</p></span></div>
-      <div class="issue" data-reveal style="--d:.07s">${logo('bulgarian-academy-of-sciences.png', 'Bulgarian Academy of Sciences', 440, 240).replace('logo-tile', 'logo-tile wide')}<span><h3>Bulgarian Academy of Sciences</h3><p>Six scientific and applied contributions from my doctoral research.</p></span></div>
+      <a class="issue" href="#/articles" data-reveal>${logo('bg-ben.webp', 'BG BEN', 400, 400)}<span><h3>BG BEN</h3><p>"School of Psychology", my regular column, 2023 – now.</p></span></a>
+      <div class="issue" data-reveal style="--d:.07s">${logo('zdraveto.webp', 'Zdraveto (blitz.bg)', 326, 100).replace('logo-tile', 'logo-tile wide')}<span><h3>"Doctor" newspaper</h3><p>Published by Zdraveto (blitz.bg). Interview: "Suicide is often a cry to be noticed", issue 15, 2015.</p></span></div>
+      <div class="issue" data-reveal style="--d:.14s">${logo('bg-radio.webp', 'BG Radio', 203, 203)}<span><h3>BG Radio</h3><p>Interview: "Covid-19 and panic attacks", 2019.</p></span></div>
+      <div class="issue" data-reveal>${logo('burgas-free-university.webp', 'Burgas Free University', 240, 250)}<span><h3>Burgas Free University</h3><p>Lectures in Experimental and Pedagogical Psychology, art therapy in crisis intervention, and family stress in adolescence.</p></span></div>
+      <div class="issue" data-reveal style="--d:.07s">${logo('bulgarian-academy-of-sciences.webp', 'Bulgarian Academy of Sciences', 440, 240).replace('logo-tile', 'logo-tile wide')}<span><h3>Bulgarian Academy of Sciences</h3><p>Six scientific and applied contributions from my doctoral research.</p></span></div>
     </div></div></section>
     ${ctaBand()}`;
 
@@ -630,6 +630,8 @@
      ===================================================================== */
   const pagesEl = document.getElementById('pages');
   const homeEl = document.querySelector('.page[data-route="/"]');
+  // Pages other than the home page don't carry its content; going home from them is a normal page load
+  const homeElsewhere = homeEl.hasAttribute('data-elsewhere');
   const titles = { '/': 'Dr Vasileva – Psychologist & CBT Psychotherapist' };
   // Addresses: the preview files (opened from disk) use #/ links; the live site uses real paths
   // (/about, and Bulgarian slugs on drvasileva.bg). SLUGS maps a page to its address on this site,
@@ -698,6 +700,7 @@
     setMenu(false);
     if (!HASH_MODE && onStaticPage()) return showStatic();
     if (isBlog(path) && !window.NOT_FOUND) return location.reload();     // back to a blog page from another page
+    if (path === '/' && homeElsewhere) return location.reload();       // back to the home page
     pagesEl.innerHTML = '';
     // Unknown address: the server's 404 page sets NOT_FOUND; unknown routes also land here
     if (window.NOT_FOUND && HASH_MODE && !location.hash) path = '/404';
@@ -730,6 +733,14 @@
     if (!form) return;
     const err = form.querySelector('.form-error'), btn = form.querySelector('.send'), label = btn.querySelector('.send-label');
     let widget = null;
+    // Cloudflare's check is loaded only on the page with the form, not on every page
+    if (!window.turnstile && !document.querySelector('script[data-turnstile]')) {
+      const ts = document.createElement('script');
+      ts.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      ts.async = true;
+      ts.dataset.turnstile = '';
+      document.head.appendChild(ts);
+    }
     const mountTurnstile = () => {
       if (typeof window.turnstile?.render !== 'function' || !document.body.contains(form)) return false;
       widget = turnstile.render('#ts-box', { sitekey: TURNSTILE_SITE_KEY, theme: 'light', appearance: 'interaction-only' });
@@ -838,17 +849,18 @@
       navigator.clipboard?.writeText(b.dataset.copy).then(() => { b.classList.add('done'); b.setAttribute('aria-label', b.dataset.done); })));
   }
   rewriteLinks(document);
+  const navigated = () => { document.documentElement.classList.add('navigated'); render(); };
   if (HASH_MODE) {
-    addEventListener('hashchange', render);
+    addEventListener('hashchange', navigated);
   } else {
     // Real addresses: follow internal links without reloading, and support the back button
-    addEventListener('popstate', render);
+    addEventListener('popstate', navigated);
     document.addEventListener('click', e => {
       const a = e.target.closest('a[data-key]');
-      if (!a || isBlog(a.dataset.key) || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target) return;
+      if (!a || isBlog(a.dataset.key) || (a.dataset.key === '/' && homeElsewhere) || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target) return;
       e.preventDefault();
       if (a.getAttribute('href') !== location.pathname) history.pushState(null, '', a.getAttribute('href'));
-      render();
+      navigated();
     });
   }
   render();

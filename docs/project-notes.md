@@ -981,5 +981,23 @@ The sites are **locked for now** with Cloudflare Access (only approved emails ca
 - [ ] Open both sites in a private window to check they're public.
 
 Before that, still to do:
-- [ ] **Website audit (important): Lighthouse, SEO, GEO and performance.** Not done yet. Lighthouse scores (performance, accessibility, best practices, SEO) on phone and desktop for the main pages of both sites; SEO (titles, descriptions, headings, hreflang, sitemaps, structured data for a psychologist and her articles); GEO, so AI search tools (ChatGPT, Gemini, Perplexity, Google AI Overviews) can understand and quote her; and loading speed (images, fonts, caching, Core Web Vitals).
+- [x] **Website audit: Lighthouse, SEO, GEO and performance** ✅ done (see "Update: website audit" below).
 - Also: ICO registration (then its number on the Privacy page), BPS and Bulgarian society memberships, her own dashboard sign-in (phone code, backup codes, password), fees and session length, the scientific publications list, and the two possible typos in „Разговор с благодарността“ (сдодбим → сдобрим, изтъкват → изтъкават).
+
+### Update: website audit (Lighthouse, SEO, GEO, performance)
+Lighthouse on the main pages of both sites, before → after (phone; desktop is 100 for performance):
+- **Performance:** 0–81 → **93–99**. Main content visible: about 5 s → **2.1–3.0 s** on a slow phone connection (0.5–0.8 s on desktop). Page weight 810–865 KB → **200–370 KB**.
+- **Accessibility:** 94–96 → **100**. **Best practices:** 96 → **100**. **SEO:** **100** (the 92 in the test is only the language link on the test address).
+
+What changed:
+- **Each page carries only its own content.** Inner pages used to include a hidden copy of the home page (two main headings, every image of the site). The menu's Home link now opens the home page itself.
+- **The site's code is one file** (`app-<fingerprint>.js`) that browsers keep, instead of 85 KB pasted into every page. nginx caches it for a year (`drvasileva-common.conf`).
+- **Images:** right-sized WebP versions (about 780 KB → 166 KB), made from the originals in `brand/originals/` with `build/make-web-images.py`; images below the first screen load only when needed.
+- **Cloudflare's robot check** loads only on the page with the contact form.
+- **Fonts:** the font list is in the page and the main fonts start loading at once. The grain texture is a small image instead of a filter drawn by the browser.
+- **The first screen shows at once:** the page fade and the intro text no longer start invisible on the first load (they still animate when moving between pages).
+- **Readability:** the quote and the footer's small print have enough contrast; headings are in order.
+- **SEO:** every page has its own description (from its introduction), breadcrumbs, the `x-default` language link, and dates in the article sitemap.
+- **Structured data (schema.org):** on every page, who she is (Person: name, PhD, job, languages, university, memberships, what she helps with, contact) and her practice (ProfessionalService: countries, languages); FAQ pages list their questions and answers; articles say who wrote them, the topic, date and length.
+- **GEO (AI search):** `llms.txt` on both sites, a plain summary of who she is and every page, for ChatGPT, Gemini, Perplexity and others.
+- [ ] **Check in Cloudflare that AI crawlers aren't blocked** (Security → Bots / AI Crawl Control, for both domains), or AI search tools can't read the sites.

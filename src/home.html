@@ -36,7 +36,7 @@
     --radius: 22px;
     --shadow: 0 18px 50px -18px rgba(44, 68, 48, .28);
     --wrap: 1200px;
-    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+    --grain: url("../public/images/grain.png");
   }
   *, *::before, *::after { box-sizing: border-box; }
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -72,6 +72,7 @@
   .js [data-reveal="right"] { transform: translateX(40px); }
   .js [data-reveal="zoom"] { transform: scale(.94); }
   .js [data-reveal].in { opacity: 1; transform: none; }
+  .js .hero [data-reveal], .js .page-hero [data-reveal], .js .post-cover[data-reveal] { opacity: 1; }
 
   /* Buttons */
   .btn { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 26px; border-radius: 999px; font-family: var(--sans); font-weight: 700; font-size: .98rem; text-decoration: none; border: 0; cursor: pointer; overflow: hidden; isolation: isolate; transition: transform .4s var(--ease), box-shadow .4s var(--ease); }
@@ -166,6 +167,7 @@
   .hero .lead { color: rgba(250,247,242,.82); font-size: 1.18rem; margin: 1.6rem 0 2.2rem; }
   .hero-fade { opacity: 0; transform: translateY(20px); animation: fadeUp 1s var(--ease) forwards; animation-delay: var(--d); }
   @keyframes fadeUp { to { opacity: 1; transform: none; } }
+  .hero .lead.hero-fade { opacity: 1; }   /* slides in but is there from the first moment, so the page counts as shown at once */
   .hero-meta { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: 10px; }
   .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(250,247,242,.08); border: 1px solid rgba(250,247,242,.14); font-size: .85rem; font-weight: 600; color: rgba(250,247,242,.9); }
   .chip .icon { width: 16px; height: 16px; color: var(--lilac); }
@@ -276,7 +278,7 @@
   .quote { padding: 130px 0; text-align: center; overflow: hidden; }
   .quote .mark { font-family: var(--serif); font-size: 9rem; line-height: .6; color: var(--lilac); height: 60px; display: block; }
   .quote blockquote { margin: 0 auto; max-width: 900px; font-family: var(--serif); font-size: clamp(1.9rem, 4vw, 3.1rem); line-height: 1.22; font-weight: 500; color: var(--green-deep); }
-  .quote blockquote .w { display: inline-block; opacity: .15; transition: opacity .6s var(--ease); transition-delay: calc(var(--i) * 40ms); }
+  .quote blockquote .w { display: inline-block; opacity: .6; transition: opacity .6s var(--ease); transition-delay: calc(var(--i) * 40ms); }
   .quote.in blockquote .w { opacity: 1; }
   .quote cite { display: block; margin-top: 32px; font-style: normal; font-size: .85rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--green); }
 
@@ -388,7 +390,7 @@
   footer { background: #22362A; color: rgba(250,247,242,.72); padding: 90px 0 34px; font-size: .95rem; position: relative; overflow: hidden; }
   .foot-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.1fr; gap: 40px; }
   footer .logo { color: var(--cream); margin-bottom: 18px; }
-  footer h4 { font-family: var(--sans); font-size: .74rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--lilac); margin: 8px 0 18px; }
+  footer h2 { font-family: var(--sans); font-size: .74rem; font-weight: 700; line-height: 1.6; letter-spacing: .22em; text-transform: uppercase; color: var(--lilac); margin: 8px 0 18px; }
   footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
   footer a { text-decoration: none; transition: color .3s; }
   footer a:hover { color: var(--cream); }
@@ -405,7 +407,7 @@
   .crisis .icon { color: var(--gold); margin-top: 2px; }
   .crisis strong { color: var(--cream); }
   .bigname { font-family: var(--serif); font-weight: 600; font-size: clamp(4rem, 14vw, 12rem); line-height: .8; color: rgba(250,247,242,.04); letter-spacing: -.02em; white-space: nowrap; margin: 60px 0 -10px; user-select: none; }
-  .copy { padding-top: 24px; border-top: 1px solid rgba(250,247,242,.1); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: .84rem; color: rgba(250,247,242,.5); }
+  .copy { padding-top: 24px; border-top: 1px solid rgba(250,247,242,.1); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: .84rem; color: rgba(250,247,242,.62); }
   .copy ul { display: flex; gap: 20px; }
 
   /* Mobile contact bar */
@@ -600,7 +602,7 @@
       </div>
       <div class="hero-visual">
         <div class="arch-outline hero-fade" style="--d:1.2s"></div>
-        <div class="arch"><img src="../public/images/dr-vasileva.jpg" alt="Dr Mirena Vasileva" width="1242" height="1242" fetchpriority="high"></div>
+        <div class="arch"><img src="../public/images/dr-vasileva.webp" alt="Dr Mirena Vasileva" width="960" height="960" fetchpriority="high"></div>
         <div class="ring hero-fade" style="--d:1.3s" aria-hidden="true">
           <svg class="spin" viewBox="0 0 150 150"><defs><path id="circ" d="M75 75m-61 0a61 61 0 1 1 122 0a61 61 0 1 1-122 0"/></defs><text><textPath href="#circ">PSYCHOLOGIST · CBT PSYCHOTHERAPIST · ONLINE ·</textPath></text></svg>
           <span class="core"><svg class="icon"><use href="#i-leaf"/></svg></span>
@@ -614,7 +616,7 @@
   <!-- Credentials marquee -->
   <div class="marquee" id="creds" aria-label="Qualifications and awards">
     <div class="marquee-track">
-      <div class="marquee-group"><span class="cred"><span class="lg"><img src="../public/images/logos/varna-free-university-mark.png" alt="Varna Free University" width="224" height="225"></span><span><b>PhD in Psychology</b><small>Varna Free University</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-ring"/></svg><span><b>Gold Ring award</b><small>Varna Free University · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-prize"/></svg><span><b>First Prize</b><small>Best Master's Thesis · 2006</small></span></span><span class="cred"><span class="lg"><img src="../public/images/logos/bps-mark.png" alt="The British Psychological Society" width="153" height="200"></span><span><b>British Psychological Society</b><small>Member</small></span></span><span class="cred"><span class="lg"><img src="../public/images/logos/burgas-free-university.png" alt="Burgas Free University" width="240" height="250"></span><span><b>Diploma in CBT</b><small>Burgas Free University</small></span></span><span class="cred"><span class="lg"><img src="../public/images/logos/burgas-free-university.png" alt="Burgas Free University" width="240" height="250"></span><span><b>Diploma in SEND</b><small>Burgas Free University</small></span></span><span class="cred"><span class="lg round"><img src="../public/images/logos/bulgarian-psychological-society.png" alt="Bulgarian Psychological Society" width="208" height="208"></span><span><b>Bulgarian Psychological Society</b><small>Member</small></span></span><span class="cred"><span class="lg round"><img src="../public/images/logos/bg-ben.png" alt="BG BEN" width="400" height="400"></span><span><b>BG BEN columnist</b><small>"School of Psychology"</small></span></span></div>
+      <div class="marquee-group"><span class="cred"><span class="lg"><img src="../public/images/logos/varna-free-university-mark.webp" alt="Varna Free University" width="224" height="225" loading="lazy" decoding="async"></span><span><b>PhD in Psychology</b><small>Varna Free University</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-ring"/></svg><span><b>Gold Ring award</b><small>Varna Free University · 2006</small></span></span><span class="cred"><svg aria-hidden="true"><use href="#em-prize"/></svg><span><b>First Prize</b><small>Best Master's Thesis · 2006</small></span></span><span class="cred"><span class="lg"><img src="../public/images/logos/bps-mark.webp" alt="The British Psychological Society" width="153" height="200" loading="lazy" decoding="async"></span><span><b>British Psychological Society</b><small>Member</small></span></span><span class="cred"><span class="lg"><img src="../public/images/logos/burgas-free-university.webp" alt="Burgas Free University" width="240" height="250" loading="lazy" decoding="async"></span><span><b>Diploma in CBT</b><small>Burgas Free University</small></span></span><span class="cred"><span class="lg"><img src="../public/images/logos/burgas-free-university.webp" alt="Burgas Free University" width="240" height="250" loading="lazy" decoding="async"></span><span><b>Diploma in SEND</b><small>Burgas Free University</small></span></span><span class="cred"><span class="lg round"><img src="../public/images/logos/bulgarian-psychological-society.webp" alt="Bulgarian Psychological Society" width="208" height="208" loading="lazy" decoding="async"></span><span><b>Bulgarian Psychological Society</b><small>Member</small></span></span><span class="cred"><span class="lg round"><img src="../public/images/logos/bg-ben.webp" alt="BG BEN" width="400" height="400" loading="lazy" decoding="async"></span><span><b>BG BEN columnist</b><small>"School of Psychology"</small></span></span></div>
       <div class="marquee-group" aria-hidden="true"></div>
     </div>
   </div>
@@ -645,7 +647,7 @@
     <div class="wrap about-grid">
       <div class="about-photo" data-reveal="left">
         <span class="frame"></span>
-        <div class="img"><img src="../public/images/dr-vasileva.jpg" alt="Portrait of Dr Mirena Vasileva" width="1242" height="1242" loading="lazy"></div>
+        <div class="img"><img src="../public/images/dr-vasileva.webp" alt="Portrait of Dr Mirena Vasileva" width="960" height="960" loading="lazy" decoding="async"></div>
         <div class="years"><strong><span class="js-count" data-to="21">0</span><sup>+</sup></strong><span>years of experience</span></div>
       </div>
       <div class="about-text">
@@ -733,15 +735,15 @@
         <h2>Awards &amp; <em>achievements</em></h2>
       </div>
       <div class="recog-grid">
-        <div class="award" data-reveal style="--d:0s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner"><svg class="icon"><use href="#i-ring"/></svg></span></span><h3>Gold Ring of Varna Free University</h3><p>Awarded for graduating with honours, Master's in Psychology and Psychopathology of Development.</p><span class="by"><img src="../public/images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University "Chernorizets Hrabar"</span></div>
-        <div class="award" data-reveal style="--d:.12s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master's Thesis</h3><p>"Stress effects on the family environment and the upbringing of children."</p><span class="by"><img src="../public/images/logos/varna-free-university.png" alt="" width="500" height="225">Varna Free University "Chernorizets Hrabar"</span></div>
+        <div class="award" data-reveal style="--d:0s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner"><svg class="icon"><use href="#i-ring"/></svg></span></span><h3>Gold Ring of Varna Free University</h3><p>Awarded for graduating with honours, Master's in Psychology and Psychopathology of Development.</p><span class="by"><img src="../public/images/logos/varna-free-university.webp" alt="" width="500" height="225" loading="lazy" decoding="async">Varna Free University "Chernorizets Hrabar"</span></div>
+        <div class="award" data-reveal style="--d:.12s"><span class="year">2006</span><span class="wreath"><svg aria-hidden="true"><use href="#laurel"/></svg><span class="inner">1st</span></span><h3>First Prize, Best Master's Thesis</h3><p>"Stress effects on the family environment and the upbringing of children."</p><span class="by"><img src="../public/images/logos/varna-free-university.webp" alt="" width="500" height="225" loading="lazy" decoding="async">Varna Free University "Chernorizets Hrabar"</span></div>
       </div>
       <div class="press" data-reveal>
         <span class="eyebrow">Featured in</span>
         <div class="press-list">
-          <span class="press-item"><span class="p-logo"><img src="../public/images/logos/bg-ben.png" alt="BG BEN" width="400" height="400"></span><span>BG BEN<small>"School of Psychology" column</small></span></span>
-          <span class="press-item"><span class="p-logo"><img src="../public/images/logos/zdraveto.png" alt="Zdraveto (blitz.bg)" width="326" height="100"></span><span>"Doctor"<small>Newspaper interview · Zdraveto · 2015</small></span></span>
-          <span class="press-item"><span class="p-logo"><img src="../public/images/logos/bg-radio.png" alt="BG Radio" width="203" height="203"></span><span>BG Radio<small>Interview · 2019</small></span></span>
+          <span class="press-item"><span class="p-logo"><img src="../public/images/logos/bg-ben.webp" alt="BG BEN" width="400" height="400" loading="lazy" decoding="async"></span><span>BG BEN<small>"School of Psychology" column</small></span></span>
+          <span class="press-item"><span class="p-logo"><img src="../public/images/logos/zdraveto.webp" alt="Zdraveto (blitz.bg)" width="326" height="100" loading="lazy" decoding="async"></span><span>"Doctor"<small>Newspaper interview · Zdraveto · 2015</small></span></span>
+          <span class="press-item"><span class="p-logo"><img src="../public/images/logos/bg-radio.webp" alt="BG Radio" width="203" height="203" loading="lazy" decoding="async"></span><span>BG Radio<small>Interview · 2019</small></span></span>
         </div>
       </div>
     </div>
@@ -783,15 +785,15 @@
         </div>
       </div>
       <div>
-        <h4>Explore</h4>
+        <h2>Explore</h2>
         <ul><li><a href="#about">About me</a></li><li><a href="#who">Who I help</a></li><li><a href="#">What I help with</a></li><li><a href="#articles">Articles</a></li><li><a href="#">Fees</a></li></ul>
       </div>
       <div>
-        <h4>Help</h4>
+        <h2>Help</h2>
         <ul><li><a href="#">FAQ</a></li><li><a href="#">Press</a></li><li><a href="#">Crisis help</a></li><li><a href="#contact">Contact</a></li></ul>
       </div>
       <div>
-        <h4>Contact</h4>
+        <h2>Contact</h2>
         <ul><li><a href="tel:+447999334778">+44 7999 334778</a></li><li><a href="mailto:contact@drvasileva.co.uk">contact@drvasileva.co.uk</a></li><li>Online &amp; in person</li><li>Български · English</li></ul>
       </div>
     </div>
@@ -855,12 +857,12 @@
   addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 
   // Marquee: duplicate the group for a seamless loop
-  const groups = document.querySelectorAll('.marquee-group');
-  groups[1].innerHTML = groups[0].innerHTML;
+  const groups = document.querySelectorAll('#creds .marquee-group');
+  if (groups[1]) groups[1].innerHTML = groups[0].innerHTML;
 
   // Quote: split into words for a reading-style reveal
   const q = document.getElementById('quote-text');
-  q.innerHTML = q.textContent.split(' ').map((w, i) => `<span class="w" style="--i:${i}">${w}</span>`).join(' ');
+  if (q) q.innerHTML = q.textContent.split(' ').map((w, i) => `<span class="w" style="--i:${i}">${w}</span>`).join(' ');
 
   // Count-up for years
   const countUp = el => {
@@ -887,56 +889,58 @@
   // Latest articles: cards made by build/blog.py. window.POSTS comes with the page; the live site then
   // loads /posts.json, so posts published in the editor appear without rebuilding the site.
   const track = document.getElementById('track'), homeTabs = document.getElementById('home-tabs');
-  const showPosts = data => {
-    if (!data || !data.posts) return;
-    homeTabs.innerHTML = [`<button class="tab" aria-pressed="true" data-filter="all">${data.all}</button>`,
-      ...data.topics.map(t => `<button class="tab" aria-pressed="false" data-filter="${t.id}"></button>`)].join('');
-    data.topics.forEach((t, i) => homeTabs.children[i + 1].textContent = t.name);
-    track.innerHTML = data.posts.slice(0, 12).map(p => p.card).join('');
-    track.querySelectorAll('[data-reveal]').forEach(el => el.removeAttribute('data-reveal'));
-    track.scrollTo({ left: 0 });
-    requestAnimationFrame(updateProgress);
-  };
-  homeTabs.addEventListener('click', e => {
-    const tab = e.target.closest('.tab');
-    if (!tab) return;
-    homeTabs.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t === tab));
-    track.querySelectorAll('.article').forEach(a => a.hidden = tab.dataset.filter !== 'all' && a.dataset.tag !== tab.dataset.filter);
-    track.scrollTo({ left: 0 });
+  if (track) {          // only on the home page (other pages don't carry its content)
+    const showPosts = data => {
+      if (!data || !data.posts) return;
+      homeTabs.innerHTML = [`<button class="tab" aria-pressed="true" data-filter="all">${data.all}</button>`,
+        ...data.topics.map(t => `<button class="tab" aria-pressed="false" data-filter="${t.id}"></button>`)].join('');
+      data.topics.forEach((t, i) => homeTabs.children[i + 1].textContent = t.name);
+      track.innerHTML = data.posts.slice(0, 12).map(p => p.card).join('');
+      track.querySelectorAll('[data-reveal]').forEach(el => el.removeAttribute('data-reveal'));
+      track.scrollTo({ left: 0 });
+      requestAnimationFrame(updateProgress);
+    };
+    homeTabs.addEventListener('click', e => {
+      const tab = e.target.closest('.tab');
+      if (!tab) return;
+      homeTabs.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-pressed', t === tab));
+      track.querySelectorAll('.article').forEach(a => a.hidden = tab.dataset.filter !== 'all' && a.dataset.tag !== tab.dataset.filter);
+      track.scrollTo({ left: 0 });
+      updateProgress();
+    });
+
+    const progress = document.getElementById('progress');
+    const updateProgress = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      const ratio = track.clientWidth / track.scrollWidth;
+      progress.style.width = (ratio * 100) + '%';
+      progress.style.transform = `translateX(${max > 0 ? (track.scrollLeft / max) * (1 / ratio - 1) * 100 : 0}%)`;
+    };
+    track.addEventListener('scroll', updateProgress, { passive: true });
+    addEventListener('resize', updateProgress);
+    showPosts(window.POSTS);
+    if (location.protocol !== 'file:' && window.SLUGS) fetch('/posts.json').then(r => r.ok ? r.json() : null).then(showPosts).catch(() => {});
     updateProgress();
-  });
 
-  const progress = document.getElementById('progress');
-  const updateProgress = () => {
-    const max = track.scrollWidth - track.clientWidth;
-    const ratio = track.clientWidth / track.scrollWidth;
-    progress.style.width = (ratio * 100) + '%';
-    progress.style.transform = `translateX(${max > 0 ? (track.scrollLeft / max) * (1 / ratio - 1) * 100 : 0}%)`;
-  };
-  track.addEventListener('scroll', updateProgress, { passive: true });
-  addEventListener('resize', updateProgress);
-  showPosts(window.POSTS);
-  if (location.protocol !== 'file:' && window.SLUGS) fetch('/posts.json').then(r => r.ok ? r.json() : null).then(showPosts).catch(() => {});
-  updateProgress();
+    document.querySelectorAll('.arrow').forEach(btn => btn.addEventListener('click', () => {
+      track.scrollBy({ left: btn.dataset.dir * track.clientWidth * .8, behavior: 'smooth' });
+    }));
 
-  document.querySelectorAll('.arrow').forEach(btn => btn.addEventListener('click', () => {
-    track.scrollBy({ left: btn.dataset.dir * track.clientWidth * .8, behavior: 'smooth' });
-  }));
-
-  // Drag to scroll (mouse)
-  let down = false, startX = 0, startLeft = 0, moved = false;
-  track.addEventListener('pointerdown', e => {
-    if (e.pointerType !== 'mouse') return;
-    down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
-  });
-  addEventListener('pointermove', e => {
-    if (!down) return;
-    const dx = e.clientX - startX;
-    if (Math.abs(dx) > 5) { moved = true; track.classList.add('dragging'); }
-    track.scrollLeft = startLeft - dx;
-  });
-  addEventListener('pointerup', () => { down = false; setTimeout(() => track.classList.remove('dragging'), 0); });
-  track.addEventListener('click', e => { if (moved) e.preventDefault(); }, true);
+    // Drag to scroll (mouse)
+    let down = false, startX = 0, startLeft = 0, moved = false;
+    track.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse') return;
+      down = true; moved = false; startX = e.clientX; startLeft = track.scrollLeft;
+    });
+    addEventListener('pointermove', e => {
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 5) { moved = true; track.classList.add('dragging'); }
+      track.scrollLeft = startLeft - dx;
+    });
+    addEventListener('pointerup', () => { down = false; setTimeout(() => track.classList.remove('dragging'), 0); });
+    track.addEventListener('click', e => { if (moved) e.preventDefault(); }, true);
+  }
 </script>
 </body>
 </html>

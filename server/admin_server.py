@@ -387,11 +387,11 @@ class Handler(BaseHTTPRequestHandler):
             f = os.path.join(FONTS, m.group(1))
             ctype = 'font/woff2' if m.group(2) == 'woff2' else 'text/css; charset=utf-8'
         else:
-            m = re.fullmatch(r'/images/((?:logos/)?[a-z0-9_-]+\.(png|jpg|svg|ico))', path)
+            m = re.fullmatch(r'/images/((?:logos/)?[a-z0-9_-]+\.(png|jpg|svg|ico|webp))', path)
             if not m:
                 return False
             f = os.path.join(IMAGES, m.group(1))
-            ctype = {'png': 'image/png', 'jpg': 'image/jpeg', 'svg': 'image/svg+xml', 'ico': 'image/x-icon'}[m.group(2)]
+            ctype = {'png': 'image/png', 'jpg': 'image/jpeg', 'svg': 'image/svg+xml', 'ico': 'image/x-icon', 'webp': 'image/webp'}[m.group(2)]
         if os.path.isfile(f):
             self.send(200, open(f, 'rb').read(), ctype, cache=True)
         else:

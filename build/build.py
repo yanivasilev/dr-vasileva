@@ -2,7 +2,8 @@
 #   preview/site.html, preview/site-bg.html   one-file previews to open from your computer (#/ links)
 #   dist/en, dist/bg                          the live sites for drvasileva.co.uk and drvasileva.bg
 # Run from anywhere:  NODE_PATH=$(npm root -g) python3 build/build.py
-import json, os, re, shutil, subprocess, sys, tempfile
+import hashlib, json, os, re, shutil, subprocess, sys, tempfile
+from html import unescape as html_unescape
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = f'{REPO}/build'        # build scripts
@@ -28,6 +29,7 @@ rep('<title>Dr Vasileva – Psychologist & CBT Psychotherapist</title>', '''<tit
 <link rel="canonical" href="https://drvasileva.co.uk/">
 <link rel="alternate" hreflang="en-GB" href="https://drvasileva.co.uk/">
 <link rel="alternate" hreflang="bg" href="https://drvasileva.bg/">
+<link rel="alternate" hreflang="x-default" href="https://drvasileva.co.uk/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Dr Vasileva">
 <meta property="og:title" content="Dr Vasileva – Psychologist & CBT Psychotherapist">
@@ -43,7 +45,13 @@ rep('<title>Dr Vasileva – Psychologist & CBT Psychotherapist</title>', '''<tit
 rep('<link rel="icon" href="../public/images/favicon.svg" type="image/svg+xml">', '''<link rel="icon" href="../public/images/favicon.ico" sizes="any">
 <link rel="icon" href="../public/images/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../public/images/apple-touch-icon.png">
-<link rel="manifest" href="../public/site.webmanifest">\n<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>''')
+<link rel="manifest" href="../public/site.webmanifest">''')
+
+# ---- fonts: the list of font files goes into the page (no extra file to wait for), and the main ones start loading at once
+fonts_css = open(f'{REPO}/public/fonts/fonts.css').read().replace('url(', 'url(../public/fonts/')
+fonts_css = re.sub(r'/\*.*?\*/', '', fonts_css, flags=re.S).strip()
+rep('<link rel="stylesheet" href="../public/fonts/fonts.css">', '<style>' + fonts_css + '</style>\n' + ''.join(
+    f'<link rel="preload" href="../public/fonts/{f}.woff2" as="font" type="font/woff2" crossorigin>\n' for f in ('manrope-latin', 'cormorant-garamond-latin')).rstrip())
 
 # ---- CSS
 s = s.replace('</style>', extra + '''
@@ -148,6 +156,15 @@ assert not missing, ('not found', missing)
 for en, tr in bg['PAIRS']:
     b = b.replace(en, tr)
 
+# The Contact page shows the same call / message buttons as the home page. They are copied into the site's
+# code here, because the other pages don't carry the home page's content to copy them from.
+TILES_JS = """document.querySelector('#home-tiles').outerHTML.replace('id="home-tiles"', '')"""
+def with_tiles(html):
+    tiles = re.search(r'<div class="tiles" id="home-tiles">.*?\n      </div>', html, re.S).group(0).replace(' id="home-tiles"', '')
+    assert html.count(TILES_JS) == 1, 'contact page: buttons not found'
+    return html.replace(TILES_JS, json.dumps(tiles, ensure_ascii=False).replace('</', '<\\/'))
+s, b = with_tiles(s), with_tiles(b)
+
 # =====================================================================
 # Articles (blog): pages and cards made by build/blog.py from content/
 # =====================================================================
@@ -187,7 +204,79 @@ def not_found(html):
     return html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<base href="/">\n<meta name="robots" content="noindex">\n<script>window.NOT_FOUND = true</script>', 1)
 
 
+def external_js(html, out):
+    # The site's code is the same on every page, so it goes into one file that browsers keep (its name
+    # changes with its content, so an update is never stale); each page only links to it
+    m = re.search(r'<script>(\n  const reduce.*?)</script>\n<script>(.*?)</script>\n</body>', html, re.S)
+    assert m, 'site script not found'
+    code = m.group(1) + '\n' + m.group(2)
+    name = f"app-{hashlib.sha256(code.encode()).hexdigest()[:10]}.js"
+    open(f'{out}/{name}', 'w').write(code)
+    return html[:m.start()] + f'<script src="/{name}" defer></script>\n</body>' + html[m.end():]
+
+
 SLUGS = {'en': (EN_SLUGS, BG_SLUGS), 'bg': (BG_SLUGS, EN_SLUGS)}
+
+# Who she is and what her practice offers, in the form search engines and AI assistants read (schema.org).
+# It's on every page, so any page someone lands on says the same.
+ABOUT = {
+    'en': dict(job='Psychologist and CBT psychotherapist', practice='Dr Vasileva – Psychologist & CBT Psychotherapist',
+               uni='Varna Free University', bps='The British Psychological Society', bgps='Bulgarian Psychological Society',
+               countries=['United Kingdom', 'Bulgaria'], languages=['Bulgarian', 'English'],
+               topics=['Anxiety and panic attacks', 'Depression', 'Stress', 'Couple and relationship problems', 'Parents and teenagers',
+                       "Children's behaviour", 'Autism', 'ADHD', 'Learning difficulties', 'Bullying and online abuse', 'Living abroad',
+                       'Cognitive behavioural therapy (CBT)', 'Special educational needs']),
+    'bg': dict(job='Психолог и когнитивно-поведенчески психотерапевт', practice='д-р Василева – психолог и КПТ психотерапевт',
+               uni='Варненски свободен университет', bps='Британско психологическо дружество', bgps='Дружество на психолозите в България',
+               countries=['Великобритания', 'България'], languages=['български', 'английски'],
+               topics=['Тревожност и панически атаки', 'Депресия', 'Стрес', 'Проблеми в двойката', 'Родители и тийнейджъри',
+                       'Поведение при децата', 'Аутизъм', 'ADHD', 'Обучителни затруднения', 'Тормоз и дигитално насилие', 'Живот в чужбина',
+                       'Когнитивно-поведенческа терапия (КПТ)', 'Специални образователни потребности']),
+}
+
+
+def site_ld(lang):
+    a, site, other = ABOUT[lang], DOMAINS[lang], DOMAINS['bg' if lang == 'en' else 'en']
+    name = 'д-р Мирена Василева' if lang == 'bg' else 'Dr Mirena Vasileva'
+    person = {'@type': 'Person', '@id': site + '#person', 'name': name, 'honorificPrefix': 'Dr', 'honorificSuffix': 'PhD',
+              'jobTitle': a['job'], 'url': site.rstrip('/') + SLUGS[lang][0]['/about'], 'image': site + 'images/dr-vasileva.webp',
+              'email': 'contact@drvasileva.co.uk' if lang == 'en' else 'contact@drvasileva.bg', 'telephone': '+447999334778',
+              'knowsLanguage': ['bg', 'en'], 'alumniOf': {'@type': 'CollegeOrUniversity', 'name': a['uni']},
+              'memberOf': [{'@type': 'Organization', 'name': a['bps']}, {'@type': 'Organization', 'name': a['bgps']}],
+              'knowsAbout': a['topics'], 'sameAs': ['https://www.facebook.com/mirena.vasileva.3', other.rstrip('/') + SLUGS['bg' if lang == 'en' else 'en'][0]['/about']]}
+    practice = {'@type': 'ProfessionalService', '@id': site + '#practice', 'name': a['practice'], 'url': site,
+                'image': site + f'images/og-{lang}.png', 'telephone': person['telephone'], 'email': person['email'],
+                'founder': {'@id': site + '#person'}, 'employee': {'@id': site + '#person'},
+                'areaServed': [{'@type': 'Country', 'name': c} for c in a['countries']], 'availableLanguage': a['languages'],
+                'knowsAbout': a['topics'], 'sameAs': [other]}
+    website = {'@type': 'WebSite', '@id': site + '#website', 'url': site, 'name': 'д-р Василева' if lang == 'bg' else 'Dr Vasileva',
+               'inLanguage': 'bg' if lang == 'bg' else 'en-GB', 'publisher': {'@id': site + '#person'}}
+    graph = json.dumps({'@context': 'https://schema.org', '@graph': [website, person, practice]}, ensure_ascii=False).replace('</', '<\\/')
+    return f'<script type="application/ld+json">{graph}</script>\n'
+
+
+def llms_txt(out, lang):
+    # A plain summary of the site for AI assistants (llmstxt.org): who she is and where each page is
+    pages = []
+    for root, _, files in os.walk(out):
+        if 'index.html' in files and '/articles/' not in root + '/' and '/statii/' not in root + '/':
+            h = open(f'{root}/index.html', encoding='utf-8').read()
+            t = re.search(r'<title>(.*?)</title>', h).group(1)
+            d = re.search(r'<meta name="description" content="([^"]*)"', h).group(1)
+            path = root[len(out):] or '/'
+            pages.append((0 if path == '/' else path.count('/'), path, html_unescape(t), html_unescape(d)))
+    pages.sort()
+    site = DOMAINS[lang].rstrip('/')
+    home = pages[0]
+    lines = [f'# {home[2]}', '', f'> {home[3]}', '',
+             ('Сайтът на английски: ' if lang == 'bg' else 'This site in Bulgarian: ') + DOMAINS['en' if lang == 'bg' else 'bg'], '',
+             '## ' + ('Страници' if lang == 'bg' else 'Pages'), '']
+    lines += [f'- [{t}]({site}{p}): {d}' for _, p, t, d in pages[1:]]
+    lines += ['', '## ' + ('Статии' if lang == 'bg' else 'Articles'), '',
+              f"- [{'Всички статии' if lang == 'bg' else 'All articles'}]({site}{SLUGS[lang][0][BLOG_KEY]}): " +
+              ('статиите на д-р Василева и рубриката ѝ в БГ БЕН' if lang == 'bg' else "Dr Vasileva's articles and her BG BEN column"), '']
+    open(f'{out}/llms.txt', 'w', encoding='utf-8').write('\n'.join(lines))
+
 # The blog's posts get addresses too, so links like #/articles/<id> become /articles/<slug> or /statii/<slug>
 POST_SLUGS = {lang: {f"{BLOG_KEY}/{p['id']}": blog.Blog(lang, topics, posts).post_path(p) for p in posts} for lang in ('en', 'bg')}
 
@@ -210,13 +299,16 @@ for lang, html in (('en', s), ('bg', b)):
     other = {**other, **POST_SLUGS['bg' if lang == 'en' else 'en']}
     page = for_server(with_blog(html, lang, 'live')).replace('<script>document.documentElement.classList.add', '<script>window.SLUGS = ' + json.dumps(own) + '; window.OTHER_SLUGS = ' + json.dumps(other) + ';</script>\n<script>document.documentElement.classList.add', 1)
     assert 'window.SLUGS' in page
+    page = page.replace('</head>', site_ld(lang) + '</head>', 1)
+    page = external_js(page, out)
     open(f'{out}/index.html', 'w').write(page)
     open(f'{out}/404.html', 'w').write(not_found(page))
     open(f'{out}/robots.txt', 'w').write(f'User-agent: *\nAllow: /\n\nSitemap: {DOMAINS[lang]}sitemap.xml\nSitemap: {DOMAINS[lang]}sitemap-articles.xml\n')
     app_pages = [k for k in SLUGS[lang][0] if k != BLOG_KEY]      # the blog writes its own pages and sitemap
     urls = ''.join(f'  <url><loc>{DOMAINS[lang].rstrip("/")}{own[k]}</loc>'
                    f'<xhtml:link rel="alternate" hreflang="en-GB" href="{DOMAINS["en"].rstrip("/")}{EN_SLUGS[k]}"/>'
-                   f'<xhtml:link rel="alternate" hreflang="bg" href="{DOMAINS["bg"].rstrip("/")}{BG_SLUGS[k]}"/></url>\n' for k in app_pages)
+                   f'<xhtml:link rel="alternate" hreflang="bg" href="{DOMAINS["bg"].rstrip("/")}{BG_SLUGS[k]}"/>'
+                   f'<xhtml:link rel="alternate" hreflang="x-default" href="{DOMAINS["en"].rstrip("/")}{EN_SLUGS[k]}"/></url>\n' for k in app_pages)
     open(f'{out}/sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + urls + '</urlset>\n')
     # Save every page as its own HTML file (needs Node + Playwright on the machine that builds)
     with tempfile.NamedTemporaryFile('w', suffix='.json', delete=False) as routes_file:
@@ -224,5 +316,6 @@ for lang, html in (('en', s), ('bg', b)):
     subprocess.run(['node', f'{B}/prerender.js', out, routes_file.name], check=True)
     os.unlink(routes_file.name)
     check_cta(out, lang)
+    llms_txt(out, lang)
     blog_pages = blog.write_site(lang, f'{out}/index.html', out)
     print(f'dist/{lang}: index.html, 404.html, {len(blog_pages)} article pages, posts.json, robots.txt, sitemaps')
