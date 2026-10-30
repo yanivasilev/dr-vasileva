@@ -446,6 +446,20 @@ sudo systemctl enable --now drvasileva-offsite.timer
 ```
 On the mail server, `sudo ls /srv/backups/from-home` shows the Admin Dashboard backups.
 
+## Restoring from a backup
+
+**Her posts (the Admin Dashboard)**, from `/var/backups/drvasileva` on the home server, or `/srv/backups/from-home` on the mail server (copy that file to the home server first):
+```
+sudo systemctl stop drvasileva-admin
+sudo mv /var/lib/drvasileva-admin /var/lib/drvasileva-admin.before-restore
+sudo tar -xzf /var/backups/drvasileva/editor-YYYY-MM-DD.tar.gz -C /var/lib
+sudo chown -R drvasileva-admin:drvasileva-admin /var/lib/drvasileva-admin && sudo chmod 700 /var/lib/drvasileva-admin
+sudo systemctl start drvasileva-admin        # it republishes the Articles pages from the restored posts
+```
+This also brings back her sign-in (password, authenticator and backup codes) as they were on that day. Once everything looks right, `/var/lib/drvasileva-admin.before-restore` can be deleted.
+
+**Her emails (mailcow)**, from `/opt/mailcow-backups` on the mail server, or `/var/backups/mailcow-from-ovh` on the home server (copy it back first): `cd /opt/mailcow-dockerized && sudo ./helper-scripts/backup_and_restore.sh restore`, then choose the backup folder and what to restore. See mailcow's documentation, "Backup and restore".
+
 ## Rebuilding `dist/` (only when the design or text changes)
 
 The server never builds anything. Changes to the text or design are made in `src/`, rebuilt with `build/build.py` and committed together with `dist/`. The main `README.md` explains how.
