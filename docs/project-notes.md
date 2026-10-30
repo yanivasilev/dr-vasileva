@@ -978,11 +978,12 @@ The sites are **locked for now** with Cloudflare Access (only approved emails ca
 - [ ] **Remove the lock:** Cloudflare → Zero Trust → Access → Applications → delete **"Dr Vasileva – before launch"** (the Admin Dashboard was never part of it).
 - [ ] **Uptime Kuma:** delete the **"Uptime Kuma"** service token (Zero Trust → Access → Service credentials) and remove the **Headers** from the "English site" and "Bulgarian site" monitors on the OVH Kuma.
 - [ ] **Google Search Console:** resubmit `sitemap.xml` and `sitemap-articles.xml` for both domains, so Google reads them straight away.
+- [ ] **Cookies page:** remove the `CF_Authorization` row (EN and BG, in `src/pages.js` and `src/bg/pages.js`); that cookie only exists while the lock is on.
 - [ ] Open both sites in a private window to check they're public.
 
 Before that, still to do:
 - [x] **Website audit: Lighthouse, SEO, GEO and performance** ✅ done (see "Update: website audit" below).
-- Also: ICO registration (then its number on the Privacy page), BPS and Bulgarian society memberships, her own dashboard sign-in (phone code, backup codes, password), fees and session length, the scientific publications list, and the two possible typos in „Разговор с благодарността“ (сдодбим → сдобрим, изтъкват → изтъкават).
+- Also: the highlighted **"to be added"** gaps on the Privacy and Terms pages (ICO number, supervision, how long records are kept, how notes are stored, online platform, in-person address, when payment is due, age for parental consent, reply time between sessions), ICO registration, BPS and Bulgarian society memberships, her own dashboard sign-in (phone code, backup codes, password), fees and session length, the scientific publications list, and the two possible typos in „Разговор с благодарността“ (сдодбим → сдобрим, изтъкват → изтъкават).
 
 ### Update: website audit (Lighthouse, SEO, GEO, performance)
 Lighthouse on the main pages of both sites, before → after (phone; desktop is 100 for performance):
