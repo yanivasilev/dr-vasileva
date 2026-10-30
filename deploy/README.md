@@ -123,17 +123,12 @@ If mailcow is on a **different** server, skip this step and run `apt install ngi
 
 ```
 cd /var/www
-git clone -b claude/nifty-hopper-d24hdq https://github.com/yanivasilev/dr-vasileva.git dr-vasileva
+git clone -b main https://github.com/yanivasilev/dr-vasileva.git dr-vasileva
 ```
 
-Once this branch is merged, use `main` instead of `claude/nifty-hopper-d24hdq`.
+`main` is the finished, live version. Make `/var/www/dr-vasileva` a real folder, not a link to another folder: if that other folder is ever deleted, the sites lose their files.
 
-**An earlier `git pull` didn't fix the Bulgarian site.** That's because the old setup:
-
-- had no folder for the .bg domain;
-- had a language link that pointed at a preview file.
-
-`dist/bg` and the nginx config in this folder fix both. Check which branch you're on with `git branch`.
+Run `git pull` as your own user, not with `sudo`. Your GitHub login (for example an SSH shortcut in `~/.ssh/config`) belongs to your user, and `sudo` would run git as root, which doesn't have it.
 
 ## 4. Certificates (first time only)
 
