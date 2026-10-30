@@ -984,7 +984,8 @@ The sites are **locked for now** with Cloudflare Access (only approved emails ca
 Before that, still to do:
 - [x] **Website audit: Lighthouse, SEO, GEO and performance** ✅ done (see "Update: website audit" below).
 - Also: the highlighted **"to be added"** gaps on the Privacy and Terms pages (ICO number, supervision, how long records are kept, how notes are stored, online platform, in-person address, when payment is due, age for parental consent, reply time between sessions), ICO registration, BPS and Bulgarian society memberships, her own dashboard sign-in (phone code, backup codes, password), fees and session length, the scientific publications list, and the two possible typos in „Разговор с благодарността“ (сдодбим → сдобрим, изтъкват → изтъкават).
-- [ ] **Google reviews.** First set up her Google Business Profile, one for the UK practice and one for Bulgaria if she sees people there in person (online-only practices can still have one, with the address hidden). How many to aim for:
+- [ ] **Google Business Profile, with the address hidden.** At business.google.com: set it up as a service-area business (she doesn't serve clients at a public address), so the address stays hidden and only the areas she serves show (e.g. United Kingdom / online; add Bulgaria too, or make a second profile for the .bg site). Category "Psychologist" (add "Psychotherapist"), the website, phone, hours and her photo. Google still asks for a real address and verifies it (often a short video of the place, or a postcard), but it isn't shown publicly.
+- [ ] **Google reviews** (once the profile is verified). How many to aim for:
   - **5** to start: enough that the star rating looks trustworthy, not like a lone review;
   - **10–20** in the first few months: about what people expect from an established local therapist;
   - then a steady **1–2 a month**: Google and visitors weigh recent reviews more than a big pile from long ago.
