@@ -41,6 +41,7 @@ const server = http.createServer((req, res) => {
       for (const n of el.querySelectorAll('.page-hero .lead, .page-body p')) {
         if (desc.length >= 120) break;
         if (n.closest('details, form, .faq')) continue;               // not an answer from a list of questions
+        if (n.matches('.updated')) continue;                            // nor a page's “last updated” line
         const t = text(n).replace(/\s*·\s*/g, ', ');
         if (t.length > 30) desc += (desc ? (/[.!?…]$/.test(desc) ? ' ' : '. ') : '') + t;
       }

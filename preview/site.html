@@ -93,6 +93,16 @@
   .prose h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-top: 1.6em; }
   .prose h2:first-child { margin-top: 0; }
   .prose p { color: #444944; font-size: 1.06rem; }
+  .legal h3 { font-size: 1.35rem; margin: 1.3em 0 .3em; }
+  .legal ul { padding-left: 1.2em; color: #444944; font-size: 1.06rem; }
+  .legal li { margin: .45em 0; }
+  .legal .updated { font-size: .9rem; color: var(--muted); margin: 0 0 18px; }
+  .legal .tbc { padding: 2px 9px; font-size: .78rem; vertical-align: 1px; }
+  .legal table { width: 100%; border-collapse: collapse; margin: 14px 0 18px; font-size: .95rem; background: var(--white); border-radius: 14px; overflow: hidden; }
+  .legal th, .legal td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--sand); vertical-align: top; }
+  .legal th { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: #F6F2EA; }
+  .legal td:first-child { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88rem; white-space: nowrap; color: var(--green-deep); }
+  @media (max-width: 600px) { .legal table, .legal thead, .legal tbody, .legal tr, .legal td { display: block; } .legal thead { display: none; } .legal td { border: 0; padding: 4px 14px; } .legal tr { padding: 10px 0; border-bottom: 1px solid var(--sand); } }
   .ticks { list-style: none; padding: 0; margin: 0 0 1.5em; display: grid; gap: 12px; }
   .ticks li { display: flex; gap: 12px; align-items: flex-start; font-size: 1.02rem; }
   .ticks li::before { content: ""; flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; background: var(--green-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234F6F52' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center / 13px no-repeat; }
@@ -2026,32 +2036,137 @@
           <li><span>National Child Helpline</span><a class="num" href="tel:116111">116 111</a></li>
         </ul></div>
       </div>
-      <div class="note warn" data-reveal>${ic('i-alert')}<span>Numbers to be double-checked before launch.</span></div>
     </div></section>`;
 
+  // Legal pages. tbc('…') marks a detail still to be filled in (it shows highlighted on the page).
+  const tbc = t => `<span class="tbc">${t}</span>`;
+  const UPDATED = '30 October 2026';
   const legal = (key, title, body) => {
     PAGES[key] = () => `
       ${hero({ crumbs: [[title]], eyebrow: 'Legal', title, icon: 'i-shield' })}
-      <section class="page-body"><div class="wrap"><div class="prose">
-        <div class="note warn">${ic('i-alert')}<span><b>Draft.</b> This text will be finalised and checked before the website goes live.</span></div>
+      <section class="page-body"><div class="wrap"><div class="prose legal">
+        <p class="updated">Last updated: ${UPDATED}</p>
         ${body}
       </div></div></section>`;
   };
   legal('/privacy', 'Privacy policy', `
-    <h2>Who I am</h2><p>Dr Mirena Vasileva is the data controller for the personal information you share through this website and in sessions. Contact: ${EMAIL}. ICO registration number: <span class="tbc">to be added</span>.</p>
-    <h2>What I collect</h2><p>Your name and contact details when you get in touch (by phone, message, email or the contact form), and, if you become a client, information about your health and wellbeing that you share in sessions.</p><h2>The contact form</h2><p>Messages sent through the form are emailed to me through my own secure mail server, not a third-party email service. To protect the form from spam and bots it uses Cloudflare Turnstile, which checks your browser without tracking you across websites.</p>
-    <h2>Why</h2><p>To reply to you, arrange and provide sessions, and keep the records my professional code requires. Health information is processed to provide health care, under UK GDPR and EU GDPR.</p>
-    <h2>How long</h2><p>Records are kept securely only for as long as needed and as professional guidance requires.</p>
-    <h2>Your rights</h2><p>You can ask to see, correct or delete your information, and you can complain to the ICO (UK) or the Commission for Personal Data Protection (Bulgaria).</p>`);
+    <p class="intro">This policy explains what personal information I collect when you visit drvasileva.co.uk or drvasileva.bg, get in touch with me or become a client, why I need it, who else handles it, and your rights.</p>
+    <h2>Who I am</h2>
+    <p>I am Dr Mirena Vasileva, PhD, psychologist and CBT psychotherapist. I am the data controller for the personal information described here.</p>
+    <ul><li>Email: <a href="mailto:${EMAIL}">${EMAIL}</a></li><li>Phone: +44 7999 334778</li><li>ICO registration number: ${tbc('to be added')}</li></ul>
+    <h2>What I collect</h2>
+    <h3>When you visit the website</h3>
+    <p>Like every website, the server receives technical information: your IP address, browser and device type, the pages you open and when. I also see anonymous visit statistics from Cloudflare Web Analytics (which pages are read, where visitors come from, their country and type of device). These statistics use no cookies and can't identify you.</p>
+    <h3>When you get in touch</h3>
+    <p>Through the contact form: your name, email address, phone number (optional), what you are interested in, how and in which language you would like a reply, and your message. By phone, WhatsApp, Viber, email or Facebook: whatever you choose to share. Please keep first messages short and don't include detailed health information.</p>
+    <h3>If you become a client</h3>
+    <p>Your contact details, what we agree about sessions and payments, and my session notes. Notes may include information about your health, wellbeing, relationships and circumstances, which the law treats as special category data and protects more strictly.</p>
+    <h3>Children and teenagers</h3>
+    <p>When I work with a young person, I also hold information about their parents or carers, as needed to arrange sessions and keep the young person safe.</p>
+    <h2>Why I use it, and the legal basis</h2>
+    <ul>
+      <li><b>To reply to you and arrange a first session:</b> steps you ask me to take before an agreement (UK GDPR and EU GDPR, Article 6(1)(b)).</li>
+      <li><b>To provide therapy and keep professional records:</b> our agreement (Article 6(1)(b)). Health information is processed for providing health care, under Article 9(2)(h) and, in the UK, the Data Protection Act 2018 (Schedule 1, paragraph 2).</li>
+      <li><b>Payments, accounts and tax:</b> legal obligations (Article 6(1)(c)).</li>
+      <li><b>To keep the website secure and working, and to understand how it is used:</b> my legitimate interests (Article 6(1)(f)). The statistics are anonymous.</li>
+      <li><b>To protect you or someone else from serious harm:</b> vital interests or legal obligations (Articles 6(1)(c)–(d) and 9(2)(c)), only when it is truly necessary.</li>
+    </ul>
+    <p>I don't use your information for marketing, I never sell it, and no decisions about you are made automatically.</p>
+    <h2>Who else handles it</h2>
+    <ul>
+      <li><b>Cloudflare, Inc.</b> delivers the website securely (encrypted connections and protection against attacks), runs the security check on the contact form (Turnstile) and provides the anonymous visit statistics.</li>
+      <li><b>OVHcloud</b>, in France, hosts my email server. Messages from the contact form and emails are stored there.</li>
+      <li><b>WhatsApp and Facebook (Meta) and Viber (Rakuten)</b>, if you choose to contact me through them. Their own privacy policies apply.</li>
+      <li><b>My bank and Revolut</b>, for payments.</li>
+      <li><b>Clinical supervision:</b> as part of good professional practice, I may discuss my work with a supervisor without anything that identifies you. ${tbc('to be confirmed')}</li>
+      <li><b>When the law requires it</b>, for example a court order, or to protect someone from serious harm. Where it is safe and possible, I will talk to you first.</li>
+    </ul>
+    <h2>Transfers outside the UK and the EU</h2>
+    <p>Cloudflare is a US company. Transfers to it are covered by the UK–US data bridge and the EU–US Data Privacy Framework, under which Cloudflare is certified, and by standard contractual clauses. OVHcloud keeps the data in the EU, which the UK recognises as adequately protected.</p>
+    <h2>How long I keep it</h2>
+    <ul>
+      <li>Enquiries that don't lead to sessions: ${tbc('to be added, e.g. 12 months')}</li>
+      <li>Client records of adults: ${tbc('to be added, e.g. 7 years after the last session')}</li>
+      <li>Client records of children and teenagers: ${tbc('to be added, e.g. until their 25th birthday, or 7 years after the last session if that is later')}</li>
+      <li>Payment records: as long as tax law requires (in the UK, usually 6 years).</li>
+      <li>Website server logs: about two weeks.</li>
+    </ul>
+    <p>After that, the information is deleted or securely destroyed.</p>
+    <h2>How I keep it safe</h2>
+    <p>The website and my email use encrypted connections, and my email runs on my own server rather than a free email service. The website's admin area needs a password and a code from my phone. Session notes are kept ${tbc('to be added, e.g. on an encrypted device / in a locked cabinet')}. WhatsApp and Viber messages are end-to-end encrypted; ordinary email may not be, so please keep sensitive details for our sessions.</p>
+    <h2>Your rights</h2>
+    <p>You can ask me to:</p>
+    <ul><li>tell you what information I hold about you and give you a copy;</li><li>correct anything that is wrong or incomplete;</li><li>delete your information, unless I have to keep it, for example professional records;</li><li>limit how I use it, or object to my using it;</li><li>give it to you, or to someone else, in a common digital format;</li><li>stop using it, where I use it with your consent.</li></ul>
+    <p>Email me at <a href="mailto:${EMAIL}">${EMAIL}</a>. It is free, and I will reply within one month.</p>
+    <h2>Complaints</h2>
+    <p>Please tell me first, so I can put it right. You can also complain to the data protection authority: in the UK, the Information Commissioner's Office (<a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a>, 0303 123 1113); in Bulgaria, the Commission for Personal Data Protection (<a href="https://www.cpdp.bg" target="_blank" rel="noopener">cpdp.bg</a>).</p>
+    <h2>Changes</h2>
+    <p>If this policy changes, the new version will be published here with a new date.</p>`);
   legal('/cookies', 'Cookies', `
-    <h2>In short</h2><p>This website does not use advertising or tracking cookies. If visitor statistics are added, they will use a privacy-friendly service that does not need cookies.</p><p>Fonts and images are served from this website itself, so visiting it does not send your details to other companies such as Google.</p>
-    <h2>Links to other services</h2><p>WhatsApp, Viber and Facebook have their own privacy policies, which apply when you use their apps.</p>`);
+    <p class="intro">This website uses no advertising or tracking cookies, so there is no cookie banner to accept. The few cookies that can appear are needed for security, and are listed below.</p>
+    <h2>What cookies are</h2>
+    <p>Cookies are small files a website saves in your browser. Some are needed for a site to work safely; others track you for advertising or statistics. This site uses only the first kind.</p>
+    <h2>Visit statistics, without cookies</h2>
+    <p>I use Cloudflare Web Analytics to see how the site is used: which pages are read, where visitors come from, their country and type of device. It sets no cookies, doesn't store anything in your browser and doesn't recognise you on other websites. It works through a small script from Cloudflare (static.cloudflareinsights.com).</p>
+    <h2>Security cookies from Cloudflare</h2>
+    <p>Cloudflare protects the website from attacks. It may set these strictly necessary cookies, which don't need your consent:</p>
+    <table><thead><tr><th>Cookie</th><th>What it does</th><th>How long</th></tr></thead><tbody>
+      <tr><td>cf_clearance</td><td>Remembers that your browser passed a security check, so you aren't checked again on every page</td><td>Up to 30 minutes</td></tr>
+      <tr><td>_cfuvid</td><td>Helps Cloudflare apply limits that stop a single visitor from overloading the site</td><td>Until you close the browser</td></tr>
+      <tr><td>CF_Authorization</td><td>Only while the site is open to invited people before its launch: remembers that you signed in to see it</td><td>Up to 1 month</td></tr>
+    </tbody></table>
+    <p>The contact form's security check (Cloudflare Turnstile) runs inside a small frame from challenges.cloudflare.com and sets no cookies on this website.</p>
+    <h2>The admin area</h2>
+    <p>The admin area, used only by me to write articles, sets a sign-in cookie (until I sign out, at most 12 hours) and a cookie that remembers its language (1 year). Visitors of the website never receive them.</p>
+    <h2>Fonts and images</h2>
+    <p>Fonts and images are served from this website itself, so visiting it doesn't send your details to companies such as Google.</p>
+    <h2>Other services</h2>
+    <p>If you contact me through WhatsApp, Viber or Facebook, or follow a link to another website, that service's own cookie and privacy policies apply.</p>
+    <h2>Your choices</h2>
+    <p>You can delete or block cookies in your browser's settings. If you block the security cookies, Cloudflare may ask you to complete a check more often.</p>`);
   legal('/terms', 'Terms', `
-    <h2>Appointments</h2><p>Appointments are arranged by phone, WhatsApp, Viber, email or Facebook.</p>
-    <h2>Payment</h2><p>By bank transfer or Revolut.</p>
-    <h2>Cancellations</h2><p>Please give at least 24 hours’ notice. Sessions cancelled with less notice may be charged in full.</p>
-    <h2>Confidentiality</h2><p>Sessions are confidential, except where there is a serious risk of harm to you or others.</p>
-    <h2>Emergencies</h2><p>I’m not an emergency service. See the <a href="#/crisis">Crisis help</a> page.</p>`);
+    <p class="intro">These terms cover using this website and working with me. By booking a session you agree to them, so please read them before we start. If anything is unclear, just ask.</p>
+    <h2>About me</h2>
+    <p>Dr Mirena Vasileva, PhD, psychologist and CBT psychotherapist. Contact: <a href="mailto:${EMAIL}">${EMAIL}</a>, +44 7999 334778.</p>
+    <h2>The website</h2>
+    <ul>
+      <li>The information on this website, including the articles, is general. It isn't medical advice or a diagnosis, and reading it doesn't start a therapeutic relationship.</li>
+      <li>If you are in crisis, please see the <a href="#/crisis">Crisis help</a> page. I am not an emergency service.</li>
+      <li>The texts and images on this website belong to me. You are welcome to share links to them.</li>
+      <li>I am not responsible for the content of other websites this site links to.</li>
+    </ul>
+    <h2>Booking</h2>
+    <p>Sessions are arranged by phone, WhatsApp, Viber, email, Facebook or the contact form. We agree together the type of sessions, the time and the language.</p>
+    <h2>Online and in-person sessions</h2>
+    <ul>
+      <li>Online sessions take place on ${tbc('to be added, e.g. Zoom / Google Meet / WhatsApp video')}. Please join from a private, quiet place with a stable internet connection.</li>
+      <li>In-person sessions take place at ${tbc('to be added: town or address')}.</li>
+      <li>Sessions are not recorded, by either of us, unless we both agree in writing.</li>
+    </ul>
+    <h2>Fees and payment</h2>
+    <p>Fees are shown on the <a href="#/fees">Fees</a> page. Payment is by bank transfer or Revolut, ${tbc('to be added: before or after each session')}.</p>
+    <h2>Cancelling and lateness</h2>
+    <ul>
+      <li>Please give at least 24 hours' notice if you need to cancel or move a session. Sessions cancelled with less notice, or missed, may be charged in full.</li>
+      <li>If you arrive late, the session still ends at the agreed time.</li>
+      <li>If I have to cancel, I will tell you as early as I can and offer another time, and you won't be charged.</li>
+    </ul>
+    <h2>Confidentiality</h2>
+    <p>What you share in sessions stays between us. The exceptions are:</p>
+    <ul><li>a serious risk of harm to you or to someone else;</li><li>a concern about the safety of a child or a vulnerable adult;</li><li>when the law requires it, for example a court order.</li></ul>
+    <p>Where it is safe and possible, I will talk to you before sharing anything. In clinical supervision, I may discuss my work without anything that identifies you. ${tbc('to be confirmed')}</p>
+    <h2>Children and teenagers</h2>
+    <p>For clients under ${tbc('to be added: age, e.g. 16 or 18')}, a parent or carer arranges the sessions and gives consent. Young people have a right to privacy too: before we start, we agree together what will be shared with parents, always with the young person's safety first.</p>
+    <h2>Between sessions</h2>
+    <p>Messages and emails are for arranging sessions. I reply ${tbc('to be added, e.g. within two working days')}. They aren't monitored for emergencies: if you need help urgently, see <a href="#/crisis">Crisis help</a>.</p>
+    <h2>Ending therapy</h2>
+    <p>You can stop at any time. It usually helps to have a final session to look back on what has changed, but this is always your choice.</p>
+    <h2>Your information</h2>
+    <p>How I handle your personal information is explained in the <a href="#/privacy">Privacy policy</a>.</p>
+    <h2>Complaints</h2>
+    <p>If you are unhappy with any part of my work, please tell me, and I will do my best to put it right.</p>
+    <h2>The law</h2>
+    <p>These terms are governed by the law of England and Wales. If you live in Bulgaria or elsewhere in the EU, you keep the rights your local consumer law gives you.</p>`);
 
   PAGES['/404'] = () => `
     <section class="page-hero grain on-dark notfound">

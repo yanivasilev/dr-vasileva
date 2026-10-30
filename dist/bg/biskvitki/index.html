@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Dr Vasileva">
 <meta property="og:title" content="Бисквитки – д-р Василева">
-<meta property="og:description" content="Този сайт не използва рекламни бисквитки или бисквитки за проследяване. Ако бъде добавена статистика за посещенията, тя ще използва услуга, която пази…">
+<meta property="og:description" content="Този сайт не използва рекламни бисквитки или бисквитки за проследяване, затова няма банер за бисквитки, който да приемате. Малкото бисквитки, които може да…">
 <meta property="og:url" content="https://drvasileva.bg/biskvitki" data-base="https://drvasileva.bg">
 <meta property="og:image" content="https://drvasileva.bg/images/og-bg.png">
 <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
 <meta property="og:locale:alternate" content="en_GB">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://drvasileva.bg/images/og-bg.png">
-<meta name="description" content="Този сайт не използва рекламни бисквитки или бисквитки за проследяване. Ако бъде добавена статистика за посещенията, тя ще използва услуга, която пази…">
+<meta name="description" content="Този сайт не използва рекламни бисквитки или бисквитки за проследяване, затова няма банер за бисквитки, който да приемате. Малкото бисквитки, които може да…">
 <meta name="theme-color" content="#2C4430">
 <link rel="icon" href="/images/favicon.ico" sizes="any">
 <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
@@ -93,6 +93,16 @@
   .prose h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); margin-top: 1.6em; }
   .prose h2:first-child { margin-top: 0; }
   .prose p { color: #444944; font-size: 1.06rem; }
+  .legal h3 { font-size: 1.35rem; margin: 1.3em 0 .3em; }
+  .legal ul { padding-left: 1.2em; color: #444944; font-size: 1.06rem; }
+  .legal li { margin: .45em 0; }
+  .legal .updated { font-size: .9rem; color: var(--muted); margin: 0 0 18px; }
+  .legal .tbc { padding: 2px 9px; font-size: .78rem; vertical-align: 1px; }
+  .legal table { width: 100%; border-collapse: collapse; margin: 14px 0 18px; font-size: .95rem; background: var(--white); border-radius: 14px; overflow: hidden; }
+  .legal th, .legal td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--sand); vertical-align: top; }
+  .legal th { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); background: #F6F2EA; }
+  .legal td:first-child { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88rem; white-space: nowrap; color: var(--green-deep); }
+  @media (max-width: 600px) { .legal table, .legal thead, .legal tbody, .legal tr, .legal td { display: block; } .legal thead { display: none; } .legal td { border: 0; padding: 4px 14px; } .legal tr { padding: 10px 0; border-bottom: 1px solid var(--sand); } }
   .ticks { list-style: none; padding: 0; margin: 0 0 1.5em; display: grid; gap: 12px; }
   .ticks li { display: flex; gap: 12px; align-items: flex-start; font-size: 1.02rem; }
   .ticks li::before { content: ""; flex-shrink: 0; width: 22px; height: 22px; margin-top: 2px; border-radius: 50%; background: var(--green-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234F6F52' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12 4 4 8-8'/%3E%3C/svg%3E") center / 13px no-repeat; }
@@ -1084,11 +1094,30 @@
         
       </div>
     </section>
-      <section class="page-body"><div class="wrap"><div class="prose">
-        <div class="note warn"><svg class="icon"><use href="#i-alert"></use></svg><span><b>Чернова.</b> Текстът ще бъде финализиран и проверен преди пускането на сайта.</span></div>
+      <section class="page-body"><div class="wrap"><div class="prose legal">
+        <p class="updated">Последна актуализация: 30 октомври 2026 г.</p>
         
-    <h2>Накратко</h2><p>Този сайт не използва рекламни бисквитки или бисквитки за проследяване. Ако бъде добавена статистика за посещенията, тя ще използва услуга, която пази поверителността и не се нуждае от бисквитки.</p><p>Шрифтовете и изображенията се зареждат от самия сайт, така че посещението му не изпраща Ваши данни на други компании, например Google.</p>
-    <h2>Връзки към други услуги</h2><p>WhatsApp, Viber и Facebook имат собствени политики за поверителност, които се прилагат, когато използвате техните приложения.</p>
+    <p class="intro">Този сайт не използва рекламни бисквитки или бисквитки за проследяване, затова няма банер за бисквитки, който да приемате. Малкото бисквитки, които може да се появят, са нужни за сигурността и са описани по-долу.</p>
+    <h2>Какво са бисквитките</h2>
+    <p>Бисквитките са малки файлове, които сайтът записва в браузъра Ви. Някои са нужни, за да работи сайтът сигурно; други Ви проследяват за реклама или статистика. Този сайт използва само първия вид.</p>
+    <h2>Статистика за посещенията – без бисквитки</h2>
+    <p>Използвам Cloudflare Web Analytics, за да виждам как се използва сайтът: кои страници се четат, откъде идват посетителите, от коя държава са и с какво устройство. Тя не записва бисквитки, не съхранява нищо в браузъра Ви и не Ви разпознава в други сайтове. Работи чрез малък скрипт от Cloudflare (static.cloudflareinsights.com).</p>
+    <h2>Бисквитки за сигурност от Cloudflare</h2>
+    <p>Cloudflare пази сайта от атаки и може да запише следните строго необходими бисквитки, за които не е нужно Вашето съгласие:</p>
+    <table><thead><tr><th>Бисквитка</th><th>За какво служи</th><th>Колко дълго</th></tr></thead><tbody>
+      <tr><td>cf_clearance</td><td>Помни, че браузърът Ви е преминал проверка за сигурност, за да не бъдете проверявани на всяка страница</td><td>До 30 минути</td></tr>
+      <tr><td>_cfuvid</td><td>Помага на Cloudflare да прилага ограничения, които не позволяват един посетител да претовари сайта</td><td>До затваряне на браузъра</td></tr>
+      <tr><td>CF_Authorization</td><td>Само докато сайтът е достъпен единствено за поканени хора преди официалното си пускане: помни, че сте влезли, за да го разгледате</td><td>До 1 месец</td></tr>
+    </tbody></table>
+    <p>Проверката за сигурност на формата за контакт (Cloudflare Turnstile) работи в малка рамка от challenges.cloudflare.com и не записва бисквитки на този сайт.</p>
+    <h2>Администрацията на сайта</h2>
+    <p>Администрацията, която използвам само аз, за да пиша статии, записва бисквитка за вход (докато изляза, най-много 12 часа) и бисквитка, която помни езика ѝ (1 година). Посетителите на сайта никога не ги получават.</p>
+    <h2>Шрифтове и изображения</h2>
+    <p>Шрифтовете и изображенията се зареждат от самия сайт, така че посещението му не изпраща Ваши данни на компании като Google.</p>
+    <h2>Други услуги</h2>
+    <p>Ако се свържете с мен чрез WhatsApp, Viber или Facebook или отворите връзка към друг сайт, важат неговите собствени политики за бисквитки и поверителност.</p>
+    <h2>Вашият избор</h2>
+    <p>Можете да изтриете или блокирате бисквитките от настройките на браузъра си. Ако блокирате бисквитките за сигурност, Cloudflare може по-често да Ви моли да преминете проверка.</p>
       </div></div></section></div></div>
 </main>
 
@@ -1134,6 +1163,6 @@
   <a class="m-viber" href="viber://chat?number=%2B447999334778"><svg class="bi"><use href="#b-viber"/></svg>Viber</a>
 </nav>
 
-<script src="/app-9b6239f748.js" defer></script>
+<script src="/app-87050144c2.js" defer></script>
 </body>
 </html>
