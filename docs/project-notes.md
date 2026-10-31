@@ -991,6 +991,30 @@ Before that, still to do:
   - then a steady **1–2 a month**: Google and visitors weigh recent reviews more than a big pile from long ago.
   Ask only people who are happy to be asked: former clients who have finished, parents, schools and organisations she has worked with, workshop or group attendees. Never offer anything in return (Google forbids it), and don't ask current clients, because it can feel like pressure while they're still in therapy. Check her professional body's rules on testimonials first (HCPC/BPS in the UK, her Bulgarian society); see also "Testimonials" above. A short link from the profile (Ask for reviews → share) makes it easy. She should reply to reviews without confirming the person was a client (e.g. "Thank you for your kind words").
 
+### Being found in the UK and in Bulgaria
+In-person sessions are only in London, so only the **UK** can have a Google Business Profile (Google needs a place, or areas, where she meets people). Bulgaria is reached through search, directories and Facebook.
+
+**UK**
+- [ ] Google Business Profile (in progress): primary category Psychologist; plus Psychotherapist, Child psychologist, Family counselor, Marriage counselor, Counselor, Mental health service (not "Clinical / Counselling / Educational psychologist": protected titles); address hidden; "Open with no main hours"; service areas London, Greater London, Hertfordshire, Essex, Kent, Surrey, Buckinghamshire, Berkshire; website drvasileva.co.uk; WhatsApp chat link; Facebook.
+- [ ] Bing Places (bingplaces.com): import straight from the Google profile.
+- [ ] Apple Business Connect (businessconnect.apple.com): shows her in Apple Maps and Siri.
+- [ ] ICO registration, then its number on the Privacy page.
+- [ ] BPS membership (and its "Find a psychologist" listing, if her grade includes one).
+- [ ] Optional paid directories: Psychology Today UK, Counselling Directory.
+- [ ] Google reviews (see above).
+
+**Bulgaria**
+- [x] Google Search Console for drvasileva.bg (sitemaps submitted).
+- [ ] Bing Webmaster Tools for both sites (import from Search Console in one click).
+- [ ] Bulgarian society membership (fee to pay), with its member listing if there is one.
+- [ ] A Facebook **Page** (business page, not her personal profile) with posts in Bulgarian and English, linking to both sites; then use it in the footer and on the Google profile.
+- [ ] Bulgarian online directories of psychologists, listing her as online sessions, linking to drvasileva.bg.
+- [ ] A Google profile in Bulgaria only if she gets a real place there where she sees people (address can be hidden too; website drvasileva.bg).
+
+**Both**
+- [ ] The "to be added" gaps on the Privacy and Terms pages; fees and session length.
+- [ ] Launch day (above): remove the lock, then resubmit the sitemaps.
+
 ### Update: website audit (Lighthouse, SEO, GEO, performance)
 Lighthouse on the main pages of both sites, before → after (phone; desktop is 100 for performance):
 - **Performance:** 0–81 → **93–99**. Main content visible: about 5 s → **2.1–3.0 s** on a slow phone connection (0.5–0.8 s on desktop). Page weight 810–865 KB → **200–370 KB**.
